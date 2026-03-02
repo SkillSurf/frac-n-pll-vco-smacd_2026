@@ -241,8 +241,4 @@ body=sub!
 spiceprefix=X
 b=0
 m=1.23}
-<<<<<<< Updated upstream
-C {ihp_4nh_inductor.sym} 2150 270 0 0 {name=x1}
-=======
 C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/lc-vco/ihp_4nh_inductor.sym} 2150 270 0 0 {name=x1}
->>>>>>> Stashed changes

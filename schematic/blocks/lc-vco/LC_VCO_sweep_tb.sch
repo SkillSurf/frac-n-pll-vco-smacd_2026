@@ -5,9 +5,9 @@ V {}
 S {}
 F {}
 E {}
-B 2 -740 140 60 540 {flags=graph
-y1=1.9952089e+09
-y2=2.6767834e+09
+B 2 120 -1050 920 -650 {flags=graph
+y1=1.9479089e+09
+y2=2.6927005e+09
 ypos1=0
 ypos2=2
 divy=5
@@ -24,52 +24,30 @@ logx=0
 logy=0
 autoload=1
 sim_type=tran
-color=4
-node=freq_vector
-x2=2.9999e-08
-hcursor1_y=2.2597346e+09
-hcursor2_y=2.5045169e+09}
-N -580 -40 -580 0 {lab=GND}
-N -640 -180 -640 -100 {lab=VDD}
-N -640 -40 -640 0 {lab=GND}
-N -580 -180 -580 -100 {lab=VCTRL}
-N -130 -60 -80 -60 {lab=OUTp}
-N -130 -40 -80 -40 {lab=OUTn}
-N -380 -60 -340 -60 {lab=VCTRL}
-N -240 40 -240 70 {lab=GND}
-N -520 -40 -520 -20 {lab=Ibias}
-N -380 -40 -340 -40 {lab=Ibias}
-N -240 -160 -240 -140 {lab=VDD}
-C {vsource.sym} -640 -70 0 0 {name=V1 value=1.2 savecurrent=false}
-C {gnd.sym} -640 0 0 0 {name=l1 lab=GND}
-C {gnd.sym} -580 0 0 0 {name=l2 lab=GND}
-C {devices/vdd.sym} -640 -180 0 0 {name=l5 lab=VDD}
-C {devices/vdd.sym} -580 -180 0 0 {name=l8 lab=VCTRL}
-C {launcher.sym} 70 570 0 0 {name=h5
+color="4 7"
+node="freq_vector
+vctrl"
+x2=1.59999e-07
+hcursor2_y=2.5025565e+09
+hcursor1_y=2.3542446e+09}
+N 290 -320 290 -280 {lab=GND}
+N 290 -460 290 -380 {lab=VCTRL}
+N 850 -390 930 -390 {lab=OUTp}
+N 850 -370 930 -370 {lab=OUTn}
+N 570 -390 640 -390 {lab=VCTRL}
+N 740 -290 740 -280 {lab=GND}
+N 570 -370 640 -370 {lab=Ibias}
+N 740 -480 740 -470 {lab=VDD}
+N 230 -460 230 -380 {lab=VDD}
+N 230 -320 230 -280 {lab=GND}
+N 170 -400 170 -380 {lab=Ibias}
+C {gnd.sym} 290 -280 0 0 {name=l2 lab=GND}
+C {devices/vdd.sym} 290 -460 0 0 {name=l8 lab=VCTRL}
+C {launcher.sym} 790 -630 0 0 {name=h5
 descr="load waves" 
-tclcommand="xschem raw_read $netlist_dir/tb_VCO.raw tran 0.0n 30n "
+tclcommand="xschem raw_read $netlist_dir/tb_VCO.raw"
 }
-C {opin.sym} -80 -60 0 0 {name=p2 lab=OUTp
-}
-C {opin.sym} -80 -40 0 0 {name=p1 lab=OUTn
-}
-C {iopin.sym} -240 -160 3 0 {name=p4 lab=VDD
-}
-C {iopin.sym} -380 -60 2 0 {name=p6 lab=VCTRL
-}
-C {iopin.sym} -240 70 1 0 {name=p3 lab=GND
-}
-C {LC_VCO.sym} -240 -50 0 0 {name=x1}
-C {devices/isource.sym} -520 -70 0 0 {name=I0 value=50u}
-C {devices/vdd.sym} -520 -100 0 0 {name=l12 lab=VDD}
-C {devices/vdd.sym} -520 -20 2 0 {name=l3 lab=Ibias}
-C {iopin.sym} -380 -40 2 0 {name=p5 lab=Ibias
-}
-C {devices/code_shown.sym} 180 -90 0 0 {name=MODEL only_toplevel=true
-format="tcleval( @value )"
-value=".lib cornerMOSlv.lib mos_tt
-.lib cornerCAP.lib cap_typ_stat"}
-C {devices/code_shown.sym} 230 0 0 0 {name=NGSPICE only_toplevel=true 
+C {devices/code_shown.sym} 1030 -740 0 0 {name=NGSPICE only_toplevel=true 
 value="
 .include ./IHP_4nH_Inductor.spice
 .param temp=27
@@ -77,7 +55,7 @@ value="
 save all
 *.ic v(OUTp)=0.6
 
-tran 1p 200n UIC
+tran 3p 160n UIC
 
 linearize v(OUTp) v(Vctrl)
 
@@ -106,4 +84,24 @@ write tb_VCO.raw
 *quit 0
 .endc
 "}
-C {vsource.sym} -580 -70 0 0 {name=V2 value="pulse(0.3 1.0 50n 100n 100n 200n)" savecurrent=false}
+C {vsource.sym} 290 -350 0 0 {name=V2 value="pulse(0.3 1.0 50n 100n 100n 200n)" savecurrent=false}
+C {devices/code_shown.sym} 1020 -860 0 0 {name=MODEL1 only_toplevel=true
+format="tcleval( @value )"
+value=".lib cornerMOSlv.lib mos_tt
+.lib cornerRES.lib res_typ
+.lib $::SG13G2_MODELS/cornerCAP.lib cap_typ_stat
+"}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/lc-vco/LC_VCO.sym} 740 -380 0 0 {name=x2}
+C {gnd.sym} 740 -280 0 0 {name=l6 lab=GND}
+C {lab_pin.sym} 570 -390 0 0 {name=p3 sig_type=std_logic lab=VCTRL}
+C {lab_pin.sym} 570 -370 0 0 {name=p7 sig_type=std_logic lab=Ibias}
+C {devices/vdd.sym} 740 -480 0 0 {name=l7 lab=VDD}
+C {lab_pin.sym} 930 -390 0 1 {name=p1 sig_type=std_logic lab=OUTp}
+C {lab_pin.sym} 930 -370 0 1 {name=p2 sig_type=std_logic lab=OUTn}
+C {vsource.sym} 230 -350 0 0 {name=V1 value=1.2 savecurrent=false}
+C {gnd.sym} 230 -280 0 0 {name=l1 lab=GND}
+C {devices/vdd.sym} 230 -460 0 0 {name=l5 lab=VDD}
+C {devices/isource.sym} 170 -430 0 0 {name=I0 value=50u}
+C {devices/vdd.sym} 170 -460 0 0 {name=l12 lab=VDD}
+C {devices/vdd.sym} 170 -380 2 0 {name=l3 lab=Ibias}
+C {title.sym} 160 -40 0 0 {name=l4 author="Skill Surf"}
