@@ -5,13 +5,8 @@ V {}
 S {}
 F {}
 E {}
-<<<<<<< Updated upstream
-B 2 -660 120 140 520 {flags=graph
-y1=0.084
-=======
 B 2 850 -1220 1650 -820 {flags=graph
 y1=0.094
->>>>>>> Stashed changes
 y2=1.1
 ypos1=0
 ypos2=2
@@ -19,11 +14,7 @@ divy=5
 subdivy=1
 unity=1
 x1=1e-14
-<<<<<<< Updated upstream
-x2=2e-07
-=======
 x2=1e-07
->>>>>>> Stashed changes
 divx=5
 subdivx=1
 xlabmag=1.0
