@@ -158,12 +158,6 @@ N 600 -940 640 -940 {lab=F_VCO}
 N 500 -730 500 -690 {lab=GND}
 N 500 -960 500 -790 {lab=F_REF}
 N 600 -700 1110 -700 {lab=F_VCO}
-N 1360 -740 1420 -740 {lab=#net1}
-N 1360 -720 1420 -720 {lab=#net2}
-N 1360 -700 1420 -700 {lab=#net3}
-N 1360 -680 1420 -680 {lab=#net4}
-N 1360 -660 1420 -660 {lab=#net5}
-N 1170 -700 1200 -700 {lab=#net6}
 N 1480 -740 1660 -740 {lab=vco_out}
 N 1660 -960 1660 -740 {lab=vco_out}
 N 1480 -720 1530 -720 {lab=rst}
@@ -174,6 +168,12 @@ N 1650 -660 1690 -660 {lab=en}
 N 1650 -680 1690 -680 {lab=sdata}
 N 1650 -700 1690 -700 {lab=sclk}
 N 1650 -720 1690 -720 {lab=rst}
+N 1360 -740 1420 -740 {lab=#net1}
+N 1360 -720 1420 -720 {lab=#net2}
+N 1360 -700 1420 -700 {lab=#net3}
+N 1360 -680 1420 -680 {lab=#net4}
+N 1360 -660 1420 -660 {lab=#net5}
+N 1170 -700 1200 -700 {lab=#net6}
 C {vsource.sym} 580 -510 0 0 {name=V1 value=1.2 savecurrent=false}
 C {gnd.sym} 580 -440 0 0 {name=l1 lab=GND}
 C {devices/vdd.sym} 580 -600 0 0 {name=l5 lab=VDD}
@@ -215,7 +215,7 @@ C {lab_pin.sym} 1280 -920 0 0 {name=p1 sig_type=std_logic lab=IbiasVCO
 C {gnd.sym} 670 -850 0 0 {name=l3 lab=GND}
 C {gnd.sym} 1010 -860 0 0 {name=l7 lab=GND}
 C {gnd.sym} 1420 -810 0 0 {name=l8 lab=GND}
-C {simulator_commands_shown.sym} 790 -480 0 0 {
+C {simulator_commands_shown.sym} 670 -530 0 0 {
 name=Libs_Ngspice1
 simulator=ngspice
 only_toplevel=false
@@ -236,49 +236,6 @@ value="
 .param CP_N_M = 1
 .param C_CP = 700p
 "}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/charge-pump/CP.sym} 1010 -960 0 0 {name=x1}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/phase-freq-detector/PFD_std.sym} 670 -950 0 0 {name=x2}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/lc-vco/LC_VCO.sym} 1420 -950 0 0 {name=x3}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/dsm_and_freq_divider.sym} 1280 -700 0 1 {name=adut
-dut=dut
-d_cosim_model= d_cosim
-model=./../dsm_and_freq_divider.so}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/adc_bridge1.sym} 1450 -740 0 1 {name=A1
-adc=adc1
-adc_bridge_model=adc_bridge
-in_low=0.4
-in_high=0.6
-}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/adc_bridge1.sym} 1450 -720 0 1 {name=A2
-adc=adc1
-adc_bridge_model=adc_bridge
-in_low=0.4
-in_high=0.6
-}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/adc_bridge1.sym} 1450 -700 0 1 {name=A3
-adc=adc1
-adc_bridge_model=adc_bridge
-in_low=0.4
-in_high=0.6
-}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/adc_bridge1.sym} 1450 -680 0 1 {name=A4
-adc=adc1
-adc_bridge_model=adc_bridge
-in_low=0.4
-in_high=0.6
-}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/adc_bridge1.sym} 1450 -660 0 1 {name=A5
-adc=adc1
-adc_bridge_model=adc_bridge
-in_low=0.4
-in_high=0.6
-}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/dac_bridge1.sym} 1140 -700 0 1 {name=A6
-dac=dac1
-dac_bridge_model=dac_bridge
-out_low=0
-out_high=1.2
-}
 C {lab_pin.sym} 1530 -660 0 1 {name=p2 sig_type=std_logic lab=en}
 C {lab_pin.sym} 1530 -680 0 1 {name=p3 sig_type=std_logic lab=sdata}
 C {lab_pin.sym} 1530 -700 0 1 {name=p4 sig_type=std_logic lab=sclk}
@@ -332,4 +289,84 @@ value="
 
   write pll_dsm_freq_div.raw
 .endc
+"}
+C {lc-vco/LC_VCO.sym} 1420 -950 0 0 {name=x3}
+C {charge-pump/CP.sym} 1010 -960 0 0 {name=x1}
+C {phase-freq-detector/PFD_std.sym} 670 -950 0 0 {name=x2}
+C {dsm/xschem/adc_bridge1.sym} 1450 -740 0 1 {name=A1
+adc=adc1
+adc_bridge_model=adc_bridge
+in_low=0.4
+in_high=0.6
+}
+C {dsm/xschem/adc_bridge1.sym} 1450 -720 0 1 {name=A2
+adc=adc1
+adc_bridge_model=adc_bridge
+in_low=0.4
+in_high=0.6
+}
+C {dsm/xschem/adc_bridge1.sym} 1450 -700 0 1 {name=A3
+adc=adc1
+adc_bridge_model=adc_bridge
+in_low=0.4
+in_high=0.6
+}
+C {dsm/xschem/adc_bridge1.sym} 1450 -680 0 1 {name=A4
+adc=adc1
+adc_bridge_model=adc_bridge
+in_low=0.4
+in_high=0.6
+}
+C {dsm/xschem/adc_bridge1.sym} 1450 -660 0 1 {name=A5
+adc=adc1
+adc_bridge_model=adc_bridge
+in_low=0.4
+in_high=0.6
+}
+C {dsm/xschem/dsm_and_freq_divider.sym} 1280 -700 0 1 {name=adut
+dut=dut
+d_cosim_model= d_cosim
+model=./../dsm_and_freq_divider.so}
+C {dsm/xschem/dac_bridge1.sym} 1140 -700 0 1 {name=A6
+dac=dac1
+dac_bridge_model=dac_bridge
+out_low=0
+out_high=1.2
+}
+C {simulator_commands.sym} 1910 -580 0 0 {name=SimulatorNGSPICE1
+vhdl_ignore=1
+spice_ignore="tcleval([regexp -nocase \{xyce\} $sim(spice,$sim(spice,default),name)])"
+simulator=ngspice
+only_toplevel=false 
+value="
+.include ./IHP_4nH_Inductor.spice
+.param temp=27
+.control
+<<<<<<< HEAD
+save V(VCTRL) V(OUTp) V(outd) V(sdata) V(sclk) V(en) V(rst) 
+=======
+save v(outd) v(OUTp) v(VCTRL) v(rst) v(sclk) v(sdata) v(en)
+>>>>>>> db3dfc6e419474ed53387991c677ebd8f716422a
+.options maxstep=50p reltol=1e-3 abstol=1e-6
+
+*.ic v(OUTp)=0.6
+tran 1p 400n
+remzerovec
+
+* Perform FFT on output
+fft v(OUTp)
+let vmag = db(mag(v(OUTp)))
+plot vmag xlabel 'Frequency (Hz)' xlimit 0 5G
+
+* Save transient waveform to raw file
+write LCVCO_DSM.raw
+
+*quit 0
+.endc
+
+
+* to generate following file copy stimuli.test
+* to the simulation directory and run simulation -> Utile Stimuli Editor (GUI), 
+* and press 'Translate'
+.include stimuli_test.cir
 "}

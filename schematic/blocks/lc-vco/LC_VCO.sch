@@ -1,4 +1,4 @@
-v {xschem version=3.4.8RC file_version=1.3}
+v {xschem version=3.4.8RC file_version=1.2}
 G {}
 K {}
 V {}
@@ -241,4 +241,4 @@ body=sub!
 spiceprefix=X
 b=0
 m=1.23}
-C {/home/mmhnbm/frac-n-pll-vco-smacd_2026/schematic/blocks/lc-vco/ihp_4nh_inductor.sym} 2150 270 0 0 {name=x1}
+C {ihp_4nh_inductor.sym} 2150 270 0 0 {name=x1}

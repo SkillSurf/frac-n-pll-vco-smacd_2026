@@ -1,4 +1,4 @@
-** sch_path: /home/mmhnbm/frac-n-pll-vco-smacd_2026/schematic/blocks/top-pll/LCVCO_DSM_tb.sch
+** sch_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/LCVCO_DSM_tb.sch
 **.subckt LCVCO_DSM_tb OUTn VDD VCTRL GND Ibias
 *.opin OUTn
 *.iopin VDD
@@ -9,6 +9,10 @@
 * noconn sclk
 * noconn sdata
 * noconn en
+V1 VDD GND 1.2
+V2 VCTRL GND pulse(0.3 1.0 50n 100n 100n 200n)
+I0 VDD Ibias 50u
+x5 OUTp net7 VDD GND sg13g2_inv_2
 A1 [ OUTp ] [ net1 ] adc1
 .model adc1 adc_bridge in_low=0.4 in_high=0.6
 A2 [ rst ] [ net2 ] adc1
@@ -23,25 +27,8 @@ adut [ net1 net2 net3 net4 net5 ] [ net6 ] null dut
 .model dut d_cosim simulation=./../dsm_and_freq_divider.so
 A6 [ net6 ] [ outd ] dac1
 .model dac1 dac_bridge out_low=0 out_high=1.2
-V1 VDD GND 1.2
-V2 VCTRL GND pulse(0.3 1.0 50n 100n 100n 200n)
-I0 VDD Ibias 50u
-x5 OUTp net7 VDD GND sg13g2_inv_2
 x1 VDD net7 OUTn Ibias VCTRL GND LC_VCO
 **** begin user architecture code
-
-
-
-.lib /home/mmhnbm/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib mos_tt
-.lib /home/mmhnbm/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib mos_tt
-.lib /home/mmhnbm/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib hbt_typ
-.lib /home/mmhnbm/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib res_typ
-.lib /home/mmhnbm/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerDIO.lib dio_tt
-.lib /home/mmhnbm/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib cap_typ
-.include /home/mmhnbm/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
-.global VDD GND
-
-
 
 
 
@@ -59,6 +46,11 @@ save v(outd) v(OUTp) v(VCTRL) v(rst) v(sclk) v(sdata) v(en)
 tran 1p 400n
 remzerovec
 
+* Perform FFT on output
+*fft v(OUTp)
+*let vmag = db(mag(v(OUTp)))
+*plot vmag xlabel 'Frequency (Hz)' xlimit 0 5G
+
 * Save transient waveform to raw file
 write LCVCO_DSM.raw
 
@@ -72,12 +64,23 @@ write LCVCO_DSM.raw
 .include stimuli_test.cir
 
 
+
+
+
+.lib cornerMOSlv.lib mos_tt
+.lib cornerHBT.lib hbt_typ
+.lib cornerRES.lib res_typ
+.lib cornerCAP.lib cap_typ_stat
+.include /foss/pdks/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
+.global VDD GND
+
+
 **** end user architecture code
 **.ends
 
-* expanding   symbol:  /home/mmhnbm/frac-n-pll-vco-smacd_2026/schematic/blocks/lc-vco/LC_VCO.sym # of pins=6
-** sym_path: /home/mmhnbm/frac-n-pll-vco-smacd_2026/schematic/blocks/lc-vco/LC_VCO.sym
-** sch_path: /home/mmhnbm/frac-n-pll-vco-smacd_2026/schematic/blocks/lc-vco/LC_VCO.sch
+* expanding   symbol:  lc-vco/LC_VCO.sym # of pins=6
+** sym_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/lc-vco/LC_VCO.sym
+** sch_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/lc-vco/LC_VCO.sch
 .subckt LC_VCO VDD OUTp OUTn Ibias VCTRL GND
 *.iopin VDD
 *.opin OUTp
@@ -86,7 +89,7 @@ write LCVCO_DSM.raw
 *.iopin VCTRL
 *.iopin Ibias
 XM6 net1 Ibias GND GND sg13_lv_nmos w=1u l=0.15u ng=1 m=60
-XM5 Ibias Ibias GND GND sg13_lv_nmos w=1u l=0.15u ng=1
+XM5 Ibias Ibias GND GND sg13_lv_nmos w=1u l=0.15u ng=1 m=1
 XM4 OUTp OUTn VDD VDD sg13_lv_pmos w=8.5u l=0.5u ng=1 m=13
 X5M3 OUTn OUTp VDD VDD sg13_lv_pmos w=8.5u l=0.5u ng=1 m=13
 XM2 OUTp OUTn net1 GND sg13_lv_nmos w=2u l=0.5u ng=1 m=12
@@ -94,7 +97,7 @@ XM1 OUTn OUTp net1 GND sg13_lv_nmos w=2u l=0.5u ng=1 m=12
 XC3 OUTp OUTn cap_cmim w=4.0e-6 l=4.0e-6 m=13.6
 XMv2 OUTp VCTRL OUTp VDD sg13_lv_pmos w=4u l=4u ng=1 m=22
 XMv1 OUTn VCTRL OUTn VDD sg13_lv_pmos w=4u l=4u ng=1 m=22
-XR1 OUTp OUTn sub! rhigh w=1e-6 l=1e-6 m=1.23 b=0
+XR1 OUTn OUTp sub! rhigh w=1e-6 l=1e-6 m=1.23 b=0
 x1 OUTn OUTp ihp_4nh_inductor
 .ends
 

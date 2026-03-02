@@ -5,16 +5,16 @@ V {}
 S {}
 F {}
 E {}
-B 2 -640 130 160 530 {flags=graph
-y1=0.094
+B 2 -660 120 140 520 {flags=graph
+y1=0.084
 y2=1.1
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=1e-13
-x2=5e-07
+x1=1e-14
+x2=2e-07
 divx=5
 subdivx=1
 xlabmag=1.0

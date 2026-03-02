@@ -69,8 +69,8 @@ XM1 OUTn OUTp net1 GND sg13_lv_nmos w=2u l=0.5u ng=1 m=12
 XC3 OUTp OUTn cap_cmim w=4.0e-6 l=4.0e-6 m=13.6
 XMv2 OUTp VCTRL OUTp VDD sg13_lv_pmos w=4u l=4u ng=1 m=22
 XMv1 OUTn VCTRL OUTn VDD sg13_lv_pmos w=4u l=4u ng=1 m=22
-x1 OUTn OUTp ihp_4nh_inductor
 XR1 OUTn OUTp sub! rhigh w=1e-6 l=1e-6 m=1.23 b=0
+x1 OUTn OUTp ihp_4nh_inductor
 .ends
 
 .GLOBAL GND

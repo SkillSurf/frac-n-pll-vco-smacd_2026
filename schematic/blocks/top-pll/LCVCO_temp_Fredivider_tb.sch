@@ -1,4 +1,4 @@
-v {xschem version=3.4.8RC file_version=1.3}
+v {xschem version=3.4.8RC file_version=1.2}
 G {}
 K {}
 V {}
@@ -13,7 +13,7 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=1e-14
+x1=0
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -39,7 +39,7 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=1e-14
+x1=0
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -135,17 +135,16 @@ write LCVCO_freqdiv.raw
 .endc
 "}
 C {FD/Freq_Div_std.sym} 750 -690 0 0 {name=x3}
-C {/home/mmhnbm/frac-n-pll-vco-smacd_2026/schematic/blocks/lc-vco/LC_VCO.sym} 390 -680 0 0 {name=x1}
-C {simulator_commands_shown.sym} 1170 -820 0 0 {name=Libs_Ngspice
+C {simulator_commands_shown.sym} 950 -830 0 0 {
+name=Libs_Ngspice1
 simulator=ngspice
 only_toplevel=false
-value="tcleval(
-.lib $::SG13G2_MODELS/cornerMOSlv.lib mos_tt
-.lib $::SG13G2_MODELS/cornerMOShv.lib mos_tt
-.lib $::SG13G2_MODELS/cornerHBT.lib hbt_typ
-.lib $::SG13G2_MODELS/cornerRES.lib res_typ
-.lib $::SG13G2_MODELS/cornerDIO.lib dio_tt
-.lib $::SG13G2_MODELS/cornerCAP.lib cap_typ
-.include /home/mmhnbm/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
+value="
+.lib cornerMOSlv.lib mos_tt
+.lib cornerHBT.lib hbt_typ
+.lib cornerRES.lib res_typ
+.lib cornerCAP.lib cap_typ_stat
+.include /foss/pdks/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
 .global VDD GND
-)"}
+"}
+C {lc-vco/LC_VCO.sym} 390 -680 0 0 {name=x1}
