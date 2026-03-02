@@ -156,7 +156,11 @@ value="
 .include ./IHP_4nH_Inductor.spice
 .param temp=27
 .control
+<<<<<<< HEAD
 save V(VCTRL) V(OUTp) V(outd) V(sdata) V(sclk) V(en) V(rst) 
+=======
+save v(outd) v(OUTp) v(VCTRL) v(rst) v(sclk) v(sdata) v(en)
+>>>>>>> db3dfc6e419474ed53387991c677ebd8f716422a
 .options maxstep=50p reltol=1e-3 abstol=1e-6
 
 *.ic v(OUTp)=0.6
