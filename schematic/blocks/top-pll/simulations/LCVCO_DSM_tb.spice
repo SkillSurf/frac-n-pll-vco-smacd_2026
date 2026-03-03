@@ -13,6 +13,10 @@ V1 VDD GND 1.2
 V2 VCTRL GND pulse(0.3 1.0 50n 100n 100n 200n)
 I0 VDD Ibias 50u
 x5 OUTp net7 VDD GND sg13g2_inv_2
+adut1 [ net2 net3 net4 ] [ net6 ] null dut
+.model dut d_cosim simulation=./../Frequency_Divider_240_248.so
+A7 [ net6 ] [ outd ] dac1
+.model dac1 dac_bridge out_low=0 out_high=1.2
 A1 [ OUTp ] [ net1 ] adc1
 .model adc1 adc_bridge in_low=0.4 in_high=0.6
 A2 [ rst ] [ net2 ] adc1
@@ -23,10 +27,6 @@ A4 [ sdata ] [ net4 ] adc1
 .model adc1 adc_bridge in_low=0.4 in_high=0.6
 A5 [ en ] [ net5 ] adc1
 .model adc1 adc_bridge in_low=0.4 in_high=0.6
-adut [ net1 net2 net3 net4 net5 ] [ net6 ] null dut
-.model dut d_cosim simulation=./../dsm_and_freq_divider.so
-A6 [ net6 ] [ outd ] dac1
-.model dac1 dac_bridge out_low=0 out_high=1.2
 x1 VDD net7 OUTn Ibias VCTRL GND LC_VCO
 **** begin user architecture code
 
@@ -35,15 +35,11 @@ x1 VDD net7 OUTn Ibias VCTRL GND LC_VCO
 .include ./IHP_4nH_Inductor.spice
 .param temp=27
 .control
-<<<<<<< HEAD
 save V(VCTRL) V(OUTp) V(outd) V(sdata) V(sclk) V(en) V(rst)
-=======
-save v(outd) v(OUTp) v(VCTRL) v(rst) v(sclk) v(sdata) v(en)
->>>>>>> db3dfc6e419474ed53387991c677ebd8f716422a
 .options maxstep=50p reltol=1e-3 abstol=1e-6
 
 *.ic v(OUTp)=0.6
-tran 1p 400n
+tran 5p 400n
 remzerovec
 
 * Perform FFT on output
@@ -78,9 +74,9 @@ write LCVCO_DSM.raw
 **** end user architecture code
 **.ends
 
-* expanding   symbol:  lc-vco/LC_VCO.sym # of pins=6
-** sym_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/lc-vco/LC_VCO.sym
-** sch_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/lc-vco/LC_VCO.sch
+* expanding   symbol:  /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/lc-vco/LC_VCO.sym # of pins=6
+** sym_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/lc-vco/LC_VCO.sym
+** sch_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/lc-vco/LC_VCO.sch
 .subckt LC_VCO VDD OUTp OUTn Ibias VCTRL GND
 *.iopin VDD
 *.opin OUTp

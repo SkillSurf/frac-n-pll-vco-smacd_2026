@@ -5,7 +5,7 @@ V {}
 S {}
 F {}
 E {}
-B 2 900 -1060 1700 -660 {flags=graph
+B 2 860 -630 1660 -230 {flags=graph
 y1=0
 y2=2
 ypos1=0
@@ -13,8 +13,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=1e-12
-x2=1e-07
+x1=-2.1754427e-09
+x2=2.4542415e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -28,7 +28,7 @@ node="f_ref
 f_vco
 "
 hilight_wave=-1}
-B 2 80 -1060 880 -660 {flags=graph
+B 2 860 -1030 1660 -630 {flags=graph
 y1=0
 y2=2
 ypos1=0
@@ -36,8 +36,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=1e-12
-x2=1e-07
+x1=-2.1754427e-09
+x2=2.4542415e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -50,16 +50,16 @@ color="9 10"
 node="up
 dn"
 hilight_wave=-1}
-B 2 900 -640 1700 -240 {flags=graph
-y1=1.1265932
-y2=1.2993932
+B 2 60 -1030 860 -630 {flags=graph
+y1=1.0920332
+y2=1.2648332
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=1e-12
-x2=1e-07
+x1=-2.1754427e-09
+x2=2.4542415e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -71,28 +71,28 @@ logy=0
 color=11
 node="vdd
 "}
-P 4 1 1480 -820 {}
-P 4 1 400 -560 {}
-C {vsource.sym} -150 -490 0 0 {name=Vdd value='VDD' savecurrent=false}
-C {lab_pin.sym} -150 -520 0 1 {name=p3 sig_type=std_logic lab=VDD}
-C {gnd.sym} -150 -460 0 0 {name=l3 lab=GND}
-C {vsource.sym} -70 -490 0 0 {name=Vfvco value="0 pulse(0 'VDD' 2n 1n 1n 5n 10n)" savecurrent=false}
-C {lab_pin.sym} -70 -520 0 1 {name=p10 sig_type=std_logic lab=F_VCO}
-C {gnd.sym} -70 -460 0 0 {name=l1 lab=GND}
-C {vsource.sym} -70 -590 0 0 {name=Vfref value="0 pulse(0 'VDD' 0n 1n 1n 5n 10n)" savecurrent=false}
-C {lab_pin.sym} -70 -620 0 1 {name=p11 sig_type=std_logic lab=F_REF}
-C {gnd.sym} -70 -560 0 0 {name=l2 lab=GND}
-C {lab_pin.sym} 240 -600 0 0 {name=p5 lab=VDD}
-C {lab_pin.sym} 390 -560 0 1 {name=p6 lab=UP}
-C {lab_pin.sym} 210 -550 0 0 {name=p7 lab=F_REF}
-C {lab_pin.sym} 210 -530 0 0 {name=p12 lab=F_VCO}
-C {lab_pin.sym} 390 -520 0 1 {name=p13 lab=DN}
-C {lab_pin.sym} 240 -480 0 0 {name=p14 lab=GND}
-C {launcher.sym} 230 -370 0 0 {name=h5
+P 4 1 1680 -490 {}
+P 4 1 730 -300 {}
+C {vsource.sym} 180 -230 0 0 {name=Vdd value='VDD' savecurrent=false}
+C {lab_pin.sym} 180 -260 0 1 {name=p3 sig_type=std_logic lab=VDD}
+C {gnd.sym} 180 -200 0 0 {name=l3 lab=GND}
+C {vsource.sym} 260 -230 0 0 {name=Vfvco value="0 pulse(0 'VDD' 2n 1n 1n 5n 10n)" savecurrent=false}
+C {lab_pin.sym} 260 -260 0 1 {name=p10 sig_type=std_logic lab=F_VCO}
+C {gnd.sym} 260 -200 0 0 {name=l1 lab=GND}
+C {vsource.sym} 260 -330 0 0 {name=Vfref value="0 pulse(0 'VDD' 0n 1n 1n 5n 10n)" savecurrent=false}
+C {lab_pin.sym} 260 -360 0 1 {name=p11 sig_type=std_logic lab=F_REF}
+C {gnd.sym} 260 -300 0 0 {name=l2 lab=GND}
+C {lab_pin.sym} 570 -340 0 0 {name=p5 lab=VDD}
+C {lab_pin.sym} 720 -300 0 1 {name=p6 lab=UP}
+C {lab_pin.sym} 540 -290 0 0 {name=p7 lab=F_REF}
+C {lab_pin.sym} 540 -270 0 0 {name=p12 lab=F_VCO}
+C {lab_pin.sym} 720 -260 0 1 {name=p13 lab=DN}
+C {lab_pin.sym} 570 -220 0 0 {name=p14 lab=GND}
+C {launcher.sym} 600 -510 0 0 {name=h5
 descr="load waves" 
 tclcommand="xschem raw_read $netlist_dir/PFD_tb.raw tran"
 }
-C {simulator_commands_shown.sym} 450 -610 0 0 {name=SimulatorNGSPICE
+C {simulator_commands_shown.sym} 1700 -750 0 0 {name=SimulatorNGSPICE
 simulator=ngspice
 only_toplevel=false 
 value="
@@ -104,7 +104,7 @@ value="
 .param VDD = 'VDDGAUSS'
 * analysis
 
-.tran 100p 100n uic
+.tran 100p 30n uic
 
 .control
 let i = 0
@@ -119,7 +119,7 @@ end
 quit
 .endc
 "}
-C {simulator_commands_shown.sym} -80 -280 0 0 {
+C {simulator_commands_shown.sym} 1690 -980 0 0 {
 name=Libs_Ngspice
 simulator=ngspice
 only_toplevel=false
@@ -133,7 +133,7 @@ value="
 
 "
       }
-C {launcher.sym} 230 -330 0 0 {name=h4
+C {launcher.sym} 600 -470 0 0 {name=h4
 descr=SimulateNGSPICE
 tclcommand="
 # Setup the default simulation commands if not already set up
@@ -157,4 +157,5 @@ write_data [save_params] $netlist_dir/[file rootname [file tail [xschem get curr
 xschem netlist
 simulate
 "}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/phase-freq-detector/PFD_std.sym} 240 -540 0 0 {name=x1}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/phase-freq-detector/PFD_std.sym} 570 -280 0 0 {name=x1}
+C {title.sym} 160 -30 0 0 {name=l4 author="Skill Surf"}

@@ -5,15 +5,15 @@ V {}
 S {}
 F {}
 E {}
-B 2 -120 -1320 680 -920 {flags=graph
-y1=0
-y2=1.6
+B 2 -90 -1440 710 -1040 {flags=graph
+y1=-0.027
+y2=1.3
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=2.5860185e-07
+x1=-2e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -28,7 +28,7 @@ color="12 4 7"
 node="outp
 vctrl
 outd"
-x2=5.9647418e-07
+x2=3.8e-07
 hcursor1_y=0.41963418
 hcursor2_y=0.70549986}
 B 2 710 -1230 1870 -1020 {flags=graph
@@ -39,8 +39,8 @@ ypos2=3
 divy=5
 subdivy=1
 unity=1
-x1=-2e-08
-x2=3.8e-07
+x1=0
+x2=4e-07
 
 subdivx=4
 xlabmag=1.2
@@ -69,8 +69,8 @@ ypos2=3
 divy=5
 subdivy=1
 unity=1
-x1=-2e-08
-x2=3.8e-07
+x1=0
+x2=4e-07
 
 subdivx=4
 xlabmag=1.2
@@ -143,15 +143,11 @@ value="
 .include ./IHP_4nH_Inductor.spice
 .param temp=27
 .control
-<<<<<<< HEAD
 save V(VCTRL) V(OUTp) V(outd) V(sdata) V(sclk) V(en) V(rst) 
-=======
-save v(outd) v(OUTp) v(VCTRL) v(rst) v(sclk) v(sdata) v(en)
->>>>>>> db3dfc6e419474ed53387991c677ebd8f716422a
 .options maxstep=50p reltol=1e-3 abstol=1e-6
 
 *.ic v(OUTp)=0.6
-tran 1p 400n
+tran 5p 400n
 remzerovec
 
 * Perform FFT on output
@@ -192,47 +188,6 @@ C {iopin.sym} 280 -650 2 0 {name=p5 lab=Ibias
 }
 C {lab_pin.sym} 650 -740 0 1 {name=p23 lab=OUTp}
 C {sg13g2_stdcells/sg13g2_inv_2.sym} 570 -670 0 0 {name=x5 VDD=VDD VSS=GND prefix=sg13g2_ }
-C {dsm/xschem/adc_bridge1.sym} 970 -680 0 0 {name=A1
-adc=adc1
-adc_bridge_model=adc_bridge
-in_low=0.4
-in_high=0.6
-}
-C {dsm/xschem/adc_bridge1.sym} 970 -660 0 0 {name=A2
-adc=adc1
-adc_bridge_model=adc_bridge
-in_low=0.4
-in_high=0.6
-}
-C {dsm/xschem/adc_bridge1.sym} 970 -640 0 0 {name=A3
-adc=adc1
-adc_bridge_model=adc_bridge
-in_low=0.4
-in_high=0.6
-}
-C {dsm/xschem/adc_bridge1.sym} 970 -620 0 0 {name=A4
-adc=adc1
-adc_bridge_model=adc_bridge
-in_low=0.4
-in_high=0.6
-}
-C {dsm/xschem/adc_bridge1.sym} 970 -600 0 0 {name=A5
-adc=adc1
-adc_bridge_model=adc_bridge
-in_low=0.4
-in_high=0.6
-}
-C {dsm/xschem/dsm_and_freq_divider.sym} 1140 -640 0 0 {name=adut
-dut=dut
-d_cosim_model= d_cosim
-model=./../dsm_and_freq_divider.so}
-C {dsm/xschem/dac_bridge1.sym} 1280 -640 0 0 {name=A6
-dac=dac1
-dac_bridge_model=dac_bridge
-out_low=0
-out_high=1.2
-}
-C {lc-vco/LC_VCO.sym} 420 -660 0 0 {name=x1}
 C {simulator_commands_shown.sym} 870 -970 0 0 {
 name=Libs_Ngspice1
 simulator=ngspice
@@ -245,3 +200,44 @@ value="
 .include /foss/pdks/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
 .global VDD GND
 "}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/freq_divider/xschem/Frequency_Divider_240_248.sym} 1140 -640 0 0 {name=adut1
+dut=dut
+d_cosim_model= d_cosim
+model=./../Frequency_Divider_240_248.so}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/dac_bridge1.sym} 1280 -640 0 0 {name=A7
+dac=dac1
+dac_bridge_model=dac_bridge
+out_low=0
+out_high=1.2
+}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/adc_bridge1.sym} 970 -680 0 0 {name=A1
+adc=adc1
+adc_bridge_model=adc_bridge
+in_low=0.4
+in_high=0.6
+}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/adc_bridge1.sym} 970 -660 0 0 {name=A2
+adc=adc1
+adc_bridge_model=adc_bridge
+in_low=0.4
+in_high=0.6
+}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/adc_bridge1.sym} 970 -640 0 0 {name=A3
+adc=adc1
+adc_bridge_model=adc_bridge
+in_low=0.4
+in_high=0.6
+}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/adc_bridge1.sym} 970 -620 0 0 {name=A4
+adc=adc1
+adc_bridge_model=adc_bridge
+in_low=0.4
+in_high=0.6
+}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/dsm/xschem/adc_bridge1.sym} 970 -600 0 0 {name=A5
+adc=adc1
+adc_bridge_model=adc_bridge
+in_low=0.4
+in_high=0.6
+}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/lc-vco/LC_VCO.sym} 420 -660 0 0 {name=x1}

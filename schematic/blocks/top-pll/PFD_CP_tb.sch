@@ -5,7 +5,7 @@ V {}
 S {}
 F {}
 E {}
-B 2 670 -820 1470 -420 {flags=graph
+B 2 800 -590 1600 -190 {flags=graph
 y1=-0.097333465
 y2=1.4626665
 ypos1=0
@@ -28,7 +28,7 @@ node="f_ref
 f_vco
 "
 hilight_wave=-1}
-B 2 670 -1220 1470 -820 {flags=graph
+B 2 800 -990 1600 -590 {flags=graph
 y1=-1.035985
 y2=2.1039727
 ypos1=0
@@ -51,9 +51,9 @@ node="up
 dn
 CTRL"
 hilight_wave=-1}
-B 2 -130 -1220 670 -820 {flags=graph
-y1=1.0513866
-y2=1.2807101
+B 2 0 -990 800 -590 {flags=graph
+y1=1.0055219
+y2=1.2348454
 ypos1=0
 ypos2=2
 divy=5
@@ -72,26 +72,26 @@ logy=0
 color=11
 node="vdd
 "}
-P 4 1 1420 -830 {}
-P 4 1 720 -340 {}
-C {vsource.sym} 170 -490 0 0 {name=Vdd value='VDD' savecurrent=false}
-C {lab_pin.sym} 170 -520 0 1 {name=p3 sig_type=std_logic lab=VDD}
-C {gnd.sym} 170 -460 0 0 {name=l3 lab=GND}
-C {vsource.sym} 250 -490 0 0 {name=Vfvco value="0 pulse(0 'VDD' 6n 1n 1n 5n 10n)" savecurrent=false}
-C {lab_pin.sym} 250 -520 0 1 {name=p10 sig_type=std_logic lab=F_VCO}
-C {gnd.sym} 250 -460 0 0 {name=l1 lab=GND}
-C {vsource.sym} 250 -590 0 0 {name=Vfref value="0 pulse(0 'VDD' 0n 1n 1n 5n 10n)" savecurrent=false}
-C {lab_pin.sym} 250 -620 0 1 {name=p11 sig_type=std_logic lab=F_REF}
-C {gnd.sym} 250 -560 0 0 {name=l2 lab=GND}
-C {lab_pin.sym} 600 -380 0 0 {name=p5 lab=VDD}
-C {lab_pin.sym} 700 -320 0 1 {name=p6 lab=CTRL}
-C {lab_pin.sym} 600 -260 0 0 {name=p14 lab=GND}
-C {launcher.sym} 490 -730 0 0 {name=h5
+P 4 1 1550 -600 {}
+P 4 1 630 -240 {}
+C {vsource.sym} 80 -390 0 0 {name=Vdd value='VDD' savecurrent=false}
+C {lab_pin.sym} 80 -420 0 1 {name=p3 sig_type=std_logic lab=VDD}
+C {gnd.sym} 80 -360 0 0 {name=l3 lab=GND}
+C {vsource.sym} 160 -390 0 0 {name=Vfvco value="0 pulse(0 'VDD' 6n 1n 1n 5n 10n)" savecurrent=false}
+C {lab_pin.sym} 160 -420 0 1 {name=p10 sig_type=std_logic lab=F_VCO}
+C {gnd.sym} 160 -360 0 0 {name=l1 lab=GND}
+C {vsource.sym} 160 -490 0 0 {name=Vfref value="0 pulse(0 'VDD' 0n 1n 1n 5n 10n)" savecurrent=false}
+C {lab_pin.sym} 160 -520 0 1 {name=p11 sig_type=std_logic lab=F_REF}
+C {gnd.sym} 160 -460 0 0 {name=l2 lab=GND}
+C {lab_pin.sym} 510 -280 0 0 {name=p5 lab=VDD}
+C {lab_pin.sym} 610 -220 0 1 {name=p6 lab=CTRL}
+C {lab_pin.sym} 510 -160 0 0 {name=p14 lab=GND}
+C {launcher.sym} 600 -560 0 0 {name=h5
 descr="load waves" 
 tclcommand="xschem raw_read $netlist_dir/PFD_CP_tb.raw tran
 "
 }
-C {launcher.sym} 490 -700 0 0 {name=h4
+C {launcher.sym} 600 -520 0 0 {name=h4
 descr=SimulateNGSPICE
 tclcommand="
 xschem netlist; 
@@ -99,20 +99,19 @@ xschem simulate;
 xschem raw_read $netlist_dir/tb_CP.raw tran; 
 xschem redraw
 "}
-C {lab_pin.sym} 170 -620 0 1 {name=p1 sig_type=std_logic lab=Ibias}
-C {gnd.sym} 170 -560 0 0 {name=l5 lab=GND}
-C {isource.sym} 170 -590 0 0 {name=I0 value=10u}
-C {lab_pin.sym} 530 -290 0 0 {name=p2 sig_type=std_logic lab=Ibias}
-C {lab_pin.sym} 260 -380 0 0 {name=p4 lab=VDD}
-C {lab_pin.sym} 410 -340 0 1 {name=p8 lab=UP}
-C {lab_pin.sym} 230 -330 0 0 {name=p9 lab=F_REF}
-C {lab_pin.sym} 230 -310 0 0 {name=p13 lab=F_VCO}
-C {lab_pin.sym} 410 -300 0 1 {name=p15 lab=DN}
-C {lab_pin.sym} 260 -260 0 0 {name=p16 lab=GND}
-C {lab_pin.sym} 530 -330 0 0 {name=p17 lab=UP}
-C {lab_pin.sym} 530 -310 0 0 {name=p7 lab=DN}
-C {simulator_commands_shown.sym} -400 -820 0 0 {
-name=Libs_Ngspice
+C {lab_pin.sym} 80 -520 0 1 {name=p1 sig_type=std_logic lab=Ibias}
+C {gnd.sym} 80 -460 0 0 {name=l5 lab=GND}
+C {isource.sym} 80 -490 0 0 {name=I0 value=10u}
+C {lab_pin.sym} 440 -190 0 0 {name=p2 sig_type=std_logic lab=Ibias}
+C {lab_pin.sym} 170 -280 0 0 {name=p4 lab=VDD}
+C {lab_pin.sym} 320 -240 0 1 {name=p8 lab=UP}
+C {lab_pin.sym} 140 -230 0 0 {name=p9 lab=F_REF}
+C {lab_pin.sym} 140 -210 0 0 {name=p13 lab=F_VCO}
+C {lab_pin.sym} 320 -200 0 1 {name=p15 lab=DN}
+C {lab_pin.sym} 170 -160 0 0 {name=p16 lab=GND}
+C {lab_pin.sym} 440 -230 0 0 {name=p17 lab=UP}
+C {lab_pin.sym} 440 -210 0 0 {name=p7 lab=DN}
+C {simulator_commands.sym} 530 -440 0 0 {name=Libs_Ngspice
 simulator=ngspice
 only_toplevel=false
 value="
@@ -132,14 +131,9 @@ value="
 .param CP_N_M = 1
 .param C_CP = 10f
 "}
-C {devices/code_shown.sym} -400 -380 0 0 {name=MODEL only_toplevel=true
-format="tcleval( @value )"
-value=".lib cornerMOSlv.lib mos_tt
-.lib $::SG13G2_MODELS/cornerCAP.lib cap_typ_stat
-"}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/phase-freq-detector/PFD_std.sym} 260 -320 0 0 {name=x1}
-C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/charge-pump/CP.sym} 600 -320 0 0 {name=x2}
-C {simulator_commands.sym} -150 -580 0 0 {name=SimulatorNGSPICE
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/phase-freq-detector/PFD_std.sym} 170 -220 0 0 {name=x1}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/charge-pump/CP.sym} 510 -220 0 0 {name=x2}
+C {simulator_commands.sym} 660 -440 0 0 {name=Simulator
 simulator=ngspice
 only_toplevel=false 
 value="
@@ -167,4 +161,10 @@ dowhile i < 1
 end
 quit 0
 .endc
+"}
+C {title.sym} 160 -30 0 0 {name=l4 author="Skill Surf"}
+C {devices/code_shown.sym} 800 -150 0 0 {name=MODEL1 only_toplevel=true
+format="tcleval( @value )"
+value="
+.lib $::SG13G2_MODELS/cornerCAP.lib cap_typ
 "}
