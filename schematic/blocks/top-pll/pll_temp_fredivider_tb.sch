@@ -190,7 +190,6 @@ value="
 "}
 C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/charge-pump/CP.sym} 570 -590 0 0 {name=x2}
 C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/phase-freq-detector/PFD_std.sym} 140 -580 0 0 {name=x3}
-C {FD/Freq_Div_std.sym} 690 -370 0 1 {name=x4}
 C {simulator_commands.sym} 1180 -280 0 0 {name=SimulatorNGSPICE
 simulator=ngspice
 only_toplevel=false 
@@ -223,3 +222,4 @@ C {lab_pin.sym} 480 -600 0 0 {name=p7 lab=UP}
 C {lab_pin.sym} 480 -580 0 0 {name=p8 lab=DN}
 C {lab_pin.sym} 1140 -570 0 1 {name=p9 lab=OUTn}
 C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/lc-vco/LC_VCO.sym} 980 -580 0 0 {name=x1}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/FD/freq_div.sym} 630 -370 0 0 {name=n1}

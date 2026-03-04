@@ -1,12 +1,10 @@
 ** sch_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/top_pll_tb.sch
-**.subckt top_pll_tb OUTn CLK_OUT
-*.opin OUTn
-*.opin CLK_OUT
+**.subckt top_pll_tb
 V1 VDD GND 1.2
 I0 VDD net1 50u
 Vfref CLK_IN GND 0 pulse(0 1.2 0n 0.1n 0.1n 5n 10n)
 I1 net2 GND 10m
-x1 CLK_OUT CLK_IN net1 OUTn net2 VDD GND pll
+x2 CLK_OUT CLK_IN net1 OUTn net2 VDD GND pll
 **** begin user architecture code
 
 
@@ -26,13 +24,13 @@ x1 CLK_OUT CLK_IN net1 OUTn net2 VDD GND pll
 .include ./IHP_4nH_Inductor.spice
 
 .control
-  save all
+  save x2.up x2.dn x2.vctrl x2.clk_in x2.clk_out x2.dsm_out clk_in clk_out outn
   *save v(sdata) v(sclk) v(rst) v(en) v(UP) v(DN) v(VCTRL) v(CLK_IN) v(DSM_OUT) v(CLK_OUT)
   * Simulation accuracy options
   .options maxstep=10p reltol=1e-4 abstol=1e-9
 
  * Run long enough for PLL lock
-  tran 20p 5u uic
+  tran 20p 1u uic
   remzerovec
   write pll_top.raw
 .endc
@@ -65,17 +63,17 @@ x1 CLK_OUT CLK_IN net1 OUTn net2 VDD GND pll
 **** end user architecture code
 **.ends
 
-* expanding   symbol:  pll.sym # of pins=7
+* expanding   symbol:  /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/pll.sym # of pins=7
 ** sym_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/pll.sym
 ** sch_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/pll.sch
 .subckt pll CLK_OUT CLK_IN IbiasVCO OUTn Ibias VDD GND
-*.opin OUTn
 *.iopin GND
 *.iopin VDD
 *.ipin CLK_IN
-*.opin CLK_OUT
 *.ipin IbiasVCO
 *.ipin Ibias
+*.opin OUTn
+*.opin CLK_OUT
 x5 CLK_OUT net7 VDD GND sg13g2_inv_2
 x1 VDD UP VCTRL DN GND Ibias CP
 x2 VDD UP CLK_IN DSM_OUT DN GND PFD_std
