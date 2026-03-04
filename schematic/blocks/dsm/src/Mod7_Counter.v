@@ -2,7 +2,7 @@
 // Module 3: Mod-7 Synchronous Counter (Using JK-FF)
 // Sequence: 000 -> 001 -> ... -> 110 -> 000
 // =================================================
-`include "JK_FF.v"
+//`include "JK_FF.v"
 
 module Mod7_Counter (
     input wire clk,

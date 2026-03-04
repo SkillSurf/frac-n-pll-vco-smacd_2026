@@ -1,11 +1,11 @@
 // ============================================================
 // TOP MODULE: Connecting all blocks
 // ============================================================
-`include "Divide_by_4.v"
-`include "Prescaler_4_5.v"
-`include "Mod7_Counter.v"
-`include "Modulus_Controller.v"
-`include "Output_Div2.v"
+//`include "Divide_by_4.v"
+//`include "Prescaler_4_5.v"
+//`include "Mod7_Counter.v"
+//`include "Modulus_Controller.v"
+//`include "Output_Div2.v"
 
 module Frequency_Divider_240_248 (
     input wire freq_in,       // Frequency Input from VCO
