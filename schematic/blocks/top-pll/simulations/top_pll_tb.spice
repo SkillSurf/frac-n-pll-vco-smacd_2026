@@ -3,7 +3,7 @@
 V1 VDD GND 1.2
 I0 VDD Vbias2 50u
 Vfref CLK_IN GND 0 pulse(0 1.2 0n 1n 1n 50n 100n)
-I1 Vbias1 GND 1000u
+I1 Vbias1 GND 200u
 x2 CLK_OUT CLK_IN Vbias2 OUTn Vbias1 VDD GND pll
 **** begin user architecture code
 
@@ -43,7 +43,7 @@ x2 CLK_OUT CLK_IN Vbias2 OUTn Vbias1 VDD GND pll
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 20p 0.3u
+  tran 30p 0.1u uic
 
   remzerovec
   write pll_top.raw
@@ -131,9 +131,10 @@ XM9 net5 Vbp net4 VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
 XM10 net4 UP VDD VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
 XC1 CTRL GND cparasitic C='C_CP'
 XR1 Ibias Vbp sub! rsil w=0.5e-6 l=0.5e-6 m=1 b=0
-XM11 VDD CTRL net7 GND sg13_lv_nmos w=100u l=0.5u ng=20 m=1
-XR2 GND net7 sub! rsil w=0.5e-6 l=0.5e-3 m=1 b=0
 XR3 net5 CTRL sub! rsil w=0.5e-6 l=1e-5 m=1 b=0
+XC2 net7 GND cparasitic C='C_CP'
+XR2 net5 net7 sub! rsil w=0.5e-6 l=1e-5 m=1 b=0
+XC3 net5 GND cparasitic C='C_CP'
 .ends
 
 

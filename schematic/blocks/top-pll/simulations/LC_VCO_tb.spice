@@ -1,15 +1,9 @@
-** sch_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/lc-vco/LC_VCO_tb.sch
-**.subckt LC_VCO_tb OUTp OUTn VDD VCTRL GND Ibias
-*.opin OUTp
-*.opin OUTn
-*.iopin VDD
-*.iopin VCTRL
-*.iopin GND
-*.iopin Ibias
+** sch_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/lc-vco/LC_VCO_tb.sch
+**.subckt LC_VCO_tb
 V1 VDD GND 1.2
-V2 VCTRL GND 0.6
+V2 VCTRL GND 1
 I0 VDD Ibias 50u
-x1 VDD OUTp OUTn Ibias VCTRL GND LC_VCO
+x2 VDD OUTp OUTn Ibias VCTRL GND LC_VCO
 **** begin user architecture code
  .lib cornerMOSlv.lib mos_tt
 .lib cornerRES.lib res_typ
@@ -19,18 +13,18 @@ x1 VDD OUTp OUTn Ibias VCTRL GND LC_VCO
 
 .include ./IHP_4nH_Inductor.spice
 .param temp=27
+
 .control
 .ic v(OUTp)=0.6
+write LC_VCO_tb.raw
+set appendwrite
 
 .options maxstep=10n reltol=1e-3 abstol=1e-6
 save v(OUTp) V(CTRL)
-tran 1p 0.2u UIC
+tran 30p 100n UIC
 
 * Save transient waveform to raw file
 write LC_VCO_tb.raw
-
-* Plot time-domain waveform
-plot v(OUTp) xlimit 5n 60n
 
 * Perform FFT on output
 fft v(OUTp)
@@ -38,22 +32,7 @@ fft v(OUTp)
 * Convert FFT magnitude to dB
 let vmag = db(mag(v(OUTp)))
 
-* ---- DETECT LARGEST FFT PEAK (ROBUST METHOD) ----
-let peak_mag = vecmax(vmag)
-
-* Find index using where()
-let peak_index = 0
-let peak_index = index(vmag, peak_mag)
-
-let peak_freq = frequency[peak_index]
-
-echo 'Largest_FFT_Peak_Frequency_Hz:' peak_freq
-echo 'Largest_FFT_Peak_Magnitude_dB:' peak_mag
-* Plot FFT result
-plot vmag xlabel 'Frequency (Hz)' xlimit 0 5G
-
-* Save FFT data to text file
-wrdata fft_output(VCTRL=0.7).txt vmag
+write LC_VCO_tb.raw
 
 .endc
 
@@ -61,9 +40,9 @@ wrdata fft_output(VCTRL=0.7).txt vmag
 **** end user architecture code
 **.ends
 
-* expanding   symbol:  lc-vco/LC_VCO.sym # of pins=6
-** sym_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/lc-vco/LC_VCO.sym
-** sch_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/lc-vco/LC_VCO.sch
+* expanding   symbol:  /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/lc-vco/LC_VCO.sym # of pins=6
+** sym_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/lc-vco/LC_VCO.sym
+** sch_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/lc-vco/LC_VCO.sch
 .subckt LC_VCO VDD OUTp OUTn Ibias VCTRL GND
 *.iopin VDD
 *.opin OUTp

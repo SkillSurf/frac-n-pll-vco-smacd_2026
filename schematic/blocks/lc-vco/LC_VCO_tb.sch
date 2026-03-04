@@ -13,7 +13,7 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=1e-14
+x1=3e-13
 x2=1e-07
 divx=5
 subdivx=1
@@ -63,7 +63,7 @@ N 80 -510 80 -490 {lab=Ibias}
 N 370 -430 440 -430 {lab=Ibias}
 N 540 -540 540 -530 {lab=VDD}
 C {vsource.sym} 140 -460 0 0 {name=V1 value=1.2 savecurrent=false}
-C {vsource.sym} 200 -460 0 0 {name=V2 value=0 savecurrent=false}
+C {vsource.sym} 200 -460 0 0 {name=V2 value=1 savecurrent=false}
 C {gnd.sym} 140 -390 0 0 {name=l1 lab=GND}
 C {gnd.sym} 200 -390 0 0 {name=l2 lab=GND}
 C {devices/vdd.sym} 140 -570 0 0 {name=l5 lab=VDD}
@@ -93,7 +93,7 @@ set appendwrite
 
 .options maxstep=10n reltol=1e-3 abstol=1e-6
 save v(OUTp) V(CTRL)
-tran 1p 100n UIC
+tran 30p 100n UIC
 
 * Save transient waveform to raw file
 write LC_VCO_tb.raw

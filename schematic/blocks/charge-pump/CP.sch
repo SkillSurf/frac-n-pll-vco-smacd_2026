@@ -43,7 +43,7 @@ N 1200 -860 1200 -800 {lab=VDD}
 N 1130 -500 1160 -500 {lab=Vbn}
 N 1120 -670 1160 -670 {lab=Vbp}
 N 1130 -770 1160 -770 {lab=UP}
-N 1460 -590 1790 -590 {lab=CTRL}
+N 1580 -590 1790 -590 {lab=CTRL}
 N 1200 -590 1200 -530 {lab=#net5}
 N 470 -770 510 -770 {lab=GND}
 N 390 -770 430 -770 {lab=VDD}
@@ -55,8 +55,8 @@ N 690 -670 740 -670 {lab=VDD}
 N 780 -770 820 -770 {lab=GND}
 N 430 -740 430 -700 {lab=#net6}
 N 490 -670 510 -670 {lab=Vbp}
-N 1460 -390 1460 -290 {lab=GND}
-N 1460 -590 1460 -450 {lab=CTRL}
+N 1580 -390 1580 -290 {lab=GND}
+N 1580 -590 1580 -450 {lab=CTRL}
 N 780 -360 820 -360 {lab=VDD}
 N 780 -670 820 -670 {lab=Vbp}
 N 490 -670 490 -610 {lab=Vbp}
@@ -65,15 +65,16 @@ N 430 -610 490 -610 {lab=Vbp}
 N 430 -640 430 -610 {lab=Vbp}
 N 740 -640 740 -560 {lab=Vbn}
 N 430 -500 430 -450 {lab=Ibias}
-N 1830 -870 1830 -620 {lab=VDD}
-N 1830 -560 1830 -520 {lab=#net7}
-N 1830 -520 1980 -520 {lab=#net7}
-N 1830 -400 1830 -290 {lab=GND}
-N 1830 -520 1830 -460 {lab=#net7}
-N 1830 -590 1870 -590 {lab=GND}
-N 1370 -590 1460 -590 {lab=CTRL}
-N 1200 -590 1310 -590 {lab=#net5}
+N 1550 -590 1580 -590 {lab=CTRL}
+N 1430 -590 1490 -590 {lab=#net5}
 N 1200 -640 1200 -590 {lab=#net5}
+N 1330 -390 1330 -290 {lab=GND}
+N 1330 -590 1330 -450 {lab=#net5}
+N 1200 -590 1330 -590 {lab=#net5}
+N 1430 -590 1430 -560 {lab=#net5}
+N 1330 -590 1430 -590 {lab=#net5}
+N 1430 -500 1430 -450 {lab=#net7}
+N 1430 -390 1430 -290 {lab=GND}
 C {opin.sym} 180 -210 0 0 {name=p4 lab=CTRL}
 C {ipin.sym} 110 -220 0 0 {name=p12 lab=UP}
 C {ipin.sym} 110 -250 0 0 {name=p1 lab=VDD}
@@ -171,7 +172,7 @@ model=sg13_lv_pmos
 spiceprefix=X
 }
 C {lab_pin.sym} 1120 -670 0 0 {name=p23 sig_type=std_logic lab=Vbp}
-C {lab_pin.sym} 1750 -590 0 1 {name=p25 sig_type=std_logic lab=CTRL}
+C {lab_pin.sym} 1790 -590 0 1 {name=p25 sig_type=std_logic lab=CTRL}
 C {lab_pin.sym} 510 -770 0 1 {name=p26 sig_type=std_logic lab=GND}
 C {lab_pin.sym} 390 -770 0 0 {name=p27 sig_type=std_logic lab=VDD}
 C {lab_pin.sym} 390 -670 0 0 {name=p28 sig_type=std_logic lab=VDD}
@@ -181,7 +182,7 @@ C {lab_pin.sym} 1240 -770 0 1 {name=p31 sig_type=std_logic lab=VDD}
 C {lab_pin.sym} 1240 -670 0 1 {name=p32 sig_type=std_logic lab=VDD}
 C {lab_pin.sym} 820 -770 0 1 {name=p33 sig_type=std_logic lab=GND}
 C {ipin.sym} 110 -130 0 0 {name=p3 lab=GND}
-C {sg13g2_pr/cap_cpara.sym} 1460 -420 0 0 {name=C1 model=cparasitic C='C_CP'  spiceprefix=X}
+C {sg13g2_pr/cap_cpara.sym} 1580 -420 0 0 {name=C1 model=cparasitic C='C_CP'  spiceprefix=X}
 C {lab_pin.sym} 820 -360 0 1 {name=p7 sig_type=std_logic lab=VDD}
 C {lab_pin.sym} 820 -670 0 1 {name=p10 sig_type=std_logic lab=Vbp}
 C {lab_pin.sym} 1130 -770 0 0 {name=p24 sig_type=std_logic lab=UP}
@@ -199,26 +200,8 @@ b=0
 m=1
 }
 C {sg13g2_pr/annotate_fet_params.sym} 1590 -942.105189945283 0 0 {name=annot3 ref=M9}
-C {sg13g2_pr/annotate_fet_params.sym} 1592.208120310291 -382.105189945283 0 0 {name=annot4 ref=M6}
-C {sg13g2_pr/sg13_lv_nmos.sym} 1810 -590 0 0 {name=M11
-l=0.5u
-w=100u
-ng=20
-m=1
-model=sg13_lv_nmos
-spiceprefix=X
-}
-C {sg13g2_pr/rsil.sym} 1830 -430 0 0 {name=R2
-w=0.5e-6
-l=0.5e-3
-model=rsil
-body=sub!
-spiceprefix=X
-b=0
-m=1
-}
-C {lab_pin.sym} 1870 -590 0 1 {name=p39 sig_type=std_logic lab=GND}
-C {sg13g2_pr/rsil.sym} 1340 -590 1 0 {name=R3
+C {sg13g2_pr/annotate_fet_params.sym} 1662.208120310291 -392.105189945283 0 0 {name=annot4 ref=M6}
+C {sg13g2_pr/rsil.sym} 1520 -590 1 0 {name=R3
 w=0.5e-6
 l=1e-5
 model=rsil
@@ -227,11 +210,22 @@ spiceprefix=X
 b=0
 m=1
 }
-C {gnd.sym} 1460 -290 0 0 {name=l2 lab=GND}
+C {gnd.sym} 1580 -290 0 0 {name=l2 lab=GND}
 C {gnd.sym} 1200 -290 0 0 {name=l3 lab=GND}
-C {gnd.sym} 1830 -290 0 0 {name=l4 lab=GND}
 C {gnd.sym} 740 -290 0 0 {name=l5 lab=GND}
 C {devices/vdd.sym} 430 -860 0 0 {name=l12 lab=VDD}
 C {devices/vdd.sym} 740 -860 0 0 {name=l6 lab=VDD}
 C {devices/vdd.sym} 1200 -860 0 0 {name=l7 lab=VDD}
-C {devices/vdd.sym} 1830 -870 0 0 {name=l8 lab=VDD}
+C {sg13g2_pr/cap_cpara.sym} 1430 -420 0 0 {name=C2 model=cparasitic C='C_CP'  spiceprefix=X}
+C {sg13g2_pr/rsil.sym} 1430 -530 2 0 {name=R2
+w=0.5e-6
+l=1e-5
+model=rsil
+body=sub!
+spiceprefix=X
+b=0
+m=1
+}
+C {gnd.sym} 1430 -290 0 0 {name=l4 lab=GND}
+C {sg13g2_pr/cap_cpara.sym} 1330 -420 0 0 {name=C3 model=cparasitic C='C_CP'  spiceprefix=X}
+C {gnd.sym} 1330 -290 0 0 {name=l8 lab=GND}

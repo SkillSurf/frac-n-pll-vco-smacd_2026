@@ -72,7 +72,6 @@ value=".lib cornerMOSlv.lib mos_tt
 .lib cornerRES.lib res_typ
 .lib $::SG13G2_MODELS/cornerCAP.lib cap_typ_stat
 "}
-C {lc-vco/LC_VCO.sym} -240 -50 0 0 {name=x1}
 C {devices/code_shown.sym} 270 -70 0 0 {name=NGSPICE1 only_toplevel=true 
 value="
 .include ./IHP_4nH_Inductor.spice
@@ -115,3 +114,4 @@ wrdata fft_output(VCTRL=0.7).txt vmag
 
 .endc
 "}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/lc-vco/LC_VCO.sym} -240 -50 0 0 {name=x2}

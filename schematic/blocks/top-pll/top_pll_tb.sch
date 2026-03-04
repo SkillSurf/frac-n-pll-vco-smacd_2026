@@ -13,8 +13,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=0
-x2=3e-07
+x1=3e-13
+x2=1e-07
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -36,8 +36,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=0
-x2=3e-07
+x1=3e-13
+x2=1e-07
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -52,15 +52,15 @@ color="4 5"
 node="*clk_out
 clk_in"}
 B 2 800 -1200 1600 -800 {flags=graph
-y1=-0.086
-y2=1.3
+y1=0.095
+y2=0.45
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=0
-x2=3e-07
+x1=3e-13
+x2=1e-07
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -79,8 +79,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=0
-x2=3e-07
+x1=3e-13
+x2=1e-07
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -94,7 +94,7 @@ hcursor1_y=0.68567067
 hcursor2_y=0.47137288
 color="4 7"
 node="x2.dn
-x2.up"}
+UP;1.2 x2.up -"}
 B 2 440 -400 1600 -190 {flags=graph
 y1=0
 y2=3
@@ -103,8 +103,8 @@ ypos2=3.15
 divy=5
 subdivy=1
 unity=1
-x1=0
-x2=3e-07
+x1=3e-13
+x2=1e-07
 
 subdivx=4
 xlabmag=1.2
@@ -131,8 +131,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=0
-x2=3e-07
+x1=3e-13
+x2=1e-07
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -183,7 +183,7 @@ xschem raw_read $netlist_dir/tb_COMB.raw tran;
 xschem redraw
 "}
 C {gnd.sym} 470 -510 0 0 {name=l11 lab=GND}
-C {isource.sym} 470 -550 0 0 {name=I1 value=1000u}
+C {isource.sym} 470 -550 0 0 {name=I1 value=200u}
 C {gnd.sym} 620 -510 0 0 {name=l7 lab=GND}
 C {vdd.sym} 620 -720 0 0 {name=l3 lab=VDD}
 C {simulator_commands.sym} 1110 -660 0 0 {name=SimulatorNGSPICE
@@ -226,7 +226,7 @@ value="
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 20p 0.3u
+  tran 30p 50u uic
   
   remzerovec
   write pll_top.raw 
