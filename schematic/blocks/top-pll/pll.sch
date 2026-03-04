@@ -46,7 +46,7 @@ N 860 -530 880 -530 {lab=DN}
 N 460 -520 520 -520 {lab=DSM_OUT}
 N 460 -280 1130 -280 {lab=DSM_OUT}
 C {lab_pin.sym} 720 -550 0 1 {name=p16 lab=UP}
-C {lab_pin.sym} 460 -520 0 0 {name=p18 lab=DSM_OUT}
+C {lab_pin.sym} 460 -520 0 0 {name=p18 sig_type=std_logic lab=DSM_OUT}
 C {lab_pin.sym} 720 -510 0 1 {name=p19 lab=DN}
 C {sg13g2_stdcells/sg13g2_inv_2.sym} 1590 -540 0 0 {name=x5 VDD=VDD VSS=GND prefix=sg13g2_ }
 C {lab_pin.sym} 1070 -540 0 1 {name=p10 lab=VCTRL}
@@ -118,14 +118,14 @@ C {title.sym} 160 -30 0 0 {name=l1 author="Skill Surf"}
 C {lab_pin.sym} 460 -540 0 0 {name=p17 lab=CLK_IN}
 C {gnd.sym} 550 -460 0 0 {name=l3 lab=GND}
 C {gnd.sym} 950 -470 0 0 {name=l5 lab=GND}
-C {lab_pin.sym} 460 -280 0 0 {name=p11 lab=DSM_OUT}
+C {lab_pin.sym} 460 -280 0 0 {name=p11 sig_type=std_logic lab=DSM_OUT}
 C {lab_pin.sym} 1320 -520 0 0 {name=p12 lab=IbiasVCO}
 C {lab_pin.sym} 860 -510 0 0 {name=p20 lab=Ibias}
 C {lab_pin.sym} 860 -550 0 0 {name=p21 lab=UP}
 C {lab_pin.sym} 860 -530 0 0 {name=p22 lab=DN}
 C {lab_pin.sym} 1320 -540 0 0 {name=p23 lab=VCTRL}
 C {gnd.sym} 1440 -430 0 0 {name=l7 lab=GND}
-C {lab_pin.sym} 1800 -540 0 1 {name=p13 lab=CLK_OUT}
+C {lab_pin.sym} 1800 -540 0 1 {name=p13 sig_type=std_logic lab=CLK_OUT}
 C {lab_pin.sym} 1600 -520 0 1 {name=p25 lab=OUTn}
 C {opin.sym} 200 -210 0 0 {name=p24 lab=OUTn
 }

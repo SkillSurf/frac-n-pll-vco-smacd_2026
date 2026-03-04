@@ -43,8 +43,8 @@ N 1200 -860 1200 -800 {lab=VDD}
 N 1130 -500 1160 -500 {lab=Vbn}
 N 1120 -670 1160 -670 {lab=Vbp}
 N 1130 -770 1160 -770 {lab=UP}
-N 1460 -590 1790 -590 {lab=#net5}
-N 1200 -590 1200 -530 {lab=#net6}
+N 1460 -590 1790 -590 {lab=CTRL}
+N 1200 -590 1200 -530 {lab=#net5}
 N 470 -770 510 -770 {lab=GND}
 N 390 -770 430 -770 {lab=VDD}
 N 390 -670 430 -670 {lab=VDD}
@@ -53,10 +53,10 @@ N 1200 -670 1240 -670 {lab=VDD}
 N 690 -770 740 -770 {lab=VDD}
 N 690 -670 740 -670 {lab=VDD}
 N 780 -770 820 -770 {lab=GND}
-N 430 -740 430 -700 {lab=#net7}
+N 430 -740 430 -700 {lab=#net6}
 N 490 -670 510 -670 {lab=Vbp}
 N 1460 -390 1460 -290 {lab=GND}
-N 1460 -590 1460 -450 {lab=#net5}
+N 1460 -590 1460 -450 {lab=CTRL}
 N 780 -360 820 -360 {lab=VDD}
 N 780 -670 820 -670 {lab=Vbp}
 N 490 -670 490 -610 {lab=Vbp}
@@ -66,14 +66,14 @@ N 430 -640 430 -610 {lab=Vbp}
 N 740 -640 740 -560 {lab=Vbn}
 N 430 -500 430 -450 {lab=Ibias}
 N 1830 -870 1830 -620 {lab=VDD}
-N 1830 -560 1830 -520 {lab=CTRL}
-N 1830 -520 1980 -520 {lab=CTRL}
+N 1830 -560 1830 -520 {lab=#net7}
+N 1830 -520 1980 -520 {lab=#net7}
 N 1830 -400 1830 -290 {lab=GND}
-N 1830 -520 1830 -460 {lab=CTRL}
+N 1830 -520 1830 -460 {lab=#net7}
 N 1830 -590 1870 -590 {lab=GND}
-N 1370 -590 1460 -590 {lab=#net5}
-N 1200 -590 1310 -590 {lab=#net6}
-N 1200 -640 1200 -590 {lab=#net6}
+N 1370 -590 1460 -590 {lab=CTRL}
+N 1200 -590 1310 -590 {lab=#net5}
+N 1200 -640 1200 -590 {lab=#net5}
 C {opin.sym} 180 -210 0 0 {name=p4 lab=CTRL}
 C {ipin.sym} 110 -220 0 0 {name=p12 lab=UP}
 C {ipin.sym} 110 -250 0 0 {name=p1 lab=VDD}
@@ -171,7 +171,7 @@ model=sg13_lv_pmos
 spiceprefix=X
 }
 C {lab_pin.sym} 1120 -670 0 0 {name=p23 sig_type=std_logic lab=Vbp}
-C {lab_pin.sym} 1980 -520 0 1 {name=p25 sig_type=std_logic lab=CTRL}
+C {lab_pin.sym} 1750 -590 0 1 {name=p25 sig_type=std_logic lab=CTRL}
 C {lab_pin.sym} 510 -770 0 1 {name=p26 sig_type=std_logic lab=GND}
 C {lab_pin.sym} 390 -770 0 0 {name=p27 sig_type=std_logic lab=VDD}
 C {lab_pin.sym} 390 -670 0 0 {name=p28 sig_type=std_logic lab=VDD}
@@ -210,7 +210,7 @@ spiceprefix=X
 }
 C {sg13g2_pr/rsil.sym} 1830 -430 0 0 {name=R2
 w=0.5e-6
-l=0.5e-4
+l=0.5e-3
 model=rsil
 body=sub!
 spiceprefix=X
