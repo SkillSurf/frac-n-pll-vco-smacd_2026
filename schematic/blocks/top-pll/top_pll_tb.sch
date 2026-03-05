@@ -13,8 +13,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3.255e-13
-x2=1e-05
+x1=3e-13
+x2=4e-05
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -36,8 +36,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3.255e-13
-x2=1e-05
+x1=3e-13
+x2=4e-05
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -52,15 +52,15 @@ color="4 5"
 node="*clk_out
 *clk_in"}
 B 2 800 -1200 1600 -800 {flags=graph
-y1=0.6
-y2=0.63
+y1=0.56
+y2=0.61
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3.255e-13
-x2=1e-05
+x1=3e-13
+x2=4e-05
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -71,7 +71,9 @@ logx=0
 logy=0
 color=4
 node=x2.vctrl
-hilight_wave=-1}
+hilight_wave=-1
+hcursor1_y=0.60890301
+hcursor2_y=0.56723704}
 B 2 1600 -1200 2400 -800 {flags=graph
 y1=-0.017
 y2=1.3
@@ -80,8 +82,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3.255e-13
-x2=1e-05
+x1=3e-13
+x2=4e-05
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -104,8 +106,8 @@ ypos2=3.15
 divy=5
 subdivy=1
 unity=1
-x1=3.255e-13
-x2=1e-05
+x1=3e-13
+x2=4e-05
 
 subdivx=4
 xlabmag=1.2
@@ -132,8 +134,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3.255e-13
-x2=1e-05
+x1=3e-13
+x2=4e-05
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -230,7 +232,7 @@ value="
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 30p 10u uic
+  tran 30p 40u uic
   
   remzerovec
   write pll_top.raw 
