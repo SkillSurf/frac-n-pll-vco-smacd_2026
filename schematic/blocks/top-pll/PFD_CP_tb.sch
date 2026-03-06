@@ -14,7 +14,7 @@ divy=5
 subdivy=1
 unity=1
 x1=1e-12
-x2=1e-07
+x2=1e-06
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -29,15 +29,15 @@ f_vco
 "
 hilight_wave=-1}
 B 2 800 -990 1600 -590 {flags=graph
-y1=-1.035985
-y2=2.1039727
+y1=-0.36399457
+y2=1.7493495
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
 x1=1e-12
-x2=1e-07
+x2=1e-06
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -50,7 +50,8 @@ color="9 10 12"
 node="up
 dn
 CTRL"
-hilight_wave=-1}
+hilight_wave=-1
+hcursor1_y=0.20114425}
 B 2 0 -990 800 -590 {flags=graph
 y1=1.0055219
 y2=1.2348454
@@ -60,7 +61,7 @@ divy=5
 subdivy=1
 unity=1
 x1=1e-12
-x2=1e-07
+x2=1e-06
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -101,7 +102,7 @@ xschem redraw
 "}
 C {lab_pin.sym} 80 -520 0 1 {name=p1 sig_type=std_logic lab=Ibias}
 C {gnd.sym} 80 -460 0 0 {name=l5 lab=GND}
-C {isource.sym} 80 -490 0 0 {name=I0 value=10u}
+C {isource.sym} 80 -490 0 0 {name=I0 value=1u}
 C {lab_pin.sym} 440 -190 0 0 {name=p2 sig_type=std_logic lab=Ibias}
 C {lab_pin.sym} 170 -280 0 0 {name=p4 lab=VDD}
 C {lab_pin.sym} 320 -240 0 1 {name=p8 lab=UP}
@@ -123,13 +124,13 @@ value="
 .global VDD GND
 
 
-.param CP_N_L = 0.5u
+.param CP_N_L = 2u
 .param CP_N_W = 3u
 .param CP_P_M = 1
-.param CP_P_L = 0.5u
+.param CP_P_L = 2u
 .param CP_P_W = 10u
 .param CP_N_M = 1
-.param C_CP = 10f
+.param C_CP = 10p
 "}
 C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/phase-freq-detector/PFD_std.sym} 170 -220 0 0 {name=x1}
 C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/charge-pump/CP.sym} 510 -220 0 0 {name=x2}
@@ -147,15 +148,15 @@ value="
 
 .control
 save all
-op
+*op
 remzerovec
 write tb_CP.raw
-set appendwrite
+*set appendwrite
 let i = 0
 dowhile i < 1
 
   
-  tran 100p 100n uic
+  tran 100p 1u uic
   write PFD_CP_tb.raw
   let i = i + 1
 end

@@ -13,8 +13,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3e-13
-x2=4e-05
+x1=-2.499685e-09
+x2=4.7500015e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -36,8 +36,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3e-13
-x2=4e-05
+x1=-2.499685e-09
+x2=4.7500015e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -52,15 +52,15 @@ color="4 5"
 node="*clk_out
 *clk_in"}
 B 2 800 -1200 1600 -800 {flags=graph
-y1=0.56
-y2=0.61
+y1=0.0308
+y2=0.0648
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3e-13
-x2=4e-05
+x1=-2.499685e-09
+x2=4.7500015e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -82,8 +82,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3e-13
-x2=4e-05
+x1=-2.499685e-09
+x2=4.7500015e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -106,8 +106,8 @@ ypos2=3.15
 divy=5
 subdivy=1
 unity=1
-x1=3e-13
-x2=4e-05
+x1=-2.499685e-09
+x2=4.7500015e-08
 
 subdivx=4
 xlabmag=1.2
@@ -134,8 +134,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3e-13
-x2=4e-05
+x1=-2.499685e-09
+x2=4.7500015e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -186,7 +186,7 @@ xschem raw_read $netlist_dir/tb_COMB.raw tran;
 xschem redraw
 "}
 C {gnd.sym} 470 -510 0 0 {name=l11 lab=GND}
-C {isource.sym} 470 -550 0 0 {name=I1 value=50u}
+C {isource.sym} 470 -550 0 0 {name=I1 value=1u}
 C {gnd.sym} 620 -510 0 0 {name=l7 lab=GND}
 C {vdd.sym} 620 -720 0 0 {name=l3 lab=VDD}
 C {simulator_commands.sym} 1110 -660 0 0 {name=SimulatorNGSPICE
@@ -223,6 +223,10 @@ value="
 .ic v(x2.vctrl)=0.606
 .ic v(x2.x1.ctrl1)=0.606
 .ic v(x2.x1.ctrl2)=0.606
+.op
+*.nodeset v(x2.vctrl)=0.606
+*.nodeset v(x2.x1.ctrl1)=0.606
+*.nodeset v(x2.x1.ctrl2)=0.606
 
 .control
   * CRITICAL: Save ONLY essential low-frequency signals. 
@@ -232,7 +236,7 @@ value="
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 30p 40u uic
+  tran 30p 50n uic
   
   remzerovec
   write pll_top.raw 
@@ -251,13 +255,13 @@ value="
 .global VDD GND
 
 
-.param CP_N_L = 0.5u
-.param CP_N_W = 10u
+.param CP_N_L = 5u
+.param CP_N_W = 3u
 .param CP_P_M = 1
-.param CP_P_L = 0.5u
-.param CP_P_W = 30u
+.param CP_P_L = 5u
+.param CP_P_W = 10u
 .param CP_N_M = 1
-.param C_CP = 1000p
+.param C_CP = 10p
 "}
 C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/pll.sym} 660 -610 0 0 {name=x2}
 C {lab_pin.sym} 760 -630 0 1 {name=p1 sig_type=std_logic lab=CLK_OUT}

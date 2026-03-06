@@ -182,7 +182,6 @@ C {lab_pin.sym} 1240 -770 0 1 {name=p31 sig_type=std_logic lab=VDD}
 C {lab_pin.sym} 1240 -670 0 1 {name=p32 sig_type=std_logic lab=VDD}
 C {lab_pin.sym} 820 -770 0 1 {name=p33 sig_type=std_logic lab=GND}
 C {ipin.sym} 110 -130 0 0 {name=p3 lab=GND}
-C {sg13g2_pr/cap_cpara.sym} 1580 -420 0 0 {name=C1 model=cparasitic C='C_CP'  spiceprefix=X}
 C {lab_pin.sym} 820 -360 0 1 {name=p7 sig_type=std_logic lab=VDD}
 C {lab_pin.sym} 820 -670 0 1 {name=p10 sig_type=std_logic lab=Vbp}
 C {lab_pin.sym} 1130 -770 0 0 {name=p24 sig_type=std_logic lab=UP}
@@ -194,7 +193,7 @@ C {sg13g2_pr/annotate_fet_params.sym} 1590 -942.105189945283 0 0 {name=annot3 re
 C {sg13g2_pr/annotate_fet_params.sym} 1662.208120310291 -392.105189945283 0 0 {name=annot4 ref=M6}
 C {sg13g2_pr/rsil.sym} 1520 -590 1 0 {name=R3
 w=0.5e-6
-l=1e-5
+l=100e-6
 model=rsil
 body=sub!
 spiceprefix=X
@@ -207,10 +206,9 @@ C {gnd.sym} 740 -290 0 0 {name=l5 lab=GND}
 C {devices/vdd.sym} 430 -860 0 0 {name=l12 lab=VDD}
 C {devices/vdd.sym} 740 -860 0 0 {name=l6 lab=VDD}
 C {devices/vdd.sym} 1200 -860 0 0 {name=l7 lab=VDD}
-C {sg13g2_pr/cap_cpara.sym} 1430 -420 0 0 {name=C2 model=cparasitic C='C_CP'  spiceprefix=X}
 C {sg13g2_pr/rsil.sym} 1430 -530 2 0 {name=R2
-w=0.5e-6
-l=1e-5
+w=1e-6
+l=100e-6
 model=rsil
 body=sub!
 spiceprefix=X
@@ -218,7 +216,6 @@ b=0
 m=1
 }
 C {gnd.sym} 1430 -290 0 0 {name=l4 lab=GND}
-C {sg13g2_pr/cap_cpara.sym} 1330 -420 0 0 {name=C3 model=cparasitic C='C_CP'  spiceprefix=X}
 C {gnd.sym} 1330 -290 0 0 {name=l8 lab=GND}
 C {lab_pin.sym} 1330 -590 0 1 {name=p6 sig_type=std_logic lab=CTRL1}
 C {lab_pin.sym} 1430 -480 0 1 {name=p9 sig_type=std_logic lab=CTRL2}
@@ -227,3 +224,21 @@ value=0
 footprint=1206
 device=resistor
 m=1}
+C {sg13g2_pr/cap_cmim.sym} 1580 -420 0 0 {name=C4
+model=cap_cmim
+w=50.0e-6
+l=100.0e-6
+m=10
+spiceprefix=X}
+C {sg13g2_pr/cap_cmim.sym} 1430 -420 0 0 {name=C1
+model=cap_cmim
+w=50.0e-6
+l=100.0e-6
+m=1
+spiceprefix=X}
+C {sg13g2_pr/cap_cmim.sym} 1330 -420 0 0 {name=C2
+model=cap_cmim
+w=50.0e-6
+l=100.0e-6
+m=1
+spiceprefix=X}

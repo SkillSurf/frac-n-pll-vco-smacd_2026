@@ -34,10 +34,9 @@ x2 CLK_OUT CLK_IN Vbias2 OUTn Vbias1 VDD GND pll
 * ==============================
 * Uncomment the line below to pre-charge the loop filter to your expected
 * V_tune voltage (e.g., 0.6V). This skips the massive initial frequency jump.
-.ic v(x2.vctrl)=0.606
-.ic v(x2.x1.ctrl1)=0.606
-.ic v(x2.x1.ctrl2)=0.606
-.op
+*.ic v(x2.vctrl)=0.606
+*.ic v(x2.x1.ctrl1)=0.606
+*.ic v(x2.x1.ctrl2)=0.606
 *.nodeset v(x2.vctrl)=0.606
 *.nodeset v(x2.x1.ctrl1)=0.606
 *.nodeset v(x2.x1.ctrl2)=0.606
@@ -96,7 +95,7 @@ x1 VDD UP VCTRL DN GND Ibias CP
 x2 VDD UP CLK_IN DSM_OUT DN GND PFD_std
 x3 VDD net7 OUTn IbiasVCO VCTRL GND LC_VCO
 adut [ net1 net2 net3 net4 net5 ] [ net6 ] null dut
-.model dut d_cosim simulation=./../dsm_and_freq_divider.so
+.model dut d_cosim simulation=./dsm_and_freq_divider.so
 A1 [ CLK_OUT ] [ net1 ] adc1
 .model adc1 adc_bridge in_low=0.4 in_high=0.6
 A2 [ rst ] [ net2 ] adc1

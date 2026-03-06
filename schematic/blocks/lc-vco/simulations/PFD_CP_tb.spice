@@ -3,7 +3,7 @@
 Vdd VDD GND 'VDD'
 Vfvco F_VCO GND 0 pulse(0 'VDD' 6n 1n 1n 5n 10n)
 Vfref F_REF GND 0 pulse(0 'VDD' 0n 1n 1n 5n 10n)
-I0 Ibias GND 10u
+I0 Ibias GND 1u
 x1 VDD UP F_REF F_VCO DN GND PFD_std
 x2 VDD UP CTRL DN GND Ibias CP
 **** begin user architecture code
@@ -18,13 +18,13 @@ x2 VDD UP CTRL DN GND Ibias CP
 .global VDD GND
 
 
-.param CP_N_L = 0.5u
-.param CP_N_W = 3u
+.param CP_N_L = 5u
+.param CP_N_W = 30u
 .param CP_P_M = 1
-.param CP_P_L = 0.5u
-.param CP_P_W = 10u
+.param CP_P_L = 5u
+.param CP_P_W = 100u
 .param CP_N_M = 1
-.param C_CP = 10f
+.param C_CP = 10p
 
 
 
@@ -40,7 +40,7 @@ x2 VDD UP CTRL DN GND Ibias CP
 
 .control
 save all
-op
+*op
 remzerovec
 write tb_CP.raw
 set appendwrite
@@ -94,17 +94,18 @@ XM2 Vbn Vbn net2 GND sg13_lv_nmos w={CP_N_W} l={CP_N_L} ng=1 m={CP_N_M}
 XM1 net2 VDD GND GND sg13_lv_nmos w={CP_N_W} l={CP_N_L} ng=1 m={CP_N_M}
 XM3 Vbn Vbp net1 VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
 XM4 net1 GND VDD VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
-XM7 Vbp Vbp net7 VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
-XM8 net7 GND VDD VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
-XM5 net6 Vbn net3 GND sg13_lv_nmos w={CP_N_W} l={CP_N_L} ng=1 m={CP_N_M}
+XM7 Vbp Vbp net5 VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
+XM8 net5 GND VDD VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
+XM5 CTRL1 Vbn net3 GND sg13_lv_nmos w={CP_N_W} l={CP_N_L} ng=1 m={CP_N_M}
 XM6 net3 DN GND GND sg13_lv_nmos w={CP_N_W} l={CP_N_L} ng=1 m={CP_N_M}
-XM9 net6 Vbp net4 VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
+XM9 CTRL1 Vbp net4 VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
 XM10 net4 UP VDD VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
-XC1 net5 GND cparasitic C='C_CP'
-XR1 Ibias Vbp sub! rsil w=0.5e-6 l=0.5e-6 m=1 b=0
-XM11 VDD net5 CTRL GND sg13_lv_nmos w=100u l=0.5u ng=20 m=1
-XR2 GND CTRL sub! rsil w=0.5e-6 l=0.5e-4 m=1 b=0
-XR3 net6 net5 sub! rsil w=0.5e-6 l=1e-5 m=1 b=0
+XR3 CTRL1 CTRL sub! rsil w=1e-6 l=100e-6 m=1 b=0
+XR2 CTRL1 CTRL2 sub! rsil w=1e-6 l=100e-6 m=1 b=0
+R1 Vbp Ibias 0 m=1
+XC4 CTRL GND cap_cmim w=50.0e-6 l=100.0e-6 m=1
+XC1 CTRL2 GND cap_cmim w=50.0e-6 l=100.0e-6 m=1
+XC2 CTRL1 GND cap_cmim w=50.0e-6 l=100.0e-6 m=1
 .ends
 
 .GLOBAL GND
