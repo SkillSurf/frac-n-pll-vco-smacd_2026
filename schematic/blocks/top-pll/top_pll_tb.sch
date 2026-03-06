@@ -5,7 +5,7 @@ V {}
 S {}
 F {}
 E {}
-B 2 2070 -1110 2870 -710 {flags=graph
+B 2 1600 -800 2400 -400 {flags=graph
 y1=-0.023
 y2=1.3
 ypos1=0
@@ -101,8 +101,8 @@ UP;1.2 x2.up -"}
 B 2 440 -400 1600 -190 {flags=graph
 y1=0
 y2=3
-ypos1=0
-ypos2=3
+ypos1=0.15
+ypos2=3.15
 divy=5
 subdivy=1
 unity=1
@@ -120,14 +120,13 @@ logy=0
 digital=1
 divx=4
 legend=1
-color="12 11 15 10 7 9"
-node="x1.rst
-x1.en
-x1.sdata
-x1.sclk
-clk_out
-x1.dsm_out"}
-B 2 2070 -710 2870 -310 {flags=graph
+color="7 12 11 10 4"
+node="rst
+sclk
+sdata
+f_vco
+vco_out"}
+B 2 1600 -400 2400 0 {flags=graph
 y1=-0.023
 y2=1.3
 ypos1=0
@@ -147,38 +146,38 @@ logx=0
 logy=0
 autoload=1
 hilight_wave=-1
-color="12 7"
+color="12 4"
 node="clk_in
-x1.dsm_out"
-x1=2.5e-6}
-P 4 1 2810 -1370 {}
-N 610 -990 610 -930 {lab=VDD}
-N 610 -870 610 -830 {lab=GND}
-N 1200 -920 1250 -920 {lab=OUTn}
-N 1090 -860 1090 -820 {lab=GND}
-N 1090 -1030 1090 -1000 {lab=VDD}
-N 880 -960 880 -950 {lab=#net1}
-N 880 -950 980 -950 {lab=#net1}
-N 880 -930 880 -920 {lab=CLK_IN}
-N 880 -930 980 -930 {lab=CLK_IN}
-N 880 -860 880 -830 {lab=GND}
-N 940 -910 940 -890 {lab=#net2}
-N 940 -910 980 -910 {lab=#net2}
-N 1200 -940 1270 -940 {lab=CLK_OUT}
-C {vsource.sym} 610 -900 0 0 {name=V1 value=1.2 savecurrent=false}
-C {gnd.sym} 610 -830 0 0 {name=l1 lab=GND}
-C {devices/vdd.sym} 610 -990 0 0 {name=l5 lab=VDD}
-C {devices/isource.sym} 880 -990 0 0 {name=I0 value=50u}
-C {devices/vdd.sym} 880 -1020 0 0 {name=l12 lab=VDD}
-C {vsource.sym} 880 -890 0 1 {name=Vfref value="0 pulse(0 1.2 0n 0.1n 0.1n 5n 10n)" savecurrent=false}
-C {lab_pin.sym} 880 -930 0 0 {name=p11 sig_type=std_logic lab=CLK_IN}
-C {gnd.sym} 880 -830 0 0 {name=l10 lab=GND}
-C {launcher.sym} 1660 -790 0 0 {name=h1
+x2.dsm_out"}
+P 4 1 2340 -1060 {}
+N 140 -720 140 -620 {lab=VDD}
+N 140 -560 140 -510 {lab=GND}
+N 620 -550 620 -510 {lab=GND}
+N 620 -720 620 -690 {lab=VDD}
+N 410 -650 410 -640 {lab=Vbias2}
+N 410 -640 510 -640 {lab=Vbias2}
+N 410 -620 410 -610 {lab=CLK_IN}
+N 410 -620 510 -620 {lab=CLK_IN}
+N 410 -550 410 -510 {lab=GND}
+N 470 -600 470 -580 {lab=Vbias1}
+N 470 -600 510 -600 {lab=Vbias1}
+N 730 -630 760 -630 {lab=CLK_OUT}
+N 730 -610 760 -610 {lab=OUTn}
+N 410 -720 410 -710 {lab=VDD}
+N 470 -520 470 -510 {lab=GND}
+C {vsource.sym} 140 -590 0 0 {name=V1 value=1.2 savecurrent=false}
+C {gnd.sym} 140 -510 0 0 {name=l1 lab=GND}
+C {devices/vdd.sym} 140 -720 0 0 {name=l5 lab=VDD}
+C {devices/isource.sym} 410 -680 0 0 {name=I0 value=50u}
+C {devices/vdd.sym} 410 -720 0 0 {name=l12 lab=VDD}
+C {vsource.sym} 410 -580 0 1 {name=Vfref value="0 pulse(0 1.2 0n 1n 1n 50n 100n)" savecurrent=false}
+C {gnd.sym} 410 -510 0 0 {name=l10 lab=GND}
+C {launcher.sym} 1360 -660 0 0 {name=h1
 descr="load waves" 
 tclcommand="xschem raw_read $netlist_dir/pll_top.raw tran
 "
 }
-C {launcher.sym} 1660 -750 0 0 {name=h4
+C {launcher.sym} 1360 -620 0 0 {name=h4
 descr=SimulateNGSPICE
 tclcommand="
 xschem netlist; 
@@ -262,49 +261,12 @@ value="
 .param CP_P_L = 5u
 .param CP_P_W = 10u
 .param CP_N_M = 1
-.param C_CP = 400p
+.param C_CP = 10p
 "}
-C {simulator_commands.sym} 1660 -960 0 0 {name=SimulatorNGSPICE
-vhdl_ignore=1
-spice_ignore="tcleval([regexp -nocase \{xyce\} $sim(spice,$sim(spice,default),name)])"
-simulator=ngspice
-only_toplevel=false 
-value="
-*****************************************************
-* PLL + DSM Frequency Divider Testbench
-*****************************************************
-
-.option temp = 27
-.param VDD = 1.2
-
-* ==============================
-* Include Models
-* ==============================
-
-* Inductor / analog models
-.include ./IHP_4nH_Inductor.spice
-
-.control
-  *save all
-  save x1.up x1.en x1.sdata x1.rst x1.sclk x1.dn x1.vctrl x1.clk_in x1.clk_out x1.dsm_out clk_in clk_out outn
-  * Simulation accuracy options
-  .options maxstep=10p reltol=1e-4 abstol=1e-9
-
- * Run long enough for PLL lock
-  tran 20p 5u uic
-  remzerovec
-  write pll_top.raw 
-.endc
-* to generate following file copy stimuli.test
-* to the simulation directory and run simulation -> Utile Stimuli Editor (GUI), 
-* and press 'Translate'
-.include stimuli_test.cir
-"}
-C {code.sym} 1860 -960 0 0 {name=MEASURE only_toplevel=false 
-value="
-.meas tran tperiod_in TRIG v(clk_in) VAL=0.6 FALL=1 TARG v(clk_in) VAL=0.6 FALL=2
-.meas tran ref_freq PARAM = '1e-6/tperiod_in'
-
-.meas tran tperiod_out TRIG v(clk_out) VAL=0.6 FALL=1 TARG v(clk_out) VAL=0.6 FALL=2
-.meas tran pll_freq PARAM = '1e-6/tperiod_out'
-"}
+C {/foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/top-pll/pll.sym} 660 -610 0 0 {name=x2}
+C {lab_pin.sym} 760 -630 0 1 {name=p1 sig_type=std_logic lab=CLK_OUT}
+C {lab_pin.sym} 760 -610 0 1 {name=p2 lab=OUTn}
+C {title.sym} 160 -30 0 0 {name=l2 author="Skill Surf"}
+C {lab_pin.sym} 410 -620 0 0 {name=p3 sig_type=std_logic lab=CLK_IN}
+C {lab_pin.sym} 470 -600 0 0 {name=p4 lab=Vbias1}
+C {lab_pin.sym} 410 -640 0 0 {name=p5 lab=Vbias2}

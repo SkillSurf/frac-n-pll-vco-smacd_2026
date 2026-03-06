@@ -9,26 +9,6 @@ x2 CLK_OUT CLK_IN Vbias2 OUTn Vbias1 VDD GND pll
 
 
 
-.lib cornerMOSlv.lib mos_tt
-.lib cornerHBT.lib hbt_typ
-.lib cornerRES.lib res_typ
-.lib cornerCAP.lib cap_typ_stat
-.include /foss/pdks/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
-.global VDD GND
-
-
-.param CP_N_L = 0.5u
-.param CP_N_W = 10u
-.param CP_P_M = 1
-.param CP_P_L = 0.5u
-.param CP_P_W = 30u
-.param CP_N_M = 1
-.param C_CP = 400p
-
-
-
-
-
 *****************************************************
 * PLL + DSM Frequency Divider Testbench (Optimized)
 *****************************************************
@@ -75,10 +55,6 @@ x2 CLK_OUT CLK_IN Vbias2 OUTn Vbias1 VDD GND pll
   remzerovec
   write pll_top.raw
 .endc
-* to generate following file copy stimuli.test
-* to the simulation directory and run simulation -> Utile Stimuli Editor (GUI),
-* and press 'Translate'
-.include stimuli_test.cir
 
 
 
@@ -98,7 +74,7 @@ x2 CLK_OUT CLK_IN Vbias2 OUTn Vbias1 VDD GND pll
 .param CP_P_L = 5u
 .param CP_P_W = 10u
 .param CP_N_M = 1
-.param C_CP = 400p
+.param C_CP = 10p
 
 
 **** end user architecture code
