@@ -17,7 +17,7 @@ N 820 -470 860 -470 {lab=UP}
 C {opin.sym} 180 -230 0 0 {name=p4 lab=UP}
 C {ipin.sym} 110 -220 0 0 {name=p12 lab=F_REF}
 C {ipin.sym} 110 -250 0 0 {name=p1 lab=VDD}
-C {ipin.sym} 110 -160 0 0 {name=p5 lab=GND}
+C {ipin.sym} 110 -160 0 0 {name=p5 lab=VSS}
 C {opin.sym} 180 -180 0 0 {name=p7 lab=DN}
 C {ipin.sym} 110 -190 0 0 {name=p20 lab=F_VCO}
 C {title.sym} 160 -30 0 0 {name=l1 author="Rajinthan R"}
@@ -34,3 +34,5 @@ C {sg13g2_stdcells/sg13g2_dfrbp_2.sym} 540 -240 0 0 {name=x2 VDD=VDD VSS=GND pre
 C {sg13g2_stdcells/sg13g2_nand2_2.sym} 660 -340 0 1 {name=x3 VDD=VDD VSS=GND prefix=sg13g2_ }
 C {lab_pin.sym} 450 -430 0 0 {name=p6 sig_type=std_logic lab=RST_N}
 C {sg13g2_stdcells/sg13g2_inv_2.sym} 780 -470 0 0 {name=x4 VDD=VDD VSS=GND prefix=sg13g2_ }
+C {opin.sym} 630 -240 0 0 {name=p3 lab=QN}
+C {opin.sym} 630 -450 0 0 {name=p8 lab=QN}
