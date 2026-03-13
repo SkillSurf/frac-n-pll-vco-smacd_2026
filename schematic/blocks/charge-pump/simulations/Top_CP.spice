@@ -1,0 +1,22 @@
+** sch_path: /foss/designs/iic_osic_tools/frac-n-pll-vco-unic_cass/schematic/blocks/charge-pump/Top_CP.sch
+.SUBCKT Top_CP CTRL UP VDD Ibias DN GND
+*.PININFO CTRL:O UP:I VDD:I Ibias:I DN:I GND:I
+M2 Vbn Vbn net2 GND sg13_lv_nmos w=3u l=2u ng=1 m=1
+M8 net5 GND VDD VDD sg13_lv_pmos w=10u l=2u ng=1 m=1
+XR3 CTRL1 CTRL sub! rsil w=0.5e-6 l=100e-6 m=1 b=0
+XR2 CTRL1 CTRL2 sub! rsil w=1e-6 l=100e-6 m=1 b=0
+XC4 CTRL GND cap_cmim w=50.0e-6 l=100.0e-6 m=10
+XC1 CTRL2 GND cap_cmim w=50.0e-6 l=100.0e-6 m=1
+XC2 CTRL1 GND cap_cmim w=50.0e-6 l=100.0e-6 m=1
+M7 Vbp Vbp net5 VDD sg13_lv_pmos w=10u l=2u ng=1 m=1
+M3 net1 GND VDD VDD sg13_lv_pmos w=10u l=2u ng=1 m=1
+M4 Vbn Vbp net1 VDD sg13_lv_pmos w=10u l=2u ng=1 m=1
+M10 net4 UP VDD VDD sg13_lv_pmos w=10u l=2u ng=1 m=1
+M11 CTRL1 Vbp net4 VDD sg13_lv_pmos w=10u l=2u ng=1 m=1
+M9 net2 VDD GND GND sg13_lv_nmos w=3u l=2u ng=1 m=1
+M1 CTRL1 Vbn net3 GND sg13_lv_nmos w=3u l=2u ng=1 m=1
+M5 net3 DN GND GND sg13_lv_nmos w=3u l=2u ng=1 m=1
+XR4 Vbp Ibias sub! rsil w=1e-6 l=1e-6 m=1 b=0
+.ENDS
+.GLOBAL GND
+.GLOBAL VDD

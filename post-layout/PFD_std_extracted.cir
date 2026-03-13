@@ -1,4 +1,4 @@
-* Extracted by KLayout with SG13G2 LVS runset on : 13/03/2026 07:31
+* Extracted by KLayout with SG13G2 LVS runset on : 13/03/2026 18:26
 
 .SUBCKT PFD_std 1 7 9 13 14 15 29 31 32 37
 M$1 4 13 11 1 sg13_lv_nmos L=0.13u W=0.42u AS=0.1428p AD=0.0609p PS=1.52u

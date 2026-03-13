@@ -1,0 +1,20 @@
+* Extracted by KLayout with SG13G2 LVS runset on : 13/03/2026 21:52
+
+.SUBCKT Top_CP
+M$1 6 7 7 1 sg13_lv_nmos L=2u W=3u AS=1.02p AD=1.02p PS=6.68u PD=6.68u
+M$2 8 7 5 1 sg13_lv_nmos L=2u W=3u AS=1.02p AD=1.02p PS=6.68u PD=6.68u
+M$3 1 10 6 1 sg13_lv_nmos L=2u W=3u AS=1.02p AD=1.02p PS=6.68u PD=6.68u
+M$4 1 9 8 1 sg13_lv_nmos L=2u W=3u AS=1.02p AD=1.02p PS=6.68u PD=6.68u
+M$5 10 13 16 10 sg13_lv_pmos L=2u W=10u AS=3.4p AD=3.4p PS=20.68u PD=20.68u
+M$6 16 11 5 10 sg13_lv_pmos L=2u W=10u AS=3.4p AD=3.4p PS=20.68u PD=20.68u
+M$7 10 1 15 10 sg13_lv_pmos L=2u W=10u AS=3.4p AD=3.4p PS=20.68u PD=20.68u
+M$8 15 11 7 10 sg13_lv_pmos L=2u W=10u AS=3.4p AD=3.4p PS=20.68u PD=20.68u
+M$9 10 1 14 10 sg13_lv_pmos L=2u W=10u AS=3.4p AD=3.4p PS=20.68u PD=20.68u
+M$10 14 11 11 10 sg13_lv_pmos L=2u W=10u AS=3.4p AD=3.4p PS=20.68u PD=20.68u
+R$11 12 11 rsil w=1u l=1u ps=0 b=0 m=1
+R$12 4 5 rsil w=1u l=100u ps=0 b=0 m=1
+R$13 3 5 rsil w=0.5u l=100u ps=0 b=0 m=1
+C$14 3 2 cap_cmim w=50u l=100u A=5000p P=300u m=1
+C$15 4 2 cap_cmim w=50u l=100u A=5000p P=300u m=1
+C$16 5 2 cap_cmim w=50u l=100u A=5000p P=300u m=1
+.ENDS Top_CP
