@@ -50,7 +50,7 @@ x2 CLK_OUT CLK_IN Vbias2 OUTn Vbias1 VDD GND pll
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 30p 5u uic
+  tran 30p 50n uic
 
   remzerovec
   write pll_top.raw
@@ -137,7 +137,7 @@ XM9 CTRL1 Ibias net4 VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
 XM10 net4 UP VDD VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
 XR3 CTRL1 CTRL sub! rsil w=0.5e-6 l=1000e-6 m=1 b=0
 XR2 CTRL1 CTRL2 sub! rsil w=0.5e-6 l=2500e-6 m=1 b=0
-XC4 CTRL GND cap_cmim w=60.0e-6 l=60.0e-6 m=10
+XC4 CTRL GND cap_cmim w=60.0e-6 l=60.0e-6 m=1
 XC1 CTRL2 GND cap_cmim w=40.0e-6 l=40.0e-6 m=4
 XC2 CTRL1 GND cap_cmim w=15.0e-6 l=20.0e-6 m=4
 .ends

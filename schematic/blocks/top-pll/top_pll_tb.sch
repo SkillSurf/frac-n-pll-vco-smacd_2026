@@ -13,8 +13,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=-1.3236811e-06
-x2=7.8240269e-06
+x1=3e-13
+x2=5e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -36,8 +36,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=-1.3236811e-06
-x2=7.8240269e-06
+x1=3e-13
+x2=5e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -52,15 +52,15 @@ color="4 5"
 node="*clk_out
 *clk_in"}
 B 2 800 -1200 1600 -800 {flags=graph
-y1=0.034
-y2=0.97
+y1=0.24
+y2=0.45
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=-1.3236811e-06
-x2=7.8240269e-06
+x1=3e-13
+x2=5e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -81,8 +81,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=-1.3236811e-06
-x2=7.8240269e-06
+x1=3e-13
+x2=5e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -105,8 +105,8 @@ ypos2=3.15
 divy=5
 subdivy=1
 unity=1
-x1=-1.3236811e-06
-x2=7.8240269e-06
+x1=3e-13
+x2=5e-08
 
 subdivx=4
 xlabmag=1.2
@@ -133,8 +133,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=-1.3236811e-06
-x2=7.8240269e-06
+x1=3e-13
+x2=5e-08
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -235,7 +235,7 @@ value="
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 30p 5u uic
+  tran 30p 50n uic
   
   remzerovec
   write pll_top.raw 
