@@ -27,7 +27,7 @@ x2 CLK_OUT CLK_IN Vbias2 OUTn Vbias1 VDD GND pll
 * ==============================
 * gear method improves stability for long oscillator runs
 * reltol=1e-3 prevents the simulator from bogging down on microscopic errors
-.options reltol=1e-3 abstol=1e-9 vntol=1e-6 method=gear
+.options reltol=1e-4 abstol=1e-9 vntol=1e-6 method=gear
 
 * ==============================
 * Initial Conditions (Speed Hack)
@@ -50,7 +50,7 @@ x2 CLK_OUT CLK_IN Vbias2 OUTn Vbias1 VDD GND pll
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 30p 50n uic
+  tran 20p 50u uic
 
   remzerovec
   write pll_top.raw
@@ -125,21 +125,21 @@ A6 [ net6 ] [ DSM_OUT ] dac1
 *.ipin Ibias
 *.ipin DN
 *.ipin GND
-XM2 Vbn Vbn net2 GND sg13_lv_nmos w={CP_N_W} l={CP_N_L} ng=1 m={CP_N_M}
-XM1 net2 VDD GND GND sg13_lv_nmos w={CP_N_W} l={CP_N_L} ng=1 m={CP_N_M}
-XM3 Vbn Ibias net1 VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
-XM4 net1 GND VDD VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
-XM7 Ibias Ibias net5 VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
-XM8 net5 GND VDD VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
-XM5 CTRL1 Vbn net3 GND sg13_lv_nmos w={CP_N_W} l={CP_N_L} ng=1 m={CP_N_M}
-XM6 net3 DN GND GND sg13_lv_nmos w={CP_N_W} l={CP_N_L} ng=1 m={CP_N_M}
-XM9 CTRL1 Ibias net4 VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
-XM10 net4 UP VDD VDD sg13_lv_pmos w={CP_P_W} l={CP_P_L} ng=1 m={CP_P_M}
+XM2 Vbn Vbn net2 GND sg13_lv_nmos w=3u l=2u ng=1 m=1
+XM8 net5 GND VDD VDD sg13_lv_pmos w=10u l=2u ng=1 m=1
 XR3 CTRL1 CTRL sub! rsil w=0.5e-6 l=1000e-6 m=1 b=0
 XR2 CTRL1 CTRL2 sub! rsil w=0.5e-6 l=2500e-6 m=1 b=0
 XC4 CTRL GND cap_cmim w=60.0e-6 l=60.0e-6 m=1
 XC1 CTRL2 GND cap_cmim w=40.0e-6 l=40.0e-6 m=4
 XC2 CTRL1 GND cap_cmim w=15.0e-6 l=20.0e-6 m=4
+XM11 Ibias Ibias net5 VDD sg13_lv_pmos w=10u l=2u ng=1 m=1
+XM3 Vbn Ibias net1 VDD sg13_lv_pmos w=10u l=2u ng=1 m=1
+XM4 net1 GND VDD VDD sg13_lv_pmos w=10u l=2u ng=1 m=1
+XM7 net4 UP VDD VDD sg13_lv_pmos w=10u l=2u ng=1 m=1
+XM9 CTRL1 Ibias net4 VDD sg13_lv_pmos w=10u l=2u ng=1 m=1
+XM10 net2 VDD GND GND sg13_lv_nmos w=3u l=2u ng=1 m=1
+XM1 net3 DN GND GND sg13_lv_nmos w=3u l=2u ng=1 m=1
+XM5 CTRL1 Vbn net3 GND sg13_lv_nmos w=3u l=2u ng=1 m=1
 .ends
 
 
@@ -177,10 +177,10 @@ XM4 OUTp OUTn VDD VDD sg13_lv_pmos w=8.5u l=0.5u ng=1 m=13
 X5M3 OUTn OUTp VDD VDD sg13_lv_pmos w=8.5u l=0.5u ng=1 m=13
 XM2 OUTp OUTn net1 GND sg13_lv_nmos w=2u l=0.5u ng=1 m=12
 XM1 OUTn OUTp net1 GND sg13_lv_nmos w=2u l=0.5u ng=1 m=12
-XC3 OUTp OUTn cap_cmim w=4.0e-6 l=4.0e-6 m=13.6
+XC3 OUTp OUTn cap_cmim w=4.26e-6 l=4.26e-6 m=12
 XMv2 OUTp VCTRL OUTp VDD sg13_lv_pmos w=4u l=4u ng=1 m=22
 XMv1 OUTn VCTRL OUTn VDD sg13_lv_pmos w=4u l=4u ng=1 m=22
-XR1 OUTn OUTp sub! rhigh w=1e-6 l=1e-6 m=1.23 b=0
+XR1 OUTn OUTp sub! rhigh w=1e-6 l=0.79e-6 m=1 b=0
 x1 OUTn OUTp ihp_4nh_inductor
 .ends
 

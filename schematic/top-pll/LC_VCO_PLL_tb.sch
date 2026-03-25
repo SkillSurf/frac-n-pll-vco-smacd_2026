@@ -14,7 +14,7 @@ divy=5
 subdivy=1
 unity=1
 x1=3e-13
-x2=5e-08
+x2=3e-05
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -37,7 +37,7 @@ divy=5
 subdivy=1
 unity=1
 x1=3e-13
-x2=5e-08
+x2=3e-05
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -52,15 +52,15 @@ color="4 5"
 node="*clk_out
 *clk_in"}
 B 2 800 -1200 1600 -800 {flags=graph
-y1=0.24
-y2=0.45
+y1=0.54406283
+y2=0.61686282
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
 x1=3e-13
-x2=5e-08
+x2=3e-05
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -72,7 +72,8 @@ logy=0
 color=4
 node=x2.vctrl
 hilight_wave=-1
-}
+hcursor1_y=0.60883755
+hcursor2_y=0.57985744}
 B 2 1600 -1200 2400 -800 {flags=graph
 y1=-0.017
 y2=1.3
@@ -82,7 +83,7 @@ divy=5
 subdivy=1
 unity=1
 x1=3e-13
-x2=5e-08
+x2=3e-05
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -106,7 +107,7 @@ divy=5
 subdivy=1
 unity=1
 x1=3e-13
-x2=5e-08
+x2=3e-05
 
 subdivx=4
 xlabmag=1.2
@@ -134,7 +135,7 @@ divy=5
 subdivy=1
 unity=1
 x1=3e-13
-x2=5e-08
+x2=3e-05
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -185,10 +186,10 @@ xschem raw_read $netlist_dir/pll_top.raw tran;
 xschem redraw
 "}
 C {gnd.sym} 470 -510 0 0 {name=l11 lab=GND}
-C {isource.sym} 470 -550 0 0 {name=I1 value=50u}
+C {isource.sym} 470 -550 0 0 {name=I1 value=5u}
 C {gnd.sym} 620 -510 0 0 {name=l7 lab=GND}
 C {vdd.sym} 620 -720 0 0 {name=l3 lab=VDD}
-C {simulator_commands.sym} 1110 -660 0 0 {name=SimulatorNGSPICE
+C {simulator_commands.sym} 1120 -660 0 0 {name=SimulatorNGSPICE
 vhdl_ignore=1
 spice_ignore="tcleval([regexp -nocase \{xyce\} $sim(spice,$sim(spice,default),name)])"
 simulator=ngspice
@@ -230,12 +231,12 @@ value="
 .control
   * CRITICAL: Save ONLY essential low-frequency signals. 
   * Saving 2.4GHz nodes for 100us will crash your memory.
-  save x2.vctrl x2.up x2.dn x2.dsm_out clk_out clk_in vbias1 vbias2
+  save x2.vctrl x2.up x2.dn x2.dsm_out clk_out clk_in vbias1 vbias2 x2.x1.ctrl1 x2.x1.ctrl2
   *save all
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 30p 50n uic
+  tran 30p 30u uic
   
   remzerovec
   write pll_top.raw 
