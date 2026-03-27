@@ -171,11 +171,11 @@ def plot_control_voltage(signals, mask, save_path=None):
     """Plot VCO control voltage — the primary PLL lock indicator."""
     fig, ax = plt.subplots(figsize=(12, 4))
     t = signals["time"][mask]
-    vctrl = signals["v(x2.vctrl)"][mask]
+    vctrl = signals["v(xpll.vctrl)"][mask]
 
     ax.plot(t, vctrl, linewidth=0.5, color="#1f77b4")
     ax.set_ylabel("Voltage (V)")
-    ax.set_title("VCO Control Voltage — v(x2.vctrl)")
+    ax.set_title("VCO Control Voltage — v(xpll.vctrl)")
     apply_time_axis(ax)
     fig.tight_layout()
     if save_path:
@@ -209,13 +209,13 @@ def plot_pfd_outputs(signals, mask, save_path=None):
     fig, axes = plt.subplots(2, 1, figsize=(12, 5), sharex=True)
     t = signals["time"][mask]
 
-    axes[0].plot(t, signals["v(x2.up)"][mask], linewidth=0.4, color="#9467bd")
+    axes[0].plot(t, signals["v(xpll.up)"][mask], linewidth=0.4, color="#9467bd")
     axes[0].set_ylabel("V")
-    axes[0].set_title("PFD UP Pulse — v(x2.up)")
+    axes[0].set_title("PFD UP Pulse — v(xpll.up)")
 
-    axes[1].plot(t, signals["v(x2.dn)"][mask], linewidth=0.4, color="#e377c2")
+    axes[1].plot(t, signals["v(xpll.dn)"][mask], linewidth=0.4, color="#e377c2")
     axes[1].set_ylabel("V")
-    axes[1].set_title("PFD DN Pulse — v(x2.dn)")
+    axes[1].set_title("PFD DN Pulse — v(xpll.dn)")
 
     apply_time_axis(axes[1])
     apply_time_axis(axes[0], xlabel=False)
@@ -230,9 +230,9 @@ def plot_dsm_output(signals, mask, save_path=None):
     fig, ax = plt.subplots(figsize=(12, 4))
     t = signals["time"][mask]
 
-    ax.plot(t, signals["v(x2.dsm_out)"][mask], linewidth=0.4, color="#ff7f0e")
+    ax.plot(t, signals["v(xpll.dsm_out)"][mask], linewidth=0.4, color="#ff7f0e")
     ax.set_ylabel("Voltage (V)")
-    ax.set_title("Delta-Sigma Modulator Output — v(x2.dsm_out)")
+    ax.set_title("Delta-Sigma Modulator Output — v(xpll.dsm_out)")
     apply_time_axis(ax)
     fig.tight_layout()
     if save_path:
@@ -356,9 +356,9 @@ def plot_overview(signals, mask, save_path=None):
     t = signals["time"][mask]
 
     # Panel 1: Control voltage
-    axes[0].plot(t, signals["v(x2.vctrl)"][mask], lw=0.5, color="#1f77b4")
+    axes[0].plot(t, signals["v(xpll.vctrl)"][mask], lw=0.5, color="#1f77b4")
     axes[0].set_ylabel("V")
-    axes[0].set_title("VCO Control Voltage — v(x2.vctrl)")
+    axes[0].set_title("VCO Control Voltage — v(xpll.vctrl)")
 
     # Panel 2: Clocks
     axes[1].plot(t, signals["v(clk_in)"][mask], lw=0.3, alpha=0.8, label="clk_in")
@@ -368,14 +368,14 @@ def plot_overview(signals, mask, save_path=None):
     axes[1].legend(loc="upper right", fontsize=8)
 
     # Panel 3: PFD outputs
-    axes[2].plot(t, signals["v(x2.up)"][mask], lw=0.3, alpha=0.8, label="UP")
-    axes[2].plot(t, signals["v(x2.dn)"][mask], lw=0.3, alpha=0.8, label="DN")
+    axes[2].plot(t, signals["v(xpll.up)"][mask], lw=0.3, alpha=0.8, label="UP")
+    axes[2].plot(t, signals["v(xpll.dn)"][mask], lw=0.3, alpha=0.8, label="DN")
     axes[2].set_ylabel("V")
     axes[2].set_title("PFD Outputs (UP / DN)")
     axes[2].legend(loc="upper right", fontsize=8)
 
     # Panel 4: DSM output
-    axes[3].plot(t, signals["v(x2.dsm_out)"][mask], lw=0.4, color="#ff7f0e")
+    axes[3].plot(t, signals["v(xpll.dsm_out)"][mask], lw=0.4, color="#ff7f0e")
     axes[3].set_ylabel("V")
     axes[3].set_title("Delta-Sigma Modulator Output")
 

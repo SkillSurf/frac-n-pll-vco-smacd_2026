@@ -1,4 +1,4 @@
-v {xschem version=3.4.8RC file_version=1.3}
+v {xschem version=3.4.8RC file_version=1.2}
 G {}
 K {}
 V {}
@@ -6,7 +6,7 @@ S {}
 F {}
 E {}
 B 2 1600 -800 2400 -400 {flags=graph
-y1=-0.023
+y1=-0.0059
 y2=1.3
 ypos1=0
 ypos2=2
@@ -14,7 +14,7 @@ divy=5
 subdivy=1
 unity=1
 x1=3e-13
-x2=3e-05
+x2=1.1e-07
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -26,18 +26,19 @@ logy=0
 autoload=1
 hilight_wave=-1
 color="7 4"
-node="*clk_out
-*x2.dsm_out"}
+node="clk_out
+xpll.dsm_out"
+}
 B 2 0 -1200 800 -800 {flags=graph
-y1=-0.38082238
-y2=1.8658542
+y1=0
+y2=1.3
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
 x1=3e-13
-x2=3e-05
+x2=1.1e-07
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -48,19 +49,21 @@ logx=0
 logy=0
 hilight_wave=-1
 autoload=1
-color="4 5"
-node="*clk_out
-*clk_in"}
+color="4 5 7"
+node="outn
+outp;xpll.outp
+clk_in"
+}
 B 2 800 -1200 1600 -800 {flags=graph
-y1=0.54406283
-y2=0.61686282
+y1=0.0011
+y2=0.11
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
 x1=3e-13
-x2=3e-05
+x2=1.1e-07
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -69,13 +72,12 @@ dataset=-1
 unitx=1
 logx=0
 logy=0
-color=4
-node=x2.vctrl
 hilight_wave=-1
-hcursor1_y=0.60883755
-hcursor2_y=0.57985744}
+color=12
+node=xpll.vctrl
+}
 B 2 1600 -1200 2400 -800 {flags=graph
-y1=-0.017
+y1=-0.012
 y2=1.3
 ypos1=0
 ypos2=2
@@ -83,7 +85,7 @@ divy=5
 subdivy=1
 unity=1
 x1=3e-13
-x2=3e-05
+x2=1.1e-07
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -96,8 +98,8 @@ hilight_wave=-1
 hcursor1_y=0.68567067
 hcursor2_y=0.47137288
 color="4 7"
-node="x2.dn
-UP;1.2 x2.up -"}
+node="xpll.dn
+UP;1.2 xpll.up -"}
 B 2 440 -400 1600 -190 {flags=graph
 y1=0
 y2=3
@@ -107,7 +109,7 @@ divy=5
 subdivy=1
 unity=1
 x1=3e-13
-x2=3e-05
+x2=1.1e-07
 
 subdivx=4
 xlabmag=1.2
@@ -127,15 +129,15 @@ sdata
 f_vco
 vco_out"}
 B 2 1600 -400 2400 0 {flags=graph
-y1=-0.023
-y2=1.3
+y1=0.26
+y2=1.56
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
 x1=3e-13
-x2=3e-05
+x2=1.1e-07
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -148,7 +150,7 @@ autoload=1
 hilight_wave=-1
 color="12 4"
 node="clk_in
-x2.dsm_out"}
+xpll.dsm_out"}
 P 4 1 2340 -1060 {}
 N 140 -720 140 -620 {lab=VDD}
 N 140 -560 140 -510 {lab=GND}
@@ -167,8 +169,8 @@ N 410 -720 410 -710 {lab=VDD}
 N 470 -520 470 -510 {lab=GND}
 C {vsource.sym} 140 -590 0 0 {name=V1 value=1.2 savecurrent=false}
 C {gnd.sym} 140 -510 0 0 {name=l1 lab=GND}
-C {devices/vdd.sym} 140 -720 0 0 {name=l5 lab=VDD}
-C {devices/vdd.sym} 410 -720 0 0 {name=l12 lab=VDD}
+C {vdd.sym} 140 -720 0 0 {name=l5 lab=VDD}
+C {vdd.sym} 410 -720 0 0 {name=l12 lab=VDD}
 C {vsource.sym} 410 -580 0 1 {name=Vfref value="0 pulse(0 1.2 0n 1n 1n 50n 100n)" savecurrent=false}
 C {gnd.sym} 410 -510 0 0 {name=l10 lab=GND}
 C {launcher.sym} 1360 -660 0 0 {name=h1
@@ -185,7 +187,7 @@ xschem raw_read $netlist_dir/pll_top.raw tran;
 xschem redraw
 "}
 C {gnd.sym} 470 -510 0 0 {name=l11 lab=GND}
-C {isource.sym} 470 -550 0 0 {name=I1 value=5u}
+C {isource.sym} 470 -550 0 0 {name=I1 value=50u}
 C {gnd.sym} 620 -510 0 0 {name=l7 lab=GND}
 C {vdd.sym} 620 -720 0 0 {name=l3 lab=VDD}
 C {simulator_commands.sym} 1120 -660 0 0 {name=SimulatorNGSPICE
@@ -219,10 +221,7 @@ value="
 * ==============================
 * Uncomment the line below to pre-charge the loop filter to your expected 
 * V_tune voltage (e.g., 0.6V). This skips the massive initial frequency jump.
-.ic v(x2.vctrl)=0.606
-.ic v(x2.x1.ctrl1)=0.606
-.ic v(x2.x1.ctrl2)=0.606
-.op
+
 *.nodeset v(x2.vctrl)=0.606
 *.nodeset v(x2.x1.ctrl1)=0.606
 *.nodeset v(x2.x1.ctrl2)=0.606
@@ -230,12 +229,12 @@ value="
 .control
   * CRITICAL: Save ONLY essential low-frequency signals. 
   * Saving 2.4GHz nodes for 100us will crash your memory.
-  save x2.vctrl x2.up x2.dn x2.dsm_out clk_out clk_in vbias1 vbias2 x2.x1.ctrl1 x2.x1.ctrl2
+  save xpll.vctrl xpll.up xpll.dn xpll.dsm_out clk_out clk_in vbias1 vbias2 xpll.xcp.ctrl1 xpll.xcp.ctrl2 outn xpll.outp
   *save all
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 30p 30u uic
+  tran 30p 110n uic
   
   remzerovec
   write pll_top.raw 
@@ -268,5 +267,5 @@ C {title.sym} 160 -30 0 0 {name=l2 author="Skill Surf"}
 C {lab_pin.sym} 410 -620 0 0 {name=p3 sig_type=std_logic lab=CLK_IN}
 C {lab_pin.sym} 470 -600 0 0 {name=p4 lab=Vbias1}
 C {lab_pin.sym} 410 -640 0 0 {name=p5 lab=Vbias2}
-C {LC_VCO_PLL.sym} 630 -620 0 0 {name=x1}
-C {devices/isource.sym} 410 -680 0 0 {name=I3 value=80u}
+C {LC_VCO_PLL.sym} 630 -620 0 0 {name=xpll}
+C {isource.sym} 410 -680 0 0 {name=I3 value=80u}
