@@ -3,7 +3,7 @@
 V1 VDD GND 1.2
 I0 VDD Vbias2 50u
 Vfref CLK_IN GND 0 pulse(0 1.2 0n 1n 1n 50n 100n)
-I1 Vbias1 GND 50u
+I1 Vbias1 GND 5u
 x1 VDD CLK_IN CLK_OUT Vbias2 OUTn Vbias1 GND LC_VCO_PLL
 **** begin user architecture code
 
@@ -45,12 +45,12 @@ x1 VDD CLK_IN CLK_OUT Vbias2 OUTn Vbias1 GND LC_VCO_PLL
 .control
   * CRITICAL: Save ONLY essential low-frequency signals.
   * Saving 2.4GHz nodes for 100us will crash your memory.
-  save x2.vctrl x2.up x2.dn x2.dsm_out clk_out clk_in vbias1 vbias2
+  save x2.vctrl x2.up x2.dn x2.dsm_out clk_out clk_in vbias1 vbias2 x2.x1.ctrl1 x2.x1.ctrl2
   *save all
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 30p 50n uic
+  tran 30p 30u uic
 
   remzerovec
   write pll_top.raw
@@ -61,6 +61,7 @@ x1 VDD CLK_IN CLK_OUT Vbias2 OUTn Vbias1 GND LC_VCO_PLL
 
 
 .lib cornerMOSlv.lib mos_tt
+.lib cornerMOShv.lib mos_tt
 .lib cornerHBT.lib hbt_typ
 .lib cornerRES.lib res_typ
 .lib cornerCAP.lib cap_typ_stat
@@ -164,23 +165,34 @@ x4 UP net1 VDD GND sg13g2_inv_2
 ** sym_path: /foss/designs/frac-n-pll-vco-unic_cass/schematic/lc-vco/LC_VCO.sym
 ** sch_path: /foss/designs/frac-n-pll-vco-unic_cass/schematic/lc-vco/LC_VCO.sch
 .subckt LC_VCO VDD OUTp OUTn Ibias VCTRL GND
-*.iopin VDD
 *.opin OUTp
 *.opin OUTn
-*.iopin GND
 *.iopin VCTRL
 *.iopin Ibias
-XM6 net1 Ibias GND GND sg13_lv_nmos w=1u l=0.15u ng=1 m=60
-XM5 Ibias Ibias GND GND sg13_lv_nmos w=1u l=0.15u ng=1
-XM4 OUTp OUTn VDD VDD sg13_lv_pmos w=8.5u l=0.5u ng=1 m=13
-X5M3 OUTn OUTp VDD VDD sg13_lv_pmos w=8.5u l=0.5u ng=1 m=13
-XM2 OUTp OUTn net1 GND sg13_lv_nmos w=2u l=0.5u ng=1 m=12
-XM1 OUTn OUTp net1 GND sg13_lv_nmos w=2u l=0.5u ng=1 m=12
-XC3 OUTp OUTn cap_cmim w=4.26e-6 l=4.26e-6 m=12
-XMv2 OUTp VCTRL OUTp VDD sg13_lv_pmos w=4u l=4u ng=1 m=22
-XMv1 OUTn VCTRL OUTn VDD sg13_lv_pmos w=4u l=4u ng=1 m=22
-XR1 OUTp OUTn sub! rhigh w=1e-6 l=0.79e-6 m=1 b=0
+*.iopin GND
+*.iopin VDD
+XM6 net5 Vgs GND GND sg13_lv_nmos w=70.29u l=0.5u ng=20
+XM4 net1 net4 VDD VDD sg13_lv_pmos w=34.52u l=0.13u ng=10
+X5M3 net4 net1 VDD VDD sg13_lv_pmos w=34.52u l=0.13u ng=10
+XM2 OUTp OUTn Vx GND sg13_lv_nmos w=25.11u l=0.13u ng=8
+XM1 OUTn OUTp Vx GND sg13_lv_nmos w=25.11u l=0.13u ng=8
+Vpmos_p net1 net3 0
+.save i(vpmos_p)
+Vnmos_p net3 OUTp 0
+.save i(vnmos_p)
+Vtail Vx net5 0
+.save i(vtail)
+XM5 Vgs Vgs GND GND sg13_lv_nmos w=17.95u l=0.5u ng=6
+Vpmos_n net4 net2 0
+.save i(vpmos_n)
+Vnmos_n net2 OUTn 0
+.save i(vnmos_n)
 *  x1 -  ihp_4nh_inductor  IS MISSING !!!!
+XC1 net2 net3 GND cap_rfcmim w=22.15e-6 l=22.15e-6 wfeed=10.0e-6
+XC3 OUTp VCTRL OUTn GND sg13_hv_svaricap w=9.74u l=0.8u Nx=7
+XC2 OUTp VCTRL OUTn GND sg13_hv_svaricap w=9.74u l=0.8u Nx=7
+Vbias Ibias Vgs 0
+.save i(vbias)
 .ends
 
 .GLOBAL GND

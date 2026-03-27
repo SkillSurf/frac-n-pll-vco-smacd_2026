@@ -14,7 +14,7 @@ divy=5
 subdivy=1
 unity=1
 
-x2=2
+x2=2.1563004
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -25,7 +25,7 @@ dataset=-1
 unitx=1
 logx=0
 logy=0
-x1=0
+x1=-0.24369964
 color=7
 node=vdd}
 B 2 1575.3515625 -794.21875 2375.3515625 -394.21875 {flags=graph
@@ -37,7 +37,7 @@ divy=5
 subdivy=1
 unity=1
 
-x2=2
+x2=2.1563004
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -48,17 +48,17 @@ dataset=-1
 unitx=1
 logx=0
 logy=0
-x1=0}
+x1=-0.24369964}
 B 2 1345.3515625 -324.21875 2145.3515625 75.78125 {flags=graph
-y1=0
-y2=6.4e-05
+y1=-4.5e-05
+y2=0
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
 
-x2=2
+x2=2.1563004
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -67,10 +67,10 @@ dataset=-1
 unitx=1
 logx=0
 logy=0
-x1=0
+x1=-0.24369964
 color="4 5"
-node="i(vmeas10)
-i(vmeas11)"
+node="i(vmeas12)
+i(vmeas13)"
 autoload=1}
 N -720 -850 -720 -795 {
 lab=#net1}

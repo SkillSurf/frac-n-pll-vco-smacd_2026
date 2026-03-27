@@ -3217,53 +3217,5 @@
   </cell>
  </cells>
  <items>
-  <item>
-   <tags />
-   <category>'TM1.b'</category>
-   <cell>CP</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment />
-   <image />
-   <values>
-    <value>edge-pair: (-163.105,66.755;-143.813,66.755)|(-144.125,68.365;-163.025,68.365)</value>
-   </values>
-  </item>
-  <item>
-   <tags />
-   <category>'TM1.b'</category>
-   <cell>CP</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment />
-   <image />
-   <values>
-    <value>edge-pair: (-163.025,83.485;-148.055,83.485)|(-148.055,84.565;-163.025,84.565)</value>
-   </values>
-  </item>
-  <item>
-   <tags />
-   <category>'TM1.b'</category>
-   <cell>CP</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment />
-   <image />
-   <values>
-    <value>edge-pair: (-142.137,66.755;-124.045,66.755)|(-123.733,68.365;-141.825,68.365)</value>
-   </values>
-  </item>
-  <item>
-   <tags />
-   <category>'TM1.b'</category>
-   <cell>CP</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment />
-   <image />
-   <values>
-    <value>edge-pair: (-137.64,83.485;-122.925,83.485)|(-122.925,84.565;-137.64,84.565)</value>
-   </values>
-  </item>
  </items>
 </report-database>
