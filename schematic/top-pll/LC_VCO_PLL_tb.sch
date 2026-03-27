@@ -248,6 +248,7 @@ simulator=ngspice
 only_toplevel=false
 value="
 .lib cornerMOSlv.lib mos_tt
+.lib cornerMOShv.lib mos_tt
 .lib cornerHBT.lib hbt_typ
 .lib cornerRES.lib res_typ
 .lib cornerCAP.lib cap_typ_stat

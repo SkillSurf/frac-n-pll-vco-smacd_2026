@@ -63,7 +63,7 @@ write bgr_temp.raw
 save all
 tran 1m 2
 
-print I(Vmeas10) I(Vmeas11) I(Vmeas14)
+print I(Vmeas10) I(Vmeas14) I(Vmeas15)
 
 write bandgap_transient.raw
 .endc

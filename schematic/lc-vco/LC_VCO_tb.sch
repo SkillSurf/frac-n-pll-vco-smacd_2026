@@ -1,8 +1,9 @@
-v {xschem version=3.4.6 file_version=1.2}
+v {xschem version=3.4.8RC file_version=1.3}
 G {}
 K {}
 V {}
 S {}
+F {}
 E {}
 N 210 -540 210 -460 {lab=VDD}
 N 210 -400 210 -360 {lab=GND}
@@ -35,7 +36,6 @@ tclcommand="xschem raw_read $netlist_dir/LC_VCO_tb.raw"
 C {devices/isource.sym} 120 -510 0 0 {name=I0 value=80u}
 C {devices/vdd.sym} 120 -540 0 0 {name=l12 lab=VDD}
 C {devices/vdd.sym} 120 -460 2 0 {name=l3 lab=Ibias}
-C {/home/designer/shared/frac-n-pll-vco-smacd_2026/schematic/lc-vco/LC_VCO.sym} 540 -440 0 0 {name=x2}
 C {gnd.sym} 540 -340 0 0 {name=l6 lab=GND}
 C {lab_pin.sym} 370 -450 0 0 {name=p3 sig_type=std_logic lab=VCTRL}
 C {lab_pin.sym} 370 -430 0 0 {name=p7 sig_type=std_logic lab=Ibias}
@@ -107,3 +107,4 @@ spice_ignore=true}
 C {vsource.sym} 650 -230 0 1 {name=Vdn value="PULSE(0.5 0.4 10n 1n 90n 1s 2s)" savecurrent=false
 }
 C {devices/vdd.sym} 880 -300 0 0 {name=l8 lab=VCTRL}
+C {LC_VCO.sym} 540 -440 0 0 {name=x1}
