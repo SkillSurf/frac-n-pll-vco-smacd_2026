@@ -1,9 +1,9 @@
-** sch_path: /home/designer/shared/frac-n-pll-vco-smacd_2026/schematic/lc-vco/LC_VCO_tb.sch
+** sch_path: /foss/designs/frac-n-pll-vco-unic_cass/schematic/lc-vco/LC_VCO_tb.sch
 **.subckt LC_VCO_tb
 V1 VDD GND 1.2
 I0 VDD Ibias 80u
-x2 VDD OUTp OUTn Ibias VCTRL GND LC_VCO
-Vup VCTRL GND PULSE(0.4 1.1 10n 90n 1n 1s 2s)
+Vup VCTRL GND PULSE(0.4 0.6 10n 90n 1n 1s 2s)
+x1 VDD OUTp OUTn Ibias VCTRL GND LC_VCO
 **** begin user architecture code
 
 
@@ -61,9 +61,9 @@ wrdata vco_waveform.txt vout_db
 **** end user architecture code
 **.ends
 
-* expanding   symbol:  /home/designer/shared/frac-n-pll-vco-smacd_2026/schematic/lc-vco/LC_VCO.sym # of pins=6
-** sym_path: /home/designer/shared/frac-n-pll-vco-smacd_2026/schematic/lc-vco/LC_VCO.sym
-** sch_path: /home/designer/shared/frac-n-pll-vco-smacd_2026/schematic/lc-vco/LC_VCO.sch
+* expanding   symbol:  LC_VCO.sym # of pins=6
+** sym_path: /foss/designs/frac-n-pll-vco-unic_cass/schematic/lc-vco/LC_VCO.sym
+** sch_path: /foss/designs/frac-n-pll-vco-unic_cass/schematic/lc-vco/LC_VCO.sch
 .subckt LC_VCO VDD OUTp OUTn Ibias VCTRL GND
 *.opin OUTp
 *.opin OUTn
@@ -71,18 +71,18 @@ wrdata vco_waveform.txt vout_db
 *.iopin Ibias
 *.iopin GND
 *.iopin VDD
-XM6 net5 Vgs GND GND sg13_lv_nmos w=70.29u l=0.5u ng=20 m=1
-XM4 net1 net4 VDD VDD sg13_lv_pmos w=34.52u l=0.13u ng=10 m=1
-X5M3 net4 net1 VDD VDD sg13_lv_pmos w=34.52u l=0.13u ng=10 m=1
-XM2 OUTp OUTn Vx GND sg13_lv_nmos w=25.11u l=0.13u ng=8 m=1
-XM1 OUTn OUTp Vx GND sg13_lv_nmos w=25.11u l=0.13u ng=8 m=1
+XM6 net5 Vgs GND GND sg13_lv_nmos w=70.29u l=0.5u ng=20
+XM4 net1 net4 VDD VDD sg13_lv_pmos w=34.52u l=0.13u ng=10
+X5M3 net4 net1 VDD VDD sg13_lv_pmos w=34.52u l=0.13u ng=10
+XM2 OUTp OUTn Vx GND sg13_lv_nmos w=25.11u l=0.13u ng=8
+XM1 OUTn OUTp Vx GND sg13_lv_nmos w=25.11u l=0.13u ng=8
 Vpmos_p net1 net3 0
 .save i(vpmos_p)
 Vnmos_p net3 OUTp 0
 .save i(vnmos_p)
 Vtail Vx net5 0
 .save i(vtail)
-XM5 Vgs Vgs GND GND sg13_lv_nmos w=17.95u l=0.5u ng=6 m=1
+XM5 Vgs Vgs GND GND sg13_lv_nmos w=17.95u l=0.5u ng=6
 Vpmos_n net4 net2 0
 .save i(vpmos_n)
 Vnmos_n net2 OUTn 0

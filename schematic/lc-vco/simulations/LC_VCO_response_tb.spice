@@ -57,9 +57,11 @@ echo Run: python3 plot_vco_tuning.py
 .endc
 
 
- .lib cornerMOSlv.lib mos_tt
+
+.lib cornerMOSlv.lib mos_tt
+.lib cornerMOShv.lib mos_tt
 .lib cornerRES.lib res_typ
-.lib /foss/pdks/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib cap_typ_stat
+.lib cornerCAP.lib cap_typ
 .include ./IHP_4nH_Inductor.spice
 
 **** end user architecture code

@@ -100,13 +100,6 @@ echo Run: python3 plot_vco_tuning.py
 .endc
 "}
 C {vsource.sym} 290 -350 0 0 {name=V2 value=0.0 savecurrent=false}
-C {devices/code_shown.sym} 100 -180 0 0 {name=MODEL1 only_toplevel=true
-format="tcleval( @value )"
-value=".lib cornerMOSlv.lib mos_tt
-.lib cornerRES.lib res_typ
-.lib $::SG13G2_MODELS/cornerCAP.lib cap_typ_stat
-.include ./IHP_4nH_Inductor.spice
-"}
 C {gnd.sym} 740 -280 0 0 {name=l6 lab=GND}
 C {lab_pin.sym} 570 -390 0 0 {name=p3 sig_type=std_logic lab=VCTRL}
 C {lab_pin.sym} 570 -370 0 0 {name=p7 sig_type=std_logic lab=Ibias}
@@ -121,3 +114,12 @@ C {devices/vdd.sym} 170 -460 0 0 {name=l12 lab=VDD}
 C {devices/vdd.sym} 170 -380 2 0 {name=l3 lab=Ibias}
 C {title.sym} 160 -40 0 0 {name=l4 author="Skill Surf"}
 C {LC_VCO.sym} 740 -380 0 0 {name=x1}
+C {simulator_commands.sym} 30 -240 0 0 {name=MODEL only_toplevel=true
+format="tcleval( @value )"
+value="
+.lib cornerMOSlv.lib mos_tt
+.lib cornerMOShv.lib mos_tt
+.lib cornerRES.lib res_typ
+.lib cornerCAP.lib cap_typ
+.include ./IHP_4nH_Inductor.spice
+"}
