@@ -1,4 +1,4 @@
-v {xschem version=3.4.8RC file_version=1.2}
+v {xschem version=3.4.8RC file_version=1.3}
 G {}
 K {}
 V {}
@@ -175,7 +175,7 @@ C {vsource.sym} 410 -580 0 1 {name=Vfref value="0 pulse(0 1.2 0n 1n 1n 50n 100n)
 C {gnd.sym} 410 -510 0 0 {name=l10 lab=GND}
 C {launcher.sym} 1360 -660 0 0 {name=h1
 descr="load waves" 
-tclcommand="xschem raw_read $netlist_dir/pll_top.raw tran
+tclcommand="xschem raw_read $netlist_dir/pll_sim.raw tran
 "
 }
 C {launcher.sym} 1360 -620 0 0 {name=h4
@@ -222,22 +222,22 @@ value="
 * Uncomment the line below to pre-charge the loop filter to your expected 
 * V_tune voltage (e.g., 0.6V). This skips the massive initial frequency jump.
 
-*.nodeset v(x2.vctrl)=0.606
-*.nodeset v(x2.x1.ctrl1)=0.606
-*.nodeset v(x2.x1.ctrl2)=0.606
+*.nodeset v(x1.vctrl)=0.606
+*.nodeset v(x1.x1.ctrl1)=0.606
+*.nodeset v(x1.x1.ctrl2)=0.606
 
 .control
   * CRITICAL: Save ONLY essential low-frequency signals. 
   * Saving 2.4GHz nodes for 100us will crash your memory.
-  save xpll.vctrl xpll.up xpll.dn xpll.dsm_out clk_out clk_in vbias1 vbias2 xpll.xcp.ctrl1 xpll.xcp.ctrl2 outn xpll.outp
+  save xpll.vctrl xpll.up xpll.dn xpll.dsm_out clk_out clk_in vbias1 vbias2 xpll.xcp.ctrl1 xpll.xcp.ctrl2 outn xpll.outp xpll.sdata xpll.sclk xpll.en xpll.rst
   *save all
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 30p 110n uic
+  tran 10p 60u uic
   
   remzerovec
-  write pll_top.raw 
+  write pll_sim.raw 
 .endc
 "}
 C {simulator_commands.sym} 990 -660 0 0 {
@@ -267,5 +267,5 @@ C {title.sym} 160 -30 0 0 {name=l2 author="Skill Surf"}
 C {lab_pin.sym} 410 -620 0 0 {name=p3 sig_type=std_logic lab=CLK_IN}
 C {lab_pin.sym} 470 -600 0 0 {name=p4 lab=Vbias1}
 C {lab_pin.sym} 410 -640 0 0 {name=p5 lab=Vbias2}
-C {LC_VCO_PLL.sym} 630 -620 0 0 {name=xpll}
 C {isource.sym} 410 -680 0 0 {name=I3 value=80u}
+C {schematic/top-pll/LC_VCO_FPLL.sym} 630 -620 0 0 {name=xpll}
