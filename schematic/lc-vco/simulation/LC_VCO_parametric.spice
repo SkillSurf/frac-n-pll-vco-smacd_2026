@@ -1,0 +1,117 @@
+** sch_path: /home/designer/shared/frac-n-pll-vco-smacd_2026/schematic/lc-vco/LC_VCO_parametric.sch
+**.subckt LC_VCO_parametric OUTp OUTn
+*.opin OUTp
+*.opin OUTn
+XM6 net5 Vgs GND GND sg13_lv_nmos w=W_6 l=L_TL ng=n_6 m=1
+XM4 net1 net4 VDD VDD sg13_lv_pmos w=W_34 l=L_CC ng=n_34 m=1
+X5M3 net4 net1 VDD VDD sg13_lv_pmos w=W_34 l=L_CC ng=n_34 m=1
+XM2 OUTp OUTn Vx GND sg13_lv_nmos w=W_12 l=L_CC ng=n_12 m=1
+XM1 OUTn OUTp Vx GND sg13_lv_nmos w=W_12 l=L_CC ng=n_12 m=1
+V1 VDD GND 1.2
+Vpmos_p net1 net2 0
+.save i(vpmos_p)
+Vnmos_p net2 OUTp 0
+.save i(vnmos_p)
+Vtail Vx net5 0
+.save i(vtail)
+XM5 Vgs Vgs GND GND sg13_lv_nmos w=W_5 l=L_TL ng=n_5 m=1
+I0 VDD Vgs 80u
+Vpmos_n net4 net3 0
+.save i(vpmos_n)
+Vnmos_n net3 OUTn 0
+.save i(vnmos_n)
+x1 net3 net2 ihp_4nh_inductor
+Vup Vctrl GND PULSE(0.4 0.85 10n 90n 1n 1s 2s)
+XC1 net3 net2 GND cap_rfcmim w=22.15e-6 l=22.15e-6 wfeed=10.0e-6
+XC3 OUTp Vctrl OUTn GND sg13_hv_svaricap w=9.74u l=0.8u Nx=7
+XC2 OUTp Vctrl OUTn GND sg13_hv_svaricap w=9.74u l=0.8u Nx=7
+**** begin user architecture code
+
+
+.param temp=27
+.control
+save all
+op
+write LC_VCO_parametric.raw
+.endc
+
+
+
+.lib cornerMOSlv.lib mos_tt
+.lib cornerMOShv.lib mos_tt
+.lib cornerRES.lib res_typ
+.lib cornerCAP.lib cap_typ
+
+
+
+.param L_CC=0.13u
+
+.param W_34=34.52u
+.param n_34=10
+
+.param W_12=25.11u
+.param n_12=8
+
+.param L_TL=0.5u
+
+.param W_6=70.29u
+.param n_6=20
+
+.param W_5=17.95u
+.param n_5=6
+
+
+
+.include ../ihp_4nh_inductor.spice
+
+
+
+
+.param temp = 27
+.options method=gear, rshunt=1.0e12
+
+.control
+
+* Save required signals
+save v(OUTp) v(OUTn) v(Vx)
+
+* Long transient simulation
+tran 10p 500n 100n
+
+* Save raw waveform
+write LC_VCO_parametric_tb.raw
+
+* Plot transient waveform
+let vout = v(OUTp)
+plot vout v(Vctrl)
+
+* Plot steady-state waveform
+plot vout xlimit 200n 205n
+
+* FFT analysis
+setplot tran1
+linearize vout
+set specwindow=blackman
+fft vout
+
+* Plot FFT spectrum
+let vout_db = db(vout)
+plot vout_db xlimit 2.35G 2.55G ylimit -140 0
+
+* Find the maximum magnitude value between 2G and 3G
+meas sp max_vout_db max vout_db FROM=2G TO=3G
+
+* Save FFT data
+wrdata fft_output_parametric.txt frequency vout_db
+
+* Save waveform for external processing
+wrdata vco_waveform_parametric.txt vout_db
+
+.endc
+
+
+**** end user architecture code
+**.ends
+.GLOBAL VDD
+.GLOBAL GND
+.end
