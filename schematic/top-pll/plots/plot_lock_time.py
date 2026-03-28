@@ -344,7 +344,7 @@ def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     raw_path   = (os.path.abspath(args.raw_file) if args.raw_file else
                   os.path.abspath(os.path.join(script_dir,
-                                               "../simulations/pll_sim.raw")))
+                                               "../simulations/pll_sim_100u.raw")))
 
     if not os.path.isfile(raw_path):
         print(f"Error: '{raw_path}' not found.");  sys.exit(1)

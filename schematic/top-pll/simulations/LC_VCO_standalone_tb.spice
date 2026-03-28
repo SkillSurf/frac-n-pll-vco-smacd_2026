@@ -17,7 +17,7 @@ x1 VDD VCTRL GND OUT VBGR LC_VCO
 .control
 
 * Save required signals
-save v(VCTRL) v(OUT) v(x1.Vx)
+save v(VCTRL) v(OUT) v(Vx)
 
 * Long transient simulation
 tran 10p 500n 100n
@@ -27,10 +27,10 @@ write LC_VCO_standalone_tran.raw
 
 * Plot transient waveform
 let vout = v(OUT)
-plot v(VCTRL) v(x1.Vx) v(OUT)
+plot v(VCTRL) v(Vx) v(OUT)
 
 * Plot steady-state waveform
-plot v(VCTRL) v(x1.Vx) v(OUT) xlimit 400n 405n
+plot v(VCTRL) v(Vx) v(OUT) xlimit 400n 405n
 
 * FFT analysis
 setplot tran1

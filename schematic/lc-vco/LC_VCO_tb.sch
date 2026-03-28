@@ -5,66 +5,52 @@ V {}
 S {}
 F {}
 E {}
-N 210 -540 210 -460 {lab=VDD}
-N 210 -400 210 -360 {lab=GND}
-N 650 -450 730 -450 {lab=OUTp}
-N 650 -430 730 -430 {lab=OUTn}
-N 370 -450 440 -450 {lab=VCTRL}
-N 540 -350 540 -340 {lab=GND}
-N 120 -480 120 -460 {lab=Ibias}
-N 370 -430 440 -430 {lab=Ibias}
-N 540 -540 540 -530 {lab=VDD}
-N 880 -180 880 -160 {lab=GND}
-N 880 -280 880 -260 {lab=VCTRL}
-N 880 -280 950 -280 {lab=VCTRL}
-N 950 -280 950 -260 {lab=VCTRL}
-N 950 -200 950 -180 {lab=GND}
-N 880 -180 950 -180 {lab=GND}
-N 880 -200 880 -180 {lab=GND}
-N 880 -300 880 -280 {lab=VCTRL}
-N 650 -280 650 -260 {lab=VCTRL}
-N 650 -280 880 -280 {lab=VCTRL}
-N 650 -180 880 -180 {lab=GND}
-N 650 -200 650 -180 {lab=GND}
-C {vsource.sym} 210 -430 0 0 {name=V1 value=1.2 savecurrent=false}
-C {gnd.sym} 210 -360 0 0 {name=l1 lab=GND}
-C {devices/vdd.sym} 210 -540 0 0 {name=l5 lab=VDD}
-C {launcher.sym} 900 -470 0 0 {name=h5
-descr="load waves" 
-tclcommand="xschem raw_read $netlist_dir/LC_VCO_tb.raw"
-}
-C {devices/isource.sym} 120 -510 0 0 {name=I0 value=80u}
-C {devices/vdd.sym} 120 -540 0 0 {name=l12 lab=VDD}
-C {devices/vdd.sym} 120 -460 2 0 {name=l3 lab=Ibias}
-C {gnd.sym} 540 -340 0 0 {name=l6 lab=GND}
-C {lab_pin.sym} 370 -450 0 0 {name=p3 sig_type=std_logic lab=VCTRL}
-C {lab_pin.sym} 370 -430 0 0 {name=p7 sig_type=std_logic lab=Ibias}
-C {devices/vdd.sym} 540 -540 0 0 {name=l7 lab=VDD}
-C {lab_pin.sym} 730 -450 0 1 {name=p1 sig_type=std_logic lab=OUTp}
-C {lab_pin.sym} 730 -430 0 1 {name=p2 sig_type=std_logic lab=OUTn}
-C {simulator_commands.sym} 140 -250 0 0 {name=NGSPICE only_toplevel=true 
+N -800 -160 -800 -120 {lab=GND}
+N -960 -140 -960 -120 {lab=GND}
+N -960 -240 -960 -220 {lab=VCTRL}
+N -960 -240 -890 -240 {lab=VCTRL}
+N -890 -240 -890 -220 {lab=VCTRL}
+N -890 -160 -890 -140 {lab=GND}
+N -960 -140 -890 -140 {lab=GND}
+N -960 -160 -960 -140 {lab=GND}
+N -800 -260 -800 -220 {lab=VDD}
+N -1190 -240 -1190 -220 {lab=VCTRL}
+N -1190 -240 -960 -240 {lab=VCTRL}
+N -1190 -140 -960 -140 {lab=GND}
+N -1190 -160 -1190 -140 {lab=GND}
+N -580 -90 -580 -50 {lab=GND}
+N -580 -190 -580 -150 {lab=VBGR}
+N -960 -270 -960 -240 {lab=VCTRL}
+N -260 -200 -180 -200 {lab=OUT}
+N -540 -210 -470 -210 {lab=VCTRL}
+N -370 -110 -370 -100 {lab=GND}
+N -540 -190 -470 -190 {lab=VBGR}
+N -370 -300 -370 -290 {lab=VDD}
+N -580 -190 -540 -190 {lab=VBGR}
+C {vsource.sym} -800 -190 0 0 {name=V1 value=1.2 savecurrent=false}
+C {gnd.sym} -800 -120 0 0 {name=l4 lab=GND}
+C {simulator_commands.sym} -1030 60 0 0 {name=ANALYSIS only_toplevel=true 
 value="
-.include ../ihp_4nh_inductor.spice
 .param temp = 27
 .options method=gear, rshunt=1.0e12
 
 .control
 
 * Save required signals
-save v(OUTp) v(VCTRL)
+save v(VCTRL) v(OUT) v(x1.Vx)
 
 * Long transient simulation
 tran 10p 500n 100n
 
 * Save raw waveform
-write LC_VCO_tb.raw
+write LC_VCO_standalone_tran.raw
 
 * Plot transient waveform
-let vout = v(OUTp)
-plot vout v(Vctrl)
+let vout = v(OUT)
+plot v(VCTRL) v(x1.Vx) v(OUT)
 
 * Plot steady-state waveform
-plot vout xlimit 200n 205n
+plot v(VCTRL) v(x1.Vx) v(OUT) xlimit 400n 405n
 
 * FFT analysis
 setplot tran1
@@ -73,21 +59,77 @@ set specwindow=blackman
 fft vout
 
 * Plot FFT spectrum
-let vout_db = db(vout)
-plot vout_db xlimit 2.35G 2.55G ylimit -150 0
+let power_out_db = db(vout)
+plot power_out_db xlimit 2.38G 2.58G ylimit -200 0
 
 * Find the maximum magnitude value between 2G and 3G
-meas sp max_vout_db max vout_db FROM=2G TO=3G
+meas sp max_power_out_db max power_out_db FROM=2G TO=3G
 
 * Save FFT data
-wrdata fft_output.txt frequency vout_db
+wrdata fft_output_standalone.txt frequency power_out_db
 
 * Save waveform for external processing
-wrdata vco_waveform.txt vout_db
+wrdata vco_waveform_standalone.txt power_out_db
 
 .endc
+"
+}
+C {vsource.sym} -960 -190 0 1 {name=Vup value="PULSE(0.4 1.1 10n 90n 1n 1s 2s)" savecurrent=false
+}
+C {gnd.sym} -960 -120 0 0 {name=l6 lab=GND}
+C {vsource.sym} -890 -190 0 0 {name=V2 value=1.1 savecurrent=false
+spice_ignore=true}
+C {vsource.sym} -1190 -190 0 1 {name=Vdn value="PULSE(0.5 0.0 10n 90n 1n 1s 2s)" savecurrent=false
+spice_ignore=true}
+C {vsource.sym} -580 -120 0 0 {name=VBGR value=0.6 savecurrent=false}
+C {gnd.sym} -580 -50 0 0 {name=l13 lab=GND}
+C {opin.sym} -180 -200 0 0 {name=p5 lab=OUT
+}
+C {simulator_commands.sym} -1170 60 0 0 {name=OP only_toplevel=true 
+value="
+.include LC_VCO_standalone_tb.save
+.param temp=27
+.control
+save all 
+op
+write LC_VCO_standalone_tb.raw
+.endc
+"
+}
+C {ipin.sym} -960 -270 1 0 {name=p11 lab=VCTRL}
+C {ipin.sym} -580 -190 1 0 {name=p4 lab=VBGR}
+C {gnd.sym} -370 -100 0 0 {name=l1 lab=GND}
+C {lab_pin.sym} -540 -210 1 0 {name=p3 sig_type=std_logic lab=VCTRL}
+C {LC_VCO.sym} -370 -130 0 0 {name=x1}
+C {vdd.sym} -370 -300 0 0 {name=l2 lab=VDD}
+C {vdd.sym} -800 -260 0 0 {name=l3 lab=VDD}
+C {simulator_commands.sym} -870 60 0 0 {name=PARAMS1 only_toplevel=true 
+value="
+.param L_CC=0.13u
+
+  .param W_34=34.52u
+  .param n_34=10
+
+  .param W_12=25.11u
+  .param n_12=8
+
+.param L_TL=0.5u
+
+  .param W_5=70.29u
+  .param n_5=20
+
+  .param W_6=17.95u
+  .param n_6=6
+
+  .param W_7=16.72u
+  .param n_7=6
 "}
-C {simulator_commands.sym} 300 -250 0 0 {name=MODEL only_toplevel=true
+C {simulator_commands.sym} -730 60 0 0 {name=INCLUDE only_toplevel=true
+format="tcleval( @value )"
+value="
+.include ../ihp_4nh_inductor.spice
+"}
+C {simulator_commands.sym} -600 60 0 0 {name=MODEL only_toplevel=true
 format="tcleval( @value )"
 value="
 .lib cornerMOSlv.lib mos_tt
@@ -95,16 +137,7 @@ value="
 .lib cornerRES.lib res_typ
 .lib cornerCAP.lib cap_typ
 "}
-C {devices/launcher.sym} 900 -410 0 0 {name=h1
+C {launcher.sym} -370 130 0 0 {name=h1
 descr="OP annotate" 
 tclcommand="xschem annotate_op"
 }
-C {vsource.sym} 880 -230 0 1 {name=Vup value="PULSE(0.4 0.6 10n 90n 1n 1s 2s)" savecurrent=false
-}
-C {gnd.sym} 880 -160 0 0 {name=l4 lab=GND}
-C {vsource.sym} 950 -230 0 0 {name=V3 value=1.1 savecurrent=false
-spice_ignore=true}
-C {vsource.sym} 650 -230 0 1 {name=Vdn value="PULSE(0.5 0.4 10n 1n 90n 1s 2s)" savecurrent=false
-spice_ignore=true}
-C {devices/vdd.sym} 880 -300 0 0 {name=l8 lab=VCTRL}
-C {LC_VCO.sym} 540 -440 0 0 {name=x1}

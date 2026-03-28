@@ -1,30 +1,21 @@
 #!/usr/bin/env python3
 """
-Reference Spur — Spectrum-Analyser Style Plot
-==============================================
-Produces a carrier-centred absolute spectrum plot that looks identical to
-a real spectrum analyser output (like the reference graphs in papers):
+PLL Reference Spur — Spectrum Analyser Style Plot
+==================================================
+Matches the style of the reference image:
+  • White background, black/coloured trace
+  • Y-axis: Power (dBc), negative, 0 at top, noise floor at bottom
+  • X-axis: absolute frequency (GHz), carrier centred, ±N×f_ref visible
+  • Carrier = tallest peak (0 dBc reference), spurs are discrete peaks below
+  • Red annotation arrows for spur level
 
-  • X-axis : absolute frequency in GHz  (e.g. 2.37 – 2.51 GHz)
-  • Y-axis : power in dBm  (carrier peak normalised to 0 dBm)
-  • Spurs  : sidebands at ±f_ref on both sides of the carrier
-  • Label  : "−XX.X dBc" double-headed arrow, carrier to spur peak
-
-Method
-------
-  1. Load v(clk_out) from the settled region (memmap, identical to
-     plot_phase_noise.py)
-  2. Find rising zero-crossings → period jitter δT_k
-  3. Zero-padded FFT of δT_k at sample rate f₀  →  L(f) [dBc/Hz]
-  4. Convert to SA display power:
-       P(f_offset) = L(f_offset) + 10·log10(RBW)   [dBc in RBW]
-  5. Mirror onto both sidebands around f₀, plot carrier at 0 dBm
+Method: zero-crossing period-jitter FFT (correct domain for digital clocks)
 
 Usage
 -----
-  python3 plot_reference_spur.py
-  python3 plot_reference_spur.py /path/to/pll_sim.raw
-  python3 plot_reference_spur.py /path/to/pll_sim.raw --fref 10e6 --span 60e6
+  python3 plot_reference_spur_SA.py /path/to/pll_top.raw
+  python3 plot_reference_spur_SA.py /path/to/pll_top.raw --fref 10e6
+  python3 plot_reference_spur_SA.py /path/to/pll_top.raw --zpad 16 --threshold 0.9
 """
 
 import os, sys, argparse
@@ -33,23 +24,20 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
-import scienceplots                          # noqa: F401
+from matplotlib.collections import LineCollection
 
-# ── Colours ──────────────────────────────────────────────────────────────────
-C_CARRIER = "#C0143C"   # crimson  – spectrum trace
-C_SPUR    = "#F5A623"   # amber    – spur annotation
-C_ANNOT   = "#4A90D9"   # blue     – offset label
-
-# ── Defaults ─────────────────────────────────────────────────────────────────
-T_SETTLE    = 20e-6     # skip first 20 µs
-ZPAD_FACTOR = 8         # zero-padding for fine FFT resolution
-RBW_HZ      = 100e3    # simulated resolution bandwidth (100 kHz)
+# ── Parameters ────────────────────────────────────────────────────────────────
+F_REF     = 10e6    # reference frequency (Hz)
+T_SETTLE  = 20e-6   # skip first N seconds (PLL settling)
+THRESHOLD = 0.6     # zero-crossing threshold (V); use ~half of VDD
+ZPAD      = 8       # zero-padding factor (more → finer bins)
+SEARCH_BW = 0.5e6   # ±Hz window to search for spur peak
+N_HARM    = 4       # number of f_ref harmonics to show each side of carrier
 
 
 # ---------------------------------------------------------------------------
-# 1.  Raw file header parser  (unchanged)
+# 1. ngspice binary .raw header parser
 # ---------------------------------------------------------------------------
-
 def parse_raw_header(filepath):
     meta, variables = {}, []
     with open(filepath, "rb") as f:
@@ -75,20 +63,19 @@ def parse_raw_header(filepath):
 
 
 # ---------------------------------------------------------------------------
-# 2.  Memory-efficient signal loader  (unchanged)
+# 2. Memory-mapped signal loader
 # ---------------------------------------------------------------------------
-
-def load_two_signals(filepath, sig_name, downsample=1, t_start=None):
+def load_signal(filepath, sig_name, t_start=None):
     meta     = parse_raw_header(filepath)
     n_vars   = meta["n_vars"]
     n_points = meta["n_points"]
     offset   = meta["data_offset"]
 
     var_idx = next(
-        (v["index"] for v in meta["variables"] if v["name"] == sig_name), None
-    )
+        (v["index"] for v in meta["variables"] if v["name"] == sig_name), None)
     if var_idx is None:
-        raise ValueError(f"Signal '{sig_name}' not in raw file.")
+        avail = [v["name"] for v in meta["variables"]]
+        raise ValueError(f"Signal '{sig_name}' not found. Available: {avail}")
 
     mm = np.memmap(filepath, dtype=np.float64, mode="r",
                    offset=offset, shape=(n_points, n_vars))
@@ -99,292 +86,376 @@ def load_two_signals(filepath, sig_name, downsample=1, t_start=None):
     if t_start is not None:
         idx = np.searchsorted(t, t_start)
         t, v = t[idx:], v[idx:]
-    if downsample > 1:
-        t, v = t[::downsample], v[::downsample]
     return t, v
 
 
 # ---------------------------------------------------------------------------
-# 3.  Rising zero-crossing detector  (unchanged)
+# 3. Rising zero-crossing detector — vectorised
 # ---------------------------------------------------------------------------
-
-def find_rising_crossings(t, v, threshold=0.6):
+def find_rising_crossings(t, v, threshold=THRESHOLD):
     above    = v > threshold
     edge_idx = np.where(np.diff(above.astype(np.int8)) == 1)[0]
-    t_cross  = np.empty(len(edge_idx))
-    for i, k in enumerate(edge_idx):
-        dv   = v[k + 1] - v[k]
-        frac = (threshold - v[k]) / dv if dv != 0.0 else 0.5
-        t_cross[i] = t[k] + frac * (t[k + 1] - t[k])
-    return t_cross
+    dv       = v[edge_idx + 1] - v[edge_idx]
+    frac     = np.where(dv != 0.0, (threshold - v[edge_idx]) / dv, 0.5)
+    return t[edge_idx] + frac * (t[edge_idx + 1] - t[edge_idx])
 
 
 # ---------------------------------------------------------------------------
-# 4.  Zero-padded FFT → SSB phase noise L(f)  (unchanged)
+# 4. Period-jitter FFT → single-sided amplitude spectrum A(f) [seconds]
 # ---------------------------------------------------------------------------
+def compute_jitter_spectrum(t_cross, zpad=ZPAD):
+    """
+    Returns
+    -------
+    f_off : offset frequency array (Hz), positive, DC excluded
+    A     : jitter amplitude (s, peak, single-sided, window-corrected)
+    f0    : carrier frequency (Hz)
+    N     : number of jitter periods
+    """
+    periods  = np.diff(t_cross)
+    T0       = np.mean(periods)
+    f0       = 1.0 / T0
+    dT       = periods - T0          # δTₖ = Tₖ − T̄  → zero-mean, no DC
 
-def compute_spur_spectrum(t_cross, zpad=ZPAD_FACTOR):
-    periods = np.diff(t_cross)
-    T0      = np.mean(periods)
-    f0      = 1.0 / T0
-    dT      = periods - T0
-    N       = len(dT)
-    N_fft   = N * zpad
+    N        = len(dT)
+    N_fft    = N * zpad
+    win      = np.hanning(N)
+    cg       = np.sum(win) / N       # coherent gain ≈ 0.5
 
-    window  = np.hanning(N)
-    dT_win  = dT * window
-    w_power = np.sum(window ** 2)
+    buf      = np.zeros(N_fft)
+    buf[:N]  = dT * win
+    X        = np.fft.rfft(buf)
+    f_fft    = np.fft.rfftfreq(N_fft, d=1.0 / f0)
 
-    X     = np.fft.rfft(dT_win, n=N_fft)
-    f_fft = np.fft.rfftfreq(N_fft, d=1.0 / f0)
+    A        = np.abs(X) / (N * cg)
+    A[1:-1] *= 2.0                   # single-sided: ×2 except DC & Nyquist
 
-    df    = f0 / N_fft
-    S_dT  = (np.abs(X) ** 2) / (w_power * df)
-
-    valid  = f_fft > 0
-    f_off  = f_fft[valid]
-    S      = S_dT[valid]
-    L_lin  = f0 **4 * S / (2.0 * f_off ** 2)
-    L_dBc  = 10.0 * np.log10(np.maximum(L_lin, 1e-300))
-
-    return f_off, L_dBc, f0
+    valid = f_fft > 0
+    return f_fft[valid], A[valid], f0, N
 
 
 # ---------------------------------------------------------------------------
-# 5.  Read peak spur level
+# 5. Convert jitter amplitude → dBc power spectrum (correct, negative values)
 # ---------------------------------------------------------------------------
+def jitter_to_dBc(A, f0):
+    """
+    φ(f) = 2π·f₀·A(f)   [radians, peak phase deviation]
 
-def read_spur_level(f_off, L_dBc, f_target, search_bw=0.5e6):
-    mask = np.abs(f_off - f_target) <= search_bw
+    Carrier reference = 0 dBc  (i.e., the carrier bin is normalised to 0).
+    All other bins are below → negative dBc values.
+
+    Power at each bin relative to carrier:
+        P(f) [dBc] = 20·log10( φ(f) / φ_max )
+                   = 20·log10( A(f) / A_max )   (f₀ cancels)
+
+    So we simply normalise by the peak amplitude → carrier = 0 dBc,
+    everything else is negative. This matches spectrum analyser convention.
+    """
+    A_max  = np.max(A)                                   # carrier bin
+    ratio  = np.maximum(A / A_max, 1e-300)
+    return 20.0 * np.log10(ratio)                        # dBc, carrier=0, rest<0
+
+
+# ---------------------------------------------------------------------------
+# 6. Measure spur level in dBc (peak search near f_ref)
+# ---------------------------------------------------------------------------
+def measure_spur(f_off, P_dBc, f_ref=F_REF, search_bw=SEARCH_BW):
+    """
+    Find the peak bin within ±search_bw of f_ref.
+    Returns spur frequency (Hz) and spur level (dBc, negative).
+    """
+    mask = np.abs(f_off - f_ref) <= search_bw
     if not np.any(mask):
         raise ValueError(
             f"No FFT bins within ±{search_bw/1e3:.0f} kHz of "
-            f"{f_target/1e6:.1f} MHz. Try increasing ZPAD_FACTOR."
-        )
-    idx    = np.argmax(L_dBc[mask])
-    f_spur = f_off[mask][idx]
-    L_spur = L_dBc[mask][idx]
-    return f_spur, L_spur
+            f"{f_ref/1e6:.1f} MHz. Increase --zpad or simulation time.")
+
+    peak_local = np.argmax(P_dBc[mask])
+    f_spur     = f_off[mask][peak_local]
+    spur_dBc   = P_dBc[mask][peak_local]    # negative ✓
+
+    return f_spur, spur_dBc
 
 
 # ---------------------------------------------------------------------------
-# 6.  Build carrier-centred SA spectrum  ← KEY NEW FUNCTION
-#
-#  L(f_offset) [dBc/Hz]  →  displayed power [dBc within RBW]:
-#      P(f_offset) = L(f_offset) + 10·log10(RBW)
-#
-#  This is then mirrored symmetrically around f₀:
-#      lower sideband: f_abs = f₀ − f_offset
-#      upper sideband: f_abs = f₀ + f_offset
-#
-#  Carrier is inserted at exactly 0 dBm (spectrum analysers normalise
-#  the carrier peak to the top of the display).
+# 7. Spectrum analyser style plot
 # ---------------------------------------------------------------------------
-
-def build_sa_spectrum(f_off, L_dBc, f0, rbw=RBW_HZ, span=None):
+def plot_SA(f_off, P_dBc, f0, f_spur, spur_dBc_val,
+            save_path, f_ref=F_REF, n_harm=N_HARM):
     """
-    Convert offset-domain L(f) into a carrier-centred SA-style spectrum.
-
-    Returns
-    -------
-    f_ghz : frequency axis in GHz
-    p_dbm : power in dBm (carrier at 0 dBm)
+    Spectrum analyser style:
+      • Y-axis  : Power (dBc), 0 at top, noise floor negative at bottom
+      • X-axis  : Absolute frequency (GHz), carrier centred
+      • Carrier : tallest spike at 0 dBc
+      • Spurs   : discrete peaks at ±N×f_ref, labelled in dBc
+      • Style   : white background, black trace, red annotations
     """
-    rbw_factor = 10.0 * np.log10(rbw)
-    p_offset   = L_dBc + rbw_factor          # dBc within RBW
+    # ── Build symmetric (double-sided) spectrum around carrier ────────────
+    # f_off is positive-only (offset from carrier).
+    # Mirror to show both sidebands, like a real SA display.
+    span_hz  = (n_harm + 0.5) * f_ref
 
-    if span is not None:
-        mask     = f_off <= span / 2.0
-        f_off    = f_off[mask]
-        p_offset = p_offset[mask]
+    # Trim to display span
+    trim     = f_off <= span_hz
+    fo       = f_off[trim]
+    Pd       = P_dBc[trim]
 
-    # Mirror: lower sideband (descending freqs) + carrier + upper sideband
-    f_lower = (f0 - f_off[::-1]) / 1e9
-    f_upper = (f0 + f_off)       / 1e9
-    p_lower = p_offset[::-1]
-    p_upper = p_offset
+    # Mirror: negative offsets (left sideband) + positive (right sideband)
+    # Carrier bin (offset=0) is placed at the join; approximate by using
+    # the minimum offset bin as the closest proxy for f0
+    f_sym    = np.concatenate([-fo[::-1], fo])
+    P_sym    = np.concatenate([ Pd[::-1],  Pd])
 
-    f_ghz = np.concatenate([f_lower, [f0 / 1e9], f_upper])
-    p_dbm = np.concatenate([p_lower, [0.0],       p_upper])
+    # Absolute GHz for x-axis
+    f_abs_GHz = (f0 + f_sym) / 1e9
 
-    return f_ghz, p_dbm
+    # Noise floor: 5th percentile — sets bottom of y-axis
+    p_floor  = np.percentile(P_sym, 2) - 5   # a little below actual floor
 
+    # ── Figure ────────────────────────────────────────────────────────────
+    fig, ax = plt.subplots(figsize=(8, 4.5))
+    fig.patch.set_facecolor("white")
+    ax.set_facecolor("white")
+    ax.grid(True, color="#cccccc", linewidth=0.5, linestyle="-", zorder=0)
+    ax.set_axisbelow(True)
 
-# ---------------------------------------------------------------------------
-# 7.  Spectrum-analyser style plot  ← KEY NEW FUNCTION
-# ---------------------------------------------------------------------------
+    # ── Coloured trace: blue (noise) → cyan → yellow → red (peaks) ────────
+    cmap   = matplotlib.colormaps["jet"]
+    P_norm = np.clip((P_sym - p_floor) / (0 - p_floor), 0, 1)
 
-def plot_sa_spectrum(f_ghz, p_dbm, f0, f_spur, L_spur, rbw, save_path):
-    """
-    Carrier-centred plot styled exactly like published SA spur graphs.
+    points = np.array([f_abs_GHz, P_sym]).T.reshape(-1, 1, 2)
+    segs   = np.concatenate([points[:-1], points[1:]], axis=1)
+    cols   = cmap((P_norm[:-1] + P_norm[1:]) / 2)
+    lc     = LineCollection(segs, colors=cols, linewidth=1.0, zorder=3)
+    ax.add_collection(lc)
 
-    Annotations
-    -----------
-    • Dashed vertical lines at ±f_spur from the carrier
-    • Double-headed arrow with dBc value (carrier → spur, right side)
-    • Horizontal arrow labelled with the MHz offset at the bottom
-    • Info box: f₀ and RBW in top-left corner
-    """
-    with plt.style.context(["science", "no-latex"]):
-        plt.rcParams.update({
-            "figure.dpi"     : 300,
-            "axes.grid"      : True,
-            "grid.alpha"     : 0.25,
-            "grid.linestyle" : "--",
-        })
+    # ── Shaded fill under spectrum (fast — no per-point vlines loop) ──────
+    ax.fill_between(f_abs_GHz, p_floor, P_sym,
+                    color="#4488cc", alpha=0.12, zorder=2)
 
-        fig, ax = plt.subplots(figsize=(4.5, 3.2))
+    # ── Carrier marker at 0 dBc ───────────────────────────────────────────
+    f0_GHz = f0 / 1e9
+    ax.vlines(f0_GHz, p_floor, 0,
+              colors="black", linewidth=1.8, zorder=6)
+    ax.annotate(
+        "Fundamental\nHarmonic",
+        xy=(f0_GHz, 0),
+        xytext=(f0_GHz + 1.2 * f_ref / 1e9, -12),
+        fontsize=8, color="#222222",
+        arrowprops=dict(arrowstyle="-|>", color="#444444",
+                        lw=0.9, connectionstyle="arc3,rad=-0.25"))
 
-        # ── Spectrum trace ─────────────────────────────────────────────────
-        ax.plot(f_ghz, p_dbm, color=C_CARRIER, linewidth=0.9, zorder=4)
+    # ── Spur markers at ±N×f_ref ─────────────────────────────────────────
+    # For n=1: use f_spur + spur_dBc_val from measure_spur() — one source
+    # of truth so arrow label == info box value, always.
+    # For n>1: nearest-bin lookup (informational only, no separate search).
+    C_RED       = "#CC0000"
+    spurs_found = []   # list of (offset_hz, level_dBc)
 
-        # ── Carrier centre line (faint dotted) ────────────────────────────
-        f0_ghz = f0 / 1e9
-        ax.axvline(f0_ghz, color=C_CARRIER, linewidth=0.5,
-                   linestyle=":", alpha=0.35, zorder=2)
+    for n in range(1, n_harm + 1):
+        f_s_off = n * f_ref
+        if f_s_off > span_hz:
+            break
 
-        # ── Spur marker lines at ±f_spur (both sidebands) ─────────────────
-        f_lo = (f0 - f_spur) / 1e9
-        f_hi = (f0 + f_spur) / 1e9
-        for f_s in [f_lo, f_hi]:
-            ax.axvline(f_s, color=C_SPUR, linewidth=0.85,
-                       linestyle="--", alpha=0.85, zorder=3)
+        if n == 1:
+            # Exact measured value — same number shown in info box
+            p_s = spur_dBc_val          # dBc, negative ✓
+        else:
+            # Nearest-bin lookup for higher harmonics
+            idx_pos = np.argmin(np.abs(fo - f_s_off))
+            p_s     = Pd[idx_pos]
 
-        # ── dBc double-headed arrow (right spur) ──────────────────────────
-        idx_spur  = np.argmin(np.abs(f_ghz - f_hi))
-        p_at_spur = p_dbm[idx_spur]
+        for sign in (+1, -1):
+            f_s_GHz = (f0 + sign * f_s_off) / 1e9
+            ax.vlines(f_s_GHz, p_floor, p_s,
+                      colors=C_RED, linewidth=0.8,
+                      linestyle="-", zorder=5, alpha=0.7)
+
+        spurs_found.append((f_s_off, p_s))
+
+    # ── "Reference Spurs" label with arrow ───────────────────────────────
+    if len(spurs_found) >= 1:
+        f_s1_GHz = f_spur / 1e9          # exact measured frequency
+        ax.annotate(
+            "Reference Spurs",
+            xy=(f_s1_GHz, spur_dBc_val),
+            xytext=(f0_GHz - 1.5 * f_ref / 1e9, spur_dBc_val + 18),
+            fontsize=8.5, color=C_RED, ha="center",
+            arrowprops=dict(arrowstyle="-|>", color=C_RED, lw=1.1,
+                            connectionstyle="arc3,rad=0.3"))
+
+    # ── dBc double-headed arrow on first positive spur ────────────────────
+    # Uses f_spur (exact Hz from measure_spur) and spur_dBc_val (same search)
+    # so the arrow label is guaranteed to match the info box.
+    if spurs_found:
+        f_s1_GHz = f_spur / 1e9              # exact measured frequency
+        arr_x    = f_s1_GHz + 0.5 * f_ref / 1e9
 
         ax.annotate(
-            "", xy=(f_hi, p_at_spur), xytext=(f_hi, 0.0),
-            arrowprops=dict(arrowstyle="<->", color=C_SPUR,
-                            lw=0.9, shrinkA=0, shrinkB=0),
-            zorder=6
-        )
+            "",
+            xy=(arr_x, 0),                   # top  : 0 dBc (carrier)
+            xytext=(arr_x, spur_dBc_val),    # bottom: measured spur level
+            arrowprops=dict(
+                arrowstyle="<->", color=C_RED,
+                lw=1.5, shrinkA=2, shrinkB=2))
 
-        # dBc label next to the arrow
-        rbw_factor   = 10.0 * np.log10(rbw)
-        spur_dbc     = L_spur + rbw_factor
-        x_label      = f_hi + (f_ghz[-1] - f_ghz[0]) * 0.018
-        ax.text(x_label, (0.0 + p_at_spur) / 2.0,
-                f"{spur_dbc:.1f} dBc",
-                color=C_SPUR, fontsize=6.5, va="center",
-                bbox=dict(boxstyle="square,pad=0.15",
-                          fc="white", ec="none", alpha=0.88))
+        # Label: same value as info box ✓
+        ax.text(
+            arr_x + 0.2 * f_ref / 1e9,
+            spur_dBc_val / 2,
+            f"{spur_dBc_val:.1f} dBc",
+            va="center", ha="left",
+            fontsize=9.5, color=C_RED, fontweight="bold",
+            bbox=dict(boxstyle="round,pad=0.25",
+                      fc="white", ec="none", alpha=0.9))
 
-        # ── Horizontal offset arrow at the bottom ─────────────────────────
-        y_lo, y_hi = ax.get_ylim()
-        y_bot      = y_lo + (y_hi - y_lo) * 0.06
+        # f_ref offset label below spur stem
+        ax.text(
+            f_s1_GHz, p_floor + 8,
+            f"{f_ref/1e6:.0f} MHz",
+            fontsize=8.5, color="#0055CC",
+            fontweight="bold", ha="center")
 
-        ax.annotate(
-            "", xy=(f_hi, y_bot), xytext=(f0_ghz, y_bot),
-            arrowprops=dict(arrowstyle="<->", color=C_ANNOT,
-                            lw=0.8, shrinkA=0, shrinkB=0),
-            zorder=5
-        )
-        ax.text((f0_ghz + f_hi) / 2.0,
-                y_bot + (y_hi - y_lo) * 0.03,
-                f"{f_spur / 1e6:.0f} MHz",
-                color=C_ANNOT, fontsize=6.5, ha="center", va="bottom")
+    # ── Info box ─────────────────────────────────────────────────────────
+    ax.text(
+        0.985, 0.97,
+        f"$F_0$      = {f0/1e9:.4f} GHz\n"
+        f"$F_{{ref}}$  = {f_ref/1e6:.0f} MHz\n"
+        f"Spur    = {spur_dBc_val:.1f} dBc",
+        transform=ax.transAxes, ha="right", va="top",
+        fontsize=8.5, family="monospace", color="#111111",
+        bbox=dict(boxstyle="round,pad=0.4", fc="white",
+                  ec="#aaaaaa", alpha=0.95, lw=0.8))
 
-        # ── Axis labels ────────────────────────────────────────────────────
-        ax.set_xlabel("Frequency (GHz)", fontsize=8)
-        ax.set_ylabel("Reference Spur (dBm)", fontsize=8, color=C_CARRIER)
-        ax.tick_params(axis="y", colors=C_CARRIER, labelsize=7)
-        ax.tick_params(axis="x", labelsize=7)
-        ax.spines["left"].set_color(C_CARRIER)
-        ax.xaxis.set_major_formatter(ticker.FormatStrFormatter("%.3f"))
-        ax.xaxis.set_major_locator(ticker.MaxNLocator(nbins=5))
+    # ── Axes ──────────────────────────────────────────────────────────────
+    ax.set_xlim((f0 - span_hz) / 1e9, (f0 + span_hz) / 1e9)
+    ax.set_ylim(p_floor, 8)      # 0 dBc at carrier, noise floor at bottom
 
-        # ── Info box top-left ──────────────────────────────────────────────
-        ax.text(0.03, 0.97,
-                f"$f_0$ = {f0/1e9:.4f} GHz\n"
-                f"RBW = {rbw/1e3:.0f} kHz",
-                transform=ax.transAxes, ha="left", va="top", fontsize=5.5,
-                bbox=dict(boxstyle="square,pad=0.2",
-                          fc="white", ec="none", alpha=0.88))
+    # X ticks every f_ref
+    ax.xaxis.set_major_locator(
+        ticker.MultipleLocator(2 * f_ref / 1e9))
+    ax.xaxis.set_minor_locator(
+        ticker.MultipleLocator(f_ref / 1e9))
+    ax.xaxis.set_major_formatter(
+        ticker.FuncFormatter(lambda x, _: f"{x:.3f}"))
+    ax.tick_params(axis="x", labelrotation=0, labelsize=8, which="both",
+                   colors="black")
+    ax.tick_params(axis="x", which="minor", length=3)
 
-        fig.tight_layout(pad=0.5)
-        fmt = "pdf" if save_path.endswith(".pdf") else "png"
-        fig.savefig(save_path, dpi=600, bbox_inches="tight", format=fmt)
-        print(f"  Saved: {save_path}")
+    # Y ticks every 20 dBc
+    ax.yaxis.set_major_locator(ticker.MultipleLocator(20))
+    ax.yaxis.set_minor_locator(ticker.MultipleLocator(10))
+    ax.tick_params(axis="y", labelsize=8, colors="black")
+
+    for spine in ax.spines.values():
+        spine.set_edgecolor("#888888")
+        spine.set_linewidth(0.8)
+
+    ax.set_xlabel("Frequency (GHz)", fontsize=10, color="black")
+    ax.set_ylabel("Power (dBc)", fontsize=10, color="black")
+    ax.set_title(
+        f"PLL Output Spectrum — Reference Spur: {spur_dBc_val:.1f} dBc"
+        f"  @  {f_ref/1e6:.0f} MHz offset  |  $f_0$ = {f0/1e9:.4f} GHz",
+        fontsize=9.5, pad=10, color="black")
+
+    fig.subplots_adjust(left=0.09, right=0.97, top=0.91, bottom=0.18)
+    fmt = "pdf" if save_path.endswith(".pdf") else "png"
+    fig.savefig(save_path, dpi=300,
+                format=fmt, facecolor="white")
+    print(f"  Saved: {save_path}")
+    plt.close(fig)
 
 
 # ---------------------------------------------------------------------------
-# 8.  Main
+# 8. Main
 # ---------------------------------------------------------------------------
-
 def main():
     parser = argparse.ArgumentParser(
-        description="Reference spur — spectrum-analyser style plot."
-    )
+        description="PLL reference spur — SA style plot from ngspice .raw file")
     parser.add_argument("raw_file", nargs="?",
-                        help="Path to .raw file")
-    parser.add_argument("--fref", type=float, default=10e6,
-                        help="Spur offset frequency in Hz (default: 10e6)")
-    parser.add_argument("--span", type=float, default=60e6,
-                        help="Total display span in Hz (default: 60e6 = ±30 MHz)")
-    parser.add_argument("--rbw", type=float, default=RBW_HZ,
-                        help=f"Resolution bandwidth in Hz (default: {RBW_HZ:.0f})")
-    parser.add_argument("--search_bw", type=float, default=0.5e6,
-                        help="Spur search half-bandwidth in Hz (default: 0.5e6)")
-    parser.add_argument("--zpad", type=int, default=ZPAD_FACTOR,
-                        help=f"Zero-padding factor (default: {ZPAD_FACTOR})")
+        help="Path to ngspice .raw transient file")
+    parser.add_argument("--fref",      type=float, default=F_REF,
+        help=f"Reference frequency Hz [default {F_REF:.0e}]")
+    parser.add_argument("--zpad",      type=int,   default=ZPAD,
+        help=f"Zero-padding factor [default {ZPAD}]")
+    parser.add_argument("--threshold", type=float, default=THRESHOLD,
+        help=f"Zero-crossing threshold V [default {THRESHOLD}]")
+    parser.add_argument("--tsettle",   type=float, default=T_SETTLE,
+        help=f"Skip settling time s [default {T_SETTLE:.1e}]")
+    parser.add_argument("--search_bw", type=float, default=SEARCH_BW,
+        help=f"Spur search half-BW Hz [default {SEARCH_BW:.0e}]")
+    parser.add_argument("--nharm",     type=int,   default=N_HARM,
+        help=f"Harmonics to show each side [default {N_HARM}]")
     args = parser.parse_args()
 
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    raw_path   = (os.path.abspath(args.raw_file) if args.raw_file else
-                  os.path.abspath(os.path.join(script_dir,
-                                               "../simulations/pll_sim.raw")))
+
+    # ── Default path matches your project layout ──────────────────────────
+    raw_path = (os.path.abspath(args.raw_file) if args.raw_file else
+                os.path.abspath(os.path.join(
+                    script_dir, "../simulations/pll_sim_100U.raw")))
 
     if not os.path.isfile(raw_path):
         print(f"Error: '{raw_path}' not found.")
         sys.exit(1)
 
-    print(f"Raw file : {raw_path}  ({os.path.getsize(raw_path)/1024**2:.0f} MB)")
-    print(f"Loading v(clk_out) (settled t > {T_SETTLE*1e6:.0f} µs, "
-          f"downsample=4) ...")
+    # ── Load ──────────────────────────────────────────────────────────────
+    print(f"\nRaw file : {raw_path}  ({os.path.getsize(raw_path)/1024**2:.1f} MB)")
+    print(f"Loading v(clk_out)  (skip first {args.tsettle*1e6:.0f} µs) ...")
+    t, v = load_signal(raw_path, "v(clk_out)", t_start=args.tsettle)
 
-    t, v = load_two_signals(raw_path, "v(clk_out)",
-                            downsample=4, t_start=T_SETTLE)
-    print(f"  {len(t):,} points  span={(t[-1]-t[0])*1e6:.1f} µs")
+    dt_mean = np.mean(np.diff(t))
+    print(f"  {len(t):,} points  |  fs = {1/dt_mean/1e9:.3f} GHz  |  "
+          f"span = {(t[-1]-t[0])*1e6:.1f} µs")
+    print(f"  v(clk_out): {v.min():.3f} V … {v.max():.3f} V")
+    thr_ok = v.min() < args.threshold < v.max()
+    print(f"  Threshold : {args.threshold} V  "
+          f"({'OK' if thr_ok else 'WARNING: outside signal range!'})")
 
-    print("  Detecting rising zero-crossings ...")
-    t_cross = find_rising_crossings(t, v, threshold=0.6)
+    # ── Zero crossings ────────────────────────────────────────────────────
+    print(f"Detecting rising edges (threshold = {args.threshold} V) ...")
+    t_cross = find_rising_crossings(t, v, threshold=args.threshold)
     print(f"  {len(t_cross):,} crossings found")
 
-    if len(t_cross) < 256:
-        print("Error: too few crossings — verify PLL has settled.")
+    if len(t_cross) < 512:
+        print("ERROR: <512 crossings — check threshold or extend simulation.")
         sys.exit(1)
 
-    print(f"  Computing FFT spectrum (zpad={args.zpad}) ...")
-    f_off, L_dBc, f0 = compute_spur_spectrum(t_cross, zpad=args.zpad)
+    # ── Jitter spectrum ───────────────────────────────────────────────────
+    print(f"Computing jitter FFT (zero-pad ×{args.zpad}) ...")
+    f_off, A, f0, N = compute_jitter_spectrum(t_cross, zpad=args.zpad)
 
-    print(f"  Searching spur at {args.fref/1e6:.1f} MHz "
-          f"±{args.search_bw/1e3:.0f} kHz ...")
-    f_spur, L_spur = read_spur_level(f_off, L_dBc, args.fref, args.search_bw)
+    df_pad = (f0 / N) / args.zpad
+    print(f"  Carrier f₀    : {f0/1e9:.6f} GHz")
+    print(f"  Jitter samples: {N:,}")
+    print(f"  Bin width     : {df_pad:.1f} Hz (zero-padded)")
 
-    rbw_factor = 10.0 * np.log10(args.rbw)
-    spur_dbc   = L_spur + rbw_factor
+    # ── Convert to dBc (carrier = 0 dBc, all else negative) ──────────────
+    P_dBc = jitter_to_dBc(A, f0)
 
-    print(f"\n  ┌──────────────────────────────────────────────────┐")
-    print(f"  │  Carrier f0      : {f0/1e9:.6f} GHz              │")
-    print(f"  │  Spur offset     : {f_spur/1e6:.3f} MHz                │")
-    print(f"  │  L(f) at spur    : {L_spur:.1f} dBc/Hz              │")
-    print(f"  │  Spur (dBc)      : {spur_dbc:.1f} dBc  "
-          f"[RBW={args.rbw/1e3:.0f} kHz]     │")
-    print(f"  └──────────────────────────────────────────────────┘")
+    # ── Spur measurement ──────────────────────────────────────────────────
+    print(f"Searching for spur near {args.fref/1e6:.1f} MHz ...")
+    f_spur, spur_dBc = measure_spur(
+        f_off, P_dBc, f_ref=args.fref, search_bw=args.search_bw)
 
-    print("  Building SA-style carrier-centred spectrum ...")
-    f_ghz, p_dbm = build_sa_spectrum(
-        f_off, L_dBc, f0, rbw=args.rbw, span=args.span
-    )
+    # ── Console report ────────────────────────────────────────────────────
+    sep = "=" * 58
+    print(f"\n{sep}")
+    print("  PLL REFERENCE SPUR MEASUREMENT")
+    print(sep)
+    print(f"  Carrier       : {f0/1e9:.6f} GHz")
+    print(f"  Spur offset   : {f_spur/1e6:.3f} MHz  (target {args.fref/1e6:.1f} MHz)")
+    print(f"  Spur level    : {spur_dBc:.2f} dBc")
+    print(f"  Sign check    : "
+          + ("NEGATIVE — correct ✓" if spur_dBc < 0
+             else "POSITIVE — check threshold / settling!"))
+    print(sep + "\n")
 
-    base = os.path.join(script_dir, "reference_spur")
-    print("  Plotting ...")
-    plot_sa_spectrum(f_ghz, p_dbm, f0, f_spur, L_spur,
-                     args.rbw, base + ".pdf")
-    plot_sa_spectrum(f_ghz, p_dbm, f0, f_spur, L_spur,
-                     args.rbw, base + ".png")
+    # ── Save plots ────────────────────────────────────────────────────────
+    base = os.path.join(script_dir, "reference_spur_SA")
+    for ext in (".png", ".pdf"):
+        plot_SA(f_off, P_dBc, f0, f_spur, spur_dBc,
+                base + ext, f_ref=args.fref, n_harm=args.nharm)
 
 
 if __name__ == "__main__":

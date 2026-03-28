@@ -1,36 +1,34 @@
-** sch_path: /foss/designs/frac-n-pll-vco-unic_cass/schematic/lc-vco/LC_VCO_standalone_tb.sch
-**.subckt LC_VCO_standalone_tb OUT VCTRL VBGR
-*.opin OUT
-*.ipin VCTRL
-*.ipin VBGR
+** sch_path: /foss/designs/frac-n-pll-vco-unic_cass/schematic/lc-vco/LC_VCO_tb.sch
+**.subckt LC_VCO_tb
 V1 VDD GND 1.2
-Vup VCTRL GND PULSE(0.4 1.1 10n 90n 1n 1s 2s)
-VBGR VBGR GND 0.6
+Vup VCTRL GND PULSE(0.4 0.6 10n 90n 1n 1s 2s)
 x1 VDD VCTRL GND OUT VBGR LC_VCO
+VBGR VBGR GND 0.6
 **** begin user architecture code
 
 
 
+.include ../ihp_4nh_inductor.spice
 .param temp = 27
 .options method=gear, rshunt=1.0e12
 
 .control
 
 * Save required signals
-save v(VCTRL) v(OUT) v(x1.Vx)
+save v(OUT) v(VCTRL)
 
 * Long transient simulation
 tran 10p 500n 100n
 
 * Save raw waveform
-write LC_VCO_standalone_tran.raw
+write LC_VCO_tb.raw
 
 * Plot transient waveform
 let vout = v(OUT)
-plot v(VCTRL) v(x1.Vx) v(OUT)
+plot vout v(Vctrl)
 
 * Plot steady-state waveform
-plot v(VCTRL) v(x1.Vx) v(OUT) xlimit 400n 405n
+plot vout xlimit 200n 205n
 
 * FFT analysis
 setplot tran1
@@ -39,58 +37,20 @@ set specwindow=blackman
 fft vout
 
 * Plot FFT spectrum
-let power_out_db = db(vout)
-plot power_out_db xlimit 2.38G 2.58G ylimit -200 0
+let vout_db = db(vout)
+plot vout_db xlimit 2.35G 2.55G ylimit -150 0
 
 * Find the maximum magnitude value between 2G and 3G
-meas sp max_power_out_db max power_out_db FROM=2G TO=3G
+meas sp max_vout_db max vout_db FROM=2G TO=3G
 
 * Save FFT data
-wrdata fft_output_standalone.txt frequency power_out_db
+wrdata fft_output.txt frequency vout_db
 
 * Save waveform for external processing
-wrdata vco_waveform_standalone.txt power_out_db
+wrdata vco_waveform.txt vout_db
 
 .endc
 
-
-
-
-
-.include LC_VCO_standalone_tb.save
-.param temp=27
-.control
-save all
-op
-write LC_VCO_standalone_tb.raw
-.endc
-
-
-
-
-
-.param L_CC=0.13u
-
-  .param W_34=34.52u
-  .param n_34=10
-
-  .param W_12=25.11u
-  .param n_12=8
-
-.param L_TL=0.5u
-
-  .param W_5=70.29u
-  .param n_5=20
-
-  .param W_6=17.95u
-  .param n_6=6
-
-  .param W_7=16.72u
-  .param n_7=6
-
-
-
-.include ../ihp_4nh_inductor.spice
 
 
 .lib cornerMOSlv.lib mos_tt
@@ -139,4 +99,6 @@ XM11 net6 net2 GND GND sg13_lv_nmos w=1.64u l=0.13u ng=1
 
 .GLOBAL GND
 .GLOBAL VDD
+.GLOBAL VBGR
+.GLOBAL VCTRL
 .end

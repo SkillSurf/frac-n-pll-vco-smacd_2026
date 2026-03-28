@@ -3,8 +3,8 @@
 V1 VDD GND 1.2
 Vfref CLK_IN GND 0 pulse(0 1.2 0n 1n 1n 50n 100n)
 I1 Vbias1 GND 50u
-I3 VDD Vbias2 80u
-xpll VDD CLK_IN CLK_OUT Vbias2 OUTn Vbias1 GND LC_VCO_FPLL
+xpll VDD CLK_IN CLK_OUT VBGR Vbias1 GND LC_VCO_FPLL
+VBGR VBGR GND 0.6
 **** begin user architecture code
 
 
@@ -42,15 +42,15 @@ xpll VDD CLK_IN CLK_OUT Vbias2 OUTn Vbias1 GND LC_VCO_FPLL
 .control
   * CRITICAL: Save ONLY essential low-frequency signals.
   * Saving 2.4GHz nodes for 100us will crash your memory.
-  save xpll.vctrl xpll.up xpll.dn xpll.dsm_out clk_out clk_in vbias1 vbias2 xpll.xcp.ctrl1 xpll.xcp.ctrl2 outn xpll.outp xpll.sdata xpll.sclk xpll.en xpll.rst
+  save xpll.vctrl xpll.up xpll.dn xpll.dsm_out clk_out clk_in vbias1 vbgr xpll.xcp.ctrl1 xpll.xcp.ctrl2 xpll.out xpll.sdata xpll.sclk xpll.en xpll.rst
   *save all
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 10p 60u uic
+  tran 10p 100u uic
 
   remzerovec
-  write pll_sim.raw
+  write pll_sim_100u.raw
 .endc
 
 
@@ -77,16 +77,15 @@ xpll VDD CLK_IN CLK_OUT Vbias2 OUTn Vbias1 GND LC_VCO_FPLL
 **** end user architecture code
 **.ends
 
-* expanding   symbol:  schematic/top-pll/LC_VCO_FPLL.sym # of pins=7
+* expanding   symbol:  schematic/top-pll/LC_VCO_FPLL.sym # of pins=6
 ** sym_path: /foss/designs/frac-n-pll-vco-unic_cass/schematic/top-pll/LC_VCO_FPLL.sym
 ** sch_path: /foss/designs/frac-n-pll-vco-unic_cass/schematic/top-pll/LC_VCO_FPLL.sch
-.subckt LC_VCO_FPLL VDD CLK_IN CLK_OUT IbiasVCO OUTn Ibias GND
+.subckt LC_VCO_FPLL VDD CLK_IN CLK_OUT VBGR Ibias GND
 *.iopin GND
 *.iopin VDD
 *.ipin CLK_IN
-*.ipin IbiasVCO
+*.ipin VBGR
 *.ipin Ibias
-*.opin OUTn
 *.opin CLK_OUT
 * noconn rst
 * noconn sclk
@@ -94,7 +93,6 @@ xpll VDD CLK_IN CLK_OUT Vbias2 OUTn Vbias1 GND LC_VCO_FPLL
 * noconn en
 xcp VDD UP VCTRL DN GND Ibias CP
 xpfd VDD UP CLK_IN DSM_OUT DN GND PFD
-xvco VDD CLK_OUT OUTn IbiasVCO VCTRL GND LC_VCO
 adut [ net1 net2 net3 net4 net5 ] [ net6 ] null dut
 .model dut d_cosim simulation=./../dsm_and_freq_divider.so
 A1 [ CLK_OUT ] [ net1 ] adc1
@@ -109,6 +107,7 @@ A3 [ sclk ] [ net3 ] adc1
 .model adc1 adc_bridge in_low=0.76 in_high=0.76
 A4 [ sdata ] [ net4 ] adc1
 .model adc1 adc_bridge in_low=0.76 in_high=0.76
+x1 VDD VCTRL GND CLK_OUT VBGR LC_VCO
 .ends
 
 
@@ -156,40 +155,43 @@ x4 UP net1 VDD GND sg13g2_inv_2
 .ends
 
 
-* expanding   symbol:  LC_VCO.sym # of pins=6
+* expanding   symbol:  schematic/lc-vco/LC_VCO.sym # of pins=5
 ** sym_path: /foss/designs/frac-n-pll-vco-unic_cass/schematic/lc-vco/LC_VCO.sym
 ** sch_path: /foss/designs/frac-n-pll-vco-unic_cass/schematic/lc-vco/LC_VCO.sch
-.subckt LC_VCO VDD OUTp OUTn Ibias VCTRL GND
-*.opin OUTp
-*.opin OUTn
-*.iopin VCTRL
-*.iopin Ibias
-*.iopin GND
+.subckt LC_VCO VDD VCTRL GND OUT VBGR
+*.opin OUT
+*.ipin VCTRL
+*.ipin VBGR
 *.iopin VDD
-XM6 net5 Vgs GND GND sg13_lv_nmos w=70.29u l=0.5u ng=20
-XM4 net1 net4 VDD VDD sg13_lv_pmos w=34.52u l=0.13u ng=10
-X5M3 net4 net1 VDD VDD sg13_lv_pmos w=34.52u l=0.13u ng=10
-XM2 OUTp OUTn Vx GND sg13_lv_nmos w=25.11u l=0.13u ng=8
-XM1 OUTn OUTp Vx GND sg13_lv_nmos w=25.11u l=0.13u ng=8
+*.iopin GND
+XM5 Vx Vgs GND GND sg13_lv_nmos w=70.29u l=0.5u ng=20
+XM4 net1 net5 VDD VDD sg13_lv_pmos w=34.52u l=0.13u ng=10
+XM3 net5 net1 VDD VDD sg13_lv_pmos w=34.52u l=0.13u ng=10
+XM2 OUTp OUTn net4 GND sg13_lv_nmos w=25.11u l=0.13u ng=8
+XM1 OUTn OUTp net4 GND sg13_lv_nmos w=25.11u l=0.13u ng=8
 Vpmos_p net1 net3 0
 .save i(vpmos_p)
 Vnmos_p net3 OUTp 0
 .save i(vnmos_p)
-Vtail Vx net5 0
+Vtail net4 Vx 0
 .save i(vtail)
-XM5 Vgs Vgs GND GND sg13_lv_nmos w=17.95u l=0.5u ng=6
-Vpmos_n net4 net2 0
+XM6 Vgs Vgs GND GND sg13_lv_nmos w=17.95u l=0.5u ng=6
+Vpmos_n net5 net2 0
 .save i(vpmos_n)
 Vnmos_n net2 OUTn 0
 .save i(vnmos_n)
 x1 net2 net3 ihp_4nh_inductor
-XC1 net2 net3 GND cap_rfcmim w=22.15e-6 l=22.15e-6 wfeed=10.0e-6
+XC1 net2 net3 GND cap_rfcmim w=21.77e-6 l=21.77e-6 wfeed=10.0e-6
 XC3 OUTp VCTRL OUTn GND sg13_hv_svaricap w=9.74u l=0.8u Nx=7
 XC2 OUTp VCTRL OUTn GND sg13_hv_svaricap w=9.74u l=0.8u Nx=7
-Vbias Ibias Vgs 0
-.save i(vbias)
+XM7 Vgs VBGR VDD VDD sg13_lv_pmos w=16.72u l=0.5u ng=6
+XM8 OUT net3 VDD VDD sg13_lv_pmos w=25.10u l=0.13u ng=15
+XM9 OUT net3 GND GND sg13_lv_nmos w=1.64u l=0.13u ng=1
+XM10 net6 net2 VDD VDD sg13_lv_pmos w=25.10u l=0.13u ng=15
+XM11 net6 net2 GND GND sg13_lv_nmos w=1.64u l=0.13u ng=1
 .ends
 
 .GLOBAL GND
 .GLOBAL VDD
+.GLOBAL VBGR
 .end

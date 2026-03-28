@@ -1,4 +1,4 @@
-v {xschem version=3.4.8RC file_version=1.2}
+v {xschem version=3.4.8RC file_version=1.3}
 G {}
 K {}
 V {}
@@ -9,7 +9,6 @@ L 4 490 -470 490 -310 {}
 L 4 470 -450 490 -470 {}
 L 4 490 -470 510 -450 {}
 P 4 1 1070 -550 {}
-N 1550 -520 1600 -520 {lab=OUTn}
 N 1440 -630 1440 -620 {lab=VDD}
 N 1320 -540 1340 -540 {lab=VCTRL}
 N 700 -510 720 -510 {lab=DN}
@@ -33,21 +32,19 @@ N 1670 -240 1710 -240 {lab=en}
 N 1670 -260 1710 -260 {lab=sdata}
 N 1670 -280 1710 -280 {lab=sclk}
 N 1670 -300 1710 -300 {lab=rst}
-N 1320 -520 1340 -520 {lab=IbiasVCO}
+N 1320 -520 1340 -520 {lab=VBGR}
 N 460 -540 520 -540 {lab=CLK_IN}
-N 1865 -540 1865 -320 {lab=CLK_OUT}
 N 700 -550 720 -550 {lab=UP}
 N 1050 -540 1070 -540 {lab=VCTRL}
 N 860 -550 880 -550 {lab=UP}
 N 860 -530 880 -530 {lab=DN}
 N 460 -520 520 -520 {lab=DSM_OUT}
 N 460 -280 1130 -280 {lab=DSM_OUT}
-N 1550 -540 1580 -540 {lab=CLK_OUT}
-N 1810 -540 1865 -540 {lab=CLK_OUT}
-N 1580 -540 1810 -540 {lab=CLK_OUT}
-N 2015 -540 2115 -540 {lab=CLK_OUT}
-N 1500 -320 1865 -320 {lab=CLK_OUT}
-N 1865 -540 2015 -540 {lab=CLK_OUT}
+N 1550 -530 1580 -530 {lab=CLK_OUT}
+N 1575 -530 1675 -530 {lab=CLK_OUT}
+N 1600 -530 1600 -330 {lab=CLK_OUT}
+N 1600 -330 1600 -320 {lab=CLK_OUT}
+N 1500 -320 1600 -320 {lab=CLK_OUT}
 C {lab_pin.sym} 720 -550 0 1 {name=p16 lab=UP}
 C {lab_pin.sym} 460 -520 0 0 {name=p18 sig_type=std_logic lab=DSM_OUT}
 C {lab_pin.sym} 720 -510 0 1 {name=p19 lab=DN}
@@ -71,26 +68,22 @@ C {iopin.sym} 170 -180 1 0 {name=p62 lab=GND}
 C {iopin.sym} 170 -290 3 0 {name=p66 lab=VDD
 }
 C {ipin.sym} 140 -260 0 0 {name=p29 lab=CLK_IN}
-C {ipin.sym} 140 -230 0 0 {name=p7 lab=IbiasVCO}
+C {ipin.sym} 140 -230 0 0 {name=p7 lab=VBGR}
 C {ipin.sym} 140 -200 0 0 {name=p1 lab=Ibias}
 C {lab_pin.sym} 460 -540 0 0 {name=p17 lab=CLK_IN}
 C {gnd.sym} 550 -460 0 0 {name=l3 lab=GND}
 C {gnd.sym} 950 -470 0 0 {name=l5 lab=GND}
 C {lab_pin.sym} 460 -280 0 0 {name=p11 sig_type=std_logic lab=DSM_OUT}
-C {lab_pin.sym} 1320 -520 0 0 {name=p12 lab=IbiasVCO}
+C {lab_pin.sym} 1320 -520 0 0 {name=p12 lab=VBGR}
 C {lab_pin.sym} 860 -510 0 0 {name=p20 lab=Ibias}
 C {lab_pin.sym} 860 -550 0 0 {name=p21 lab=UP}
 C {lab_pin.sym} 860 -530 0 0 {name=p22 lab=DN}
 C {lab_pin.sym} 1320 -540 0 0 {name=p23 lab=VCTRL}
 C {gnd.sym} 1440 -430 0 0 {name=l7 lab=GND}
-C {lab_pin.sym} 2115 -540 0 1 {name=p13 sig_type=std_logic lab=CLK_OUT}
-C {lab_pin.sym} 1600 -520 0 1 {name=p25 lab=OUTn}
-C {opin.sym} 200 -210 0 0 {name=p24 lab=OUTn
-}
+C {lab_pin.sym} 1675 -530 0 1 {name=p13 sig_type=std_logic lab=CLK_OUT}
 C {opin.sym} 200 -240 0 0 {name=p6 lab=CLK_OUT}
 C {CP.sym} 950 -540 0 0 {name=xcp}
 C {PFD.sym} 550 -530 0 0 {name=xpfd}
-C {LC_VCO.sym} 1440 -530 0 0 {name=xvco}
 C {dsm_and_freq_divider.sym} 1300 -280 0 1 {name=adut
 dut=dut
 d_cosim_model= d_cosim
@@ -131,3 +124,4 @@ adc_bridge_model=adc_bridge
 in_low=0.76
 in_high=0.76
 }
+C {schematic/lc-vco/LC_VCO.sym} 1440 -460 0 0 {name=x1}

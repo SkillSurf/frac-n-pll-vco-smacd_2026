@@ -156,21 +156,20 @@ N 140 -720 140 -620 {lab=VDD}
 N 140 -560 140 -510 {lab=GND}
 N 620 -550 620 -510 {lab=GND}
 N 620 -720 620 -690 {lab=VDD}
-N 410 -650 410 -640 {lab=Vbias2}
-N 410 -640 510 -640 {lab=Vbias2}
+N 410 -650 410 -640 {lab=VBGR}
+N 410 -640 510 -640 {lab=VBGR}
 N 410 -620 410 -610 {lab=CLK_IN}
 N 410 -620 510 -620 {lab=CLK_IN}
 N 410 -550 410 -510 {lab=GND}
 N 470 -600 470 -580 {lab=Vbias1}
 N 470 -600 510 -600 {lab=Vbias1}
-N 730 -630 760 -630 {lab=CLK_OUT}
-N 730 -610 760 -610 {lab=OUTn}
-N 410 -720 410 -710 {lab=VDD}
+N 730 -620 760 -620 {lab=CLK_OUT}
 N 470 -520 470 -510 {lab=GND}
+N 60 -550 60 -510 {lab=GND}
+N 60 -710 60 -610 {lab=VBGR}
 C {vsource.sym} 140 -590 0 0 {name=V1 value=1.2 savecurrent=false}
 C {gnd.sym} 140 -510 0 0 {name=l1 lab=GND}
 C {vdd.sym} 140 -720 0 0 {name=l5 lab=VDD}
-C {vdd.sym} 410 -720 0 0 {name=l12 lab=VDD}
 C {vsource.sym} 410 -580 0 1 {name=Vfref value="0 pulse(0 1.2 0n 1n 1n 50n 100n)" savecurrent=false}
 C {gnd.sym} 410 -510 0 0 {name=l10 lab=GND}
 C {launcher.sym} 1360 -660 0 0 {name=h1
@@ -229,15 +228,15 @@ value="
 .control
   * CRITICAL: Save ONLY essential low-frequency signals. 
   * Saving 2.4GHz nodes for 100us will crash your memory.
-  save xpll.vctrl xpll.up xpll.dn xpll.dsm_out clk_out clk_in vbias1 vbias2 xpll.xcp.ctrl1 xpll.xcp.ctrl2 outn xpll.outp xpll.sdata xpll.sclk xpll.en xpll.rst
+  save xpll.vctrl xpll.up xpll.dn xpll.dsm_out clk_out clk_in vbias1 vbgr xpll.xcp.ctrl1 xpll.xcp.ctrl2 xpll.out xpll.sdata xpll.sclk xpll.en xpll.rst
   *save all
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 10p 60u uic
+  tran 10p 100u uic
   
   remzerovec
-  write pll_sim.raw 
+  write pll_sim_100u.raw 
 .endc
 "}
 C {simulator_commands.sym} 990 -660 0 0 {
@@ -261,11 +260,13 @@ value="
 .param CP_P_W = 10u
 .param CP_N_M = 1
 "}
-C {lab_pin.sym} 760 -630 0 1 {name=p1 sig_type=std_logic lab=CLK_OUT}
-C {lab_pin.sym} 760 -610 0 1 {name=p2 lab=OUTn}
+C {lab_pin.sym} 760 -620 0 1 {name=p1 sig_type=std_logic lab=CLK_OUT}
 C {title.sym} 160 -30 0 0 {name=l2 author="Skill Surf"}
 C {lab_pin.sym} 410 -620 0 0 {name=p3 sig_type=std_logic lab=CLK_IN}
 C {lab_pin.sym} 470 -600 0 0 {name=p4 lab=Vbias1}
-C {lab_pin.sym} 410 -640 0 0 {name=p5 lab=Vbias2}
-C {isource.sym} 410 -680 0 0 {name=I3 value=80u}
-C {schematic/top-pll/LC_VCO_FPLL.sym} 630 -620 0 0 {name=xpll}
+C {lab_pin.sym} 410 -650 0 0 {name=p5 lab=VBGR}
+C {schematic/top-pll/LC_VCO_FPLL.sym} 610 -530 0 0 {name=xpll}
+C {vsource.sym} 60 -580 0 0 {name=VBGR value=0.6 savecurrent=false}
+C {gnd.sym} 60 -510 0 0 {name=l13 lab=GND}
+C {vdd.sym} 60 -710 0 0 {name=l4 lab=VBGR}
+C {vdd.sym} 410 -650 0 0 {name=l6 lab=VBGR}
