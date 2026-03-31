@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(python3 verify_reference_spur.py)",
-      "Bash(python3 -c \"import sys; print\\(sys.executable\\)\")",
-      "Bash(pip install:*)"
-    ]
-  }
-}
