@@ -212,19 +212,19 @@ C {devices/code_shown.sym} 2820 130 0 0 {name=PARAMS only_toplevel=true
 value="
 .param L_CC=0.13u
 
-.param W_34=34.52u
-.param n_34=10
+.param W_34=36u
+.param n_34=5
 
-.param W_12=25.11u
-.param n_12=8
+.param W_12=22u
+.param n_12=3
 
-.param L_TL=0.5u
+.param L_TL=1u
 
-.param W_6=70.29u
-.param n_6=20
+.param W_6=384u
+.param n_6=48
 
-.param W_5=17.95u
-.param n_5=6
+.param W_5=64u
+.param n_5=8
 "}
 C {sg13g2_pr/sg13_lv_nmos.sym} 1890 760 0 1 {name=M5
 l=L_TL
@@ -235,7 +235,7 @@ model=sg13_lv_nmos
 spiceprefix=X
 }
 C {gnd.sym} 1870 850 0 1 {name=l8 lab=GND}
-C {isource.sym} 1870 640 0 1 {name=I0 value=80u}
+C {isource.sym} 1870 640 0 1 {name=I0 value=100u}
 C {devices/vdd.sym} 1870 570 0 0 {name=l9 lab=VDD}
 C {ammeter.sym} 2020 190 0 1 {name=Vpmos_n savecurrent=true spice_ignore=0}
 C {ammeter.sym} 2020 330 0 1 {name=Vnmos_n savecurrent=true spice_ignore=0}
@@ -247,10 +247,12 @@ format="tcleval( @value )"
 value="
 .include ../ihp_4nh_inductor.spice
 "}
-C {simulator_commands.sym} 2820 520 0 0 {name=ANALYSIS only_toplevel=true 
+C {simulator_commands.sym} 2880 520 0 0 {name=ANALYSIS only_toplevel=true 
 value="
 .param temp = 27
-.options method=gear, rshunt=1.0e12
+.options method=gear
+.options savecurrents
+.options noacct
 
 .control
 
@@ -263,12 +265,14 @@ tran 10p 500n 100n
 * Save raw waveform
 write LC_VCO_parametric_tb.raw
 
-* Plot transient waveform
-let vout = v(OUTp)
-plot vout v(Vctrl)
+* Find average power dissipation
+let tot_power = abs(v(vdd)*i(v1))
+meas tran avg_power AVG tot_power FROM=400n TO=450n
 
 * Plot steady-state waveform
-plot vout xlimit 200n 205n
+let vout = v(OUTp)
+meas tran vout_pp PP vout FROM=400n TO=450n
+plot vout xlimit 400n 405n
 
 * FFT analysis
 setplot tran1
@@ -277,21 +281,22 @@ set specwindow=blackman
 fft vout
 
 * Plot FFT spectrum
-let vout_db = db(vout)
-plot vout_db xlimit 2.35G 2.55G ylimit -140 0
+let power_db = db(vout)
+plot power_db xlimit 2.34G 2.54G ylimit -200 0
 
 * Find the maximum magnitude value between 2G and 3G
-meas sp max_vout_db max vout_db FROM=2G TO=3G
+meas sp max_power_db max power_db FROM=2G TO=3G
 
 * Save FFT data
-wrdata fft_output_parametric.txt frequency vout_db
+wrdata fft_output_parametric.txt frequency power_db
 
 * Save waveform for external processing
-wrdata vco_waveform_parametric.txt vout_db
+wrdata vco_waveform_parametric.txt power_db
 
 .endc
-"}
-C {vsource.sym} 1680 230 0 1 {name=Vup value="PULSE(0.4 0.85 10n 90n 1n 1s 2s)" savecurrent=false
+"
+}
+C {vsource.sym} 1680 230 0 1 {name=Vup value="PULSE(0.4 1.1 10n 90n 1n 1s 2s)" savecurrent=false
 }
 C {gnd.sym} 1680 300 0 0 {name=l6 lab=GND}
 C {lab_pin.sym} 1680 160 1 0 {name=p4 sig_type=std_logic lab=Vctrl
@@ -299,14 +304,14 @@ C {lab_pin.sym} 1680 160 1 0 {name=p4 sig_type=std_logic lab=Vctrl
 C {sg13g2_pr/cap_rfcmim.sym} 2170 170 0 0 {name=C1 
 model=cap_rfcmim
 lvs_model=rfcmim
-w=22.15e-6
-l=22.15e-6
+w=22.1e-6
+l=22.1e-6
 wfeed=10.0e-6
 spiceprefix=X}
 C {gnd.sym} 2090 200 0 0 {name=l11 lab=GND}
-C {vsource.sym} 1750 230 0 0 {name=V2 value=1.1 savecurrent=false
+C {vsource.sym} 1750 230 0 0 {name=V2 value=0 savecurrent=false
 spice_ignore=true}
-C {vsource.sym} 1450 230 0 1 {name=Vdn value="PULSE(0.5 0.0 10n 1n 90n 1s 2s)" savecurrent=false
+C {vsource.sym} 1450 230 0 1 {name=Vdn value="PULSE(0.5 0.4 10n 90n 1n 1s 2s)" savecurrent=false
 spice_ignore=true}
 C {sg13g2_pr/sg13_svaricap.sym} 1550 620 2 0 {name=C3 
 model=sg13_hv_svaricap 
@@ -331,3 +336,28 @@ C {lab_pin.sym} 1420 560 2 1 {name=p7 sig_type=std_logic lab=OUTn
 }
 C {lab_pin.sym} 1550 700 3 0 {name=p5 sig_type=std_logic lab=Vctrl
 }
+C {simulator_commands.sym} 2720 520 0 0 {name=TRANSIENT only_toplevel=true 
+value="
+.param temp = 27
+.options method=gear
+.options savecurrents
+.options noacct
+
+.control
+
+* Save required signals
+save v(OUTp) v(OUTn) v(Vx)
+
+* Long transient simulation
+tran 10p 50n
+
+* Plot transient waveform
+let vout = v(OUTp)
+plot vout v(Vctrl) v(Vx)
+
+* Find average power dissipation
+let tot_power = abs(v(vdd)*i(v1))
+plot tot_power xlimit 20n 35n
+
+.endc
+"}

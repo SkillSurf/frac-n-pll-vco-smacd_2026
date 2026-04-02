@@ -1,9 +1,8 @@
-v {xschem version=3.4.8RC file_version=1.3}
+v {xschem version=3.4.6 file_version=1.2}
 G {}
 K {}
 V {}
 S {}
-F {}
 E {}
 B 2 -724.6484375 -64.21875 75.3515625 335.78125 {flags=graph
 y1=0
@@ -43,32 +42,52 @@ N -1030 -270 -1030 -240 {lab=VCTRL}
 N -260 -200 -180 -200 {lab=OUT}
 N -540 -210 -470 -210 {lab=VCTRL}
 N -370 -110 -370 -100 {lab=GND}
-N -540 -190 -470 -190 {lab=VBGR}
 N -370 -300 -370 -290 {lab=VDD}
+<<<<<<< Updated upstream
 N -560 -190 -540 -190 {lab=VBGR}
 C {gnd.sym} -870 -120 0 0 {name=l4 lab=GND}
 C {simulator_commands.sym} -1120 -30 0 0 {name=ANALYSIS only_toplevel=true 
+=======
+N -580 -190 -470 -190 {lab=VBGR}
+C {vsource.sym} -800 -190 0 0 {name=V1 value=1.2 savecurrent=false}
+C {gnd.sym} -800 -120 0 0 {name=l4 lab=GND}
+C {simulator_commands.sym} -1030 60 0 0 {name=ANALYSIS only_toplevel=true 
+>>>>>>> Stashed changes
 value="
 .param temp = 27
-.options method=gear, rshunt=1.0e12
+.options method=gear
 
 .control
 
 * Save required signals
+<<<<<<< Updated upstream
 save v(VCTRL) v(OUT) v(x1.Vx) v(vbgr)
 
 * Long transient simulation
 tran 10p 1.5 100n
+=======
+save v(VCTRL) v(OUT) v(x1.Vx) v(x1.OUTp)
+
+* Long transient simulation
+tran 10p 6u 1u
+>>>>>>> Stashed changes
 
 * Save raw waveform
 write LC_VCO_tran.raw
 
 * Plot transient waveform
 let vout = v(OUT)
+<<<<<<< Updated upstream
 plot v(VCTRL) v(x1.Vx) v(OUT)
 plot v(VBGR)
 * Plot steady-state waveform
 plot v(VCTRL) v(x1.Vx) v(OUT) xlimit 1 1100m
+=======
+plot v(VCTRL) v(x1.Vx) v(OUT) v(x1.OUTp)
+
+* Plot steady-state waveform
+plot v(VCTRL) v(x1.Vx) v(OUT) v(x1.OUTp) xlimit 4000n 4005n
+>>>>>>> Stashed changes
 
 * FFT analysis
 setplot tran1
@@ -78,7 +97,7 @@ fft vout
 
 * Plot FFT spectrum
 let power_out_db = db(vout)
-plot power_out_db xlimit 2.38G 2.58G ylimit -200 0
+plot power_out_db xlimit 2.34G 2.54G ylimit -200 0
 
 * Find the maximum magnitude value between 2G and 3G
 meas sp max_power_out_db max power_out_db FROM=2G TO=3G
@@ -95,7 +114,11 @@ wrdata vco_waveform_standalone.txt power_out_db
 .endc
 "
 }
+<<<<<<< Updated upstream
 C {vsource.sym} -1030 -190 0 1 {name=Vup value="PULSE(0.4 0.81 10n 90n 1n 1s 2s)" savecurrent=false
+=======
+C {vsource.sym} -960 -190 0 1 {name=Vup value="PULSE(0.4 0.8 10n 90n 1n 1s 2s)" savecurrent=false
+>>>>>>> Stashed changes
 }
 C {gnd.sym} -1030 -120 0 0 {name=l6 lab=GND}
 C {vsource.sym} -960 -190 0 0 {name=V2 value=1.1 savecurrent=false
@@ -106,12 +129,11 @@ C {opin.sym} -180 -200 0 0 {name=p5 lab=OUT
 }
 C {simulator_commands.sym} -1260 -30 0 0 {name=OP only_toplevel=true 
 value="
-.include LC_VCO_standalone_tb.save
 .param temp=27
 .control
 save all 
 op
-write LC_VCO_standalone_tb.raw
+write LC_VCO_tb.raw
 .endc
 "
 }
@@ -120,6 +142,7 @@ C {gnd.sym} -370 -100 0 0 {name=l1 lab=GND}
 C {lab_pin.sym} -540 -210 1 0 {name=p3 sig_type=std_logic lab=VCTRL}
 C {LC_VCO.sym} -370 -130 0 0 {name=x1}
 C {vdd.sym} -370 -300 0 0 {name=l2 lab=VDD}
+<<<<<<< Updated upstream
 C {vdd.sym} -870 -260 0 0 {name=l3 lab=VDD}
 C {simulator_commands.sym} -960 -30 0 0 {name=PARAMS1 only_toplevel=true 
 value="
@@ -143,11 +166,19 @@ value="
   .param n_7=6
 "}
 C {simulator_commands.sym} -1260 150 0 0 {name=INCLUDE only_toplevel=true
+=======
+C {vdd.sym} -800 -260 0 0 {name=l3 lab=VDD}
+C {simulator_commands.sym} -730 60 0 0 {name=INCLUDE only_toplevel=true
+>>>>>>> Stashed changes
 format="tcleval( @value )"
 value="
 .include ../ihp_4nh_inductor.spice
 "}
+<<<<<<< Updated upstream
 C {simulator_commands.sym} -1130 150 0 0 {name=MODEL only_toplevel=true
+=======
+C {simulator_commands.sym} -880 60 0 0 {name=MODEL only_toplevel=true
+>>>>>>> Stashed changes
 format="tcleval( @value )"
 value="
 .lib cornerMOSlv.lib mos_tt

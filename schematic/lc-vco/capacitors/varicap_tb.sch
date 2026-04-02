@@ -124,6 +124,11 @@ while v_current <= v_stop
     let i = i + 1
 end
 
+let C_var_max = C_var[0]
+let C_var_min = C_var[12]
+let delta_C = (C_var_max - C_var_min) * 1e15
+print delta_C
+
 * 4. Plot the results
 plot C_var vs V_ctrl xlabel 'Tuning Voltage (V)' ylabel 'Capacitance (F)' title 'Differential Capacitance vs. Tuning Voltage'
 
