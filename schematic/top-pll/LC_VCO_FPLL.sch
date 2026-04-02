@@ -1,9 +1,8 @@
-v {xschem version=3.4.8RC file_version=1.3}
+v {xschem version=3.4.6 file_version=1.2}
 G {}
 K {}
 V {}
 S {}
-F {}
 E {}
 L 4 490 -470 490 -310 {}
 L 4 470 -450 490 -470 {}
@@ -40,11 +39,10 @@ N 860 -550 880 -550 {lab=UP}
 N 860 -530 880 -530 {lab=DN}
 N 460 -520 520 -520 {lab=DSM_OUT}
 N 460 -280 1130 -280 {lab=DSM_OUT}
-N 1550 -530 1580 -530 {lab=CLK_OUT}
-N 1575 -530 1675 -530 {lab=CLK_OUT}
-N 1600 -530 1600 -330 {lab=CLK_OUT}
-N 1600 -330 1600 -320 {lab=CLK_OUT}
+N 1600 -530 1675 -530 {lab=CLK_OUT}
+N 1600 -530 1600 -320 {lab=CLK_OUT}
 N 1500 -320 1600 -320 {lab=CLK_OUT}
+N 1550 -530 1600 -530 {lab=CLK_OUT}
 C {lab_pin.sym} 720 -550 0 1 {name=p16 lab=UP}
 C {lab_pin.sym} 460 -520 0 0 {name=p18 sig_type=std_logic lab=DSM_OUT}
 C {lab_pin.sym} 720 -510 0 1 {name=p19 lab=DN}
@@ -82,46 +80,41 @@ C {lab_pin.sym} 1320 -540 0 0 {name=p23 lab=VCTRL}
 C {gnd.sym} 1440 -430 0 0 {name=l7 lab=GND}
 C {lab_pin.sym} 1675 -530 0 1 {name=p13 sig_type=std_logic lab=CLK_OUT}
 C {opin.sym} 200 -240 0 0 {name=p6 lab=CLK_OUT}
-C {CP.sym} 950 -540 0 0 {name=xcp}
-C {PFD.sym} 550 -530 0 0 {name=xpfd}
-C {dsm_and_freq_divider.sym} 1300 -280 0 1 {name=adut
+C {charge-pump/CP.sym} 950 -540 0 0 {name=xcp}
+C {phase-freq-detector/PFD.sym} 550 -530 0 0 {name=xpfd}
+C {dsm/xschem/dsm_and_freq_divider.sym} 1300 -280 0 1 {name=adut
 dut=dut
 d_cosim_model= d_cosim
 model=./../dsm_and_freq_divider.so}
-C {adc_bridge1.sym} 1470 -320 2 0 {name=A1
+C {dsm/xschem/adc_bridge1.sym} 1470 -320 2 0 {name=A1
 adc=adc1
 adc_bridge_model=adc_bridge
-in_low=0.76
-in_high=0.76
-}
-C {dac_bridge1.sym} 1160 -280 0 1 {name=A6
+in_low=0.6
+in_high=0.6}
+C {dsm/xschem/dac_bridge1.sym} 1160 -280 0 1 {name=A6
 dac=dac1
 dac_bridge_model=dac_bridge
 out_low=0
 out_high=1.2
 }
-C {adc_bridge1.sym} 1470 -240 2 0 {name=A7
+C {dsm/xschem/adc_bridge1.sym} 1470 -240 2 0 {name=A7
 adc=adc1
 adc_bridge_model=adc_bridge
-in_low=0.76
-in_high=0.76
-}
-C {adc_bridge1.sym} 1470 -300 2 0 {name=A2
+in_low=0.6
+in_high=0.6}
+C {dsm/xschem/adc_bridge1.sym} 1470 -300 2 0 {name=A2
 adc=adc1
 adc_bridge_model=adc_bridge
-in_low=0.76
-in_high=0.76
-}
-C {adc_bridge1.sym} 1470 -280 2 0 {name=A3
+in_low=0.6
+in_high=0.6}
+C {dsm/xschem/adc_bridge1.sym} 1470 -280 2 0 {name=A3
 adc=adc1
 adc_bridge_model=adc_bridge
-in_low=0.76
-in_high=0.76
-}
-C {adc_bridge1.sym} 1470 -260 2 0 {name=A4
+in_low=0.6
+in_high=0.6}
+C {dsm/xschem/adc_bridge1.sym} 1470 -260 2 0 {name=A4
 adc=adc1
 adc_bridge_model=adc_bridge
-in_low=0.76
-in_high=0.76
-}
-C {schematic/lc-vco/LC_VCO.sym} 1440 -460 0 0 {name=x1}
+in_low=0.6
+in_high=0.6}
+C {lc-vco/LC_VCO.sym} 1440 -460 0 0 {name=x1}

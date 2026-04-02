@@ -1,9 +1,8 @@
-v {xschem version=3.4.8RC file_version=1.3}
+v {xschem version=3.4.6 file_version=1.2}
 G {}
 K {}
 V {}
 S {}
-F {}
 E {}
 N 1200 -930 1250 -930 {lab=OUT}
 N 1090 -860 1090 -820 {lab=GND}
@@ -46,7 +45,7 @@ value="
 * ==============================
 
 * Inductor / analog models
-.include ./IHP_4nH_Inductor.spice
+.include ../IHP_4nH_Inductor.spice
 
 .control
 save all
@@ -67,9 +66,9 @@ print all > op_out.txt
 * to generate following file copy stimuli.test
 * to the simulation directory and run simulation -> Utile Stimuli Editor (GUI), 
 * and press 'Translate'
-.include stimuli_test.cir
+.include ../simulations/stimuli_test.cir
 "}
-C {schematic/top-pll/LC_VCO_FPLL.sym} 1080 -840 0 0 {name=x1}
+C {top-pll/LC_VCO_FPLL.sym} 1080 -840 0 0 {name=x1}
 C {vsource.sym} 670 -820 0 0 {name=V1 value=1.2 savecurrent=false}
 C {gnd.sym} 670 -740 0 0 {name=l1 lab=GND}
 C {vdd.sym} 670 -950 0 0 {name=l5 lab=VDD}
@@ -86,8 +85,9 @@ value="
 .lib cornerMOShv.lib mos_tt
 .lib cornerHBT.lib hbt_typ
 .lib cornerRES.lib res_typ
-.lib cornerCAP.lib cap_typ_stat
-.include /foss/pdks/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
+.lib cornerCAP.lib cap_typ
+*.include /foss/pdks/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
+.include /opt/pdks/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
 .global VDD GND
 
 

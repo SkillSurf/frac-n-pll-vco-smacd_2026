@@ -1,20 +1,19 @@
-v {xschem version=3.4.8RC file_version=1.3}
+v {xschem version=3.4.6 file_version=1.2}
 G {}
 K {}
 V {}
 S {}
-F {}
 E {}
 B 2 1600 -800 2400 -400 {flags=graph
-y1=-0.0059
+y1=0
 y2=1.3
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3e-13
-x2=1.1e-07
+x1=0
+x2=2e-06
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -37,8 +36,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3e-13
-x2=1.1e-07
+x1=0
+x2=2e-06
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -49,21 +48,20 @@ logx=0
 logy=0
 hilight_wave=-1
 autoload=1
-color="4 5 7"
-node="outn
-outp;xpll.outp
+color="4 7"
+node="xpll.x1.outp
 clk_in"
 }
 B 2 800 -1200 1600 -800 {flags=graph
-y1=0.0011
-y2=0.11
+y1=0.015
+y2=0.88
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3e-13
-x2=1.1e-07
+x1=0
+x2=2e-06
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -77,15 +75,15 @@ color=12
 node=xpll.vctrl
 }
 B 2 1600 -1200 2400 -800 {flags=graph
-y1=-0.012
+y1=-0.00032
 y2=1.3
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3e-13
-x2=1.1e-07
+x1=0
+x2=2e-06
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -95,11 +93,11 @@ unitx=1
 logx=0
 logy=0
 hilight_wave=-1
-hcursor1_y=0.68567067
-hcursor2_y=0.47137288
+hcursor1_y=0.3997472
+hcursor2_y=0.82900464
 color="4 7"
 node="xpll.dn
-UP;1.2 xpll.up -"}
+xpll.up"}
 B 2 440 -400 1600 -190 {flags=graph
 y1=0
 y2=3
@@ -108,8 +106,8 @@ ypos2=3.15
 divy=5
 subdivy=1
 unity=1
-x1=3e-13
-x2=1.1e-07
+x1=0
+x2=2e-06
 
 subdivx=4
 xlabmag=1.2
@@ -129,15 +127,15 @@ sdata
 f_vco
 vco_out"}
 B 2 1600 -400 2400 0 {flags=graph
-y1=0.26
-y2=1.56
+y1=0
+y2=1.3
 ypos1=0
 ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=3e-13
-x2=1.1e-07
+x1=0
+x2=2e-06
 divx=5
 subdivx=1
 xlabmag=1.0
@@ -174,7 +172,7 @@ C {vsource.sym} 410 -580 0 1 {name=Vfref value="0 pulse(0 1.2 0n 1n 1n 50n 100n)
 C {gnd.sym} 410 -510 0 0 {name=l10 lab=GND}
 C {launcher.sym} 1360 -660 0 0 {name=h1
 descr="load waves" 
-tclcommand="xschem raw_read $netlist_dir/pll_sim.raw tran
+tclcommand="xschem raw_read $netlist_dir/simulation/pll_sim_100u.raw tran
 "
 }
 C {launcher.sym} 1360 -620 0 0 {name=h4
@@ -201,12 +199,13 @@ value="
 
 .option temp=27
 .param VDD=1.2
+.option rshunt = 1.0e12
 
 * ==============================
 * Include Models & Stimuli
 * ==============================
-.include ./IHP_4nH_Inductor.spice
-.include stimuli_test.cir
+.include ../IHP_4nH_Inductor.spice
+.include ../simulations/stimuli_test.cir
 
 * ==============================
 * Simulation Options (Optimized for Speed & Stability)
@@ -228,12 +227,12 @@ value="
 .control
   * CRITICAL: Save ONLY essential low-frequency signals. 
   * Saving 2.4GHz nodes for 100us will crash your memory.
-  save xpll.vctrl xpll.up xpll.dn xpll.dsm_out clk_out clk_in vbias1 vbgr xpll.xcp.ctrl1 xpll.xcp.ctrl2 xpll.out xpll.sdata xpll.sclk xpll.en xpll.rst
+  save xpll.vctrl xpll.up xpll.dn xpll.dsm_out clk_out clk_in vbias1 vbgr xpll.xcp.ctrl1 xpll.xcp.ctrl2 xpll.outp xpll.sdata xpll.sclk xpll.en xpll.rst
   *save all
 
 
   * 20p defines the step to resolve the 2.4 GHz edges without forcing a maxstep.
-  tran 10p 100u uic
+  tran 10p 100u
   
   remzerovec
   write pll_sim_100u.raw 
@@ -248,8 +247,9 @@ value="
 .lib cornerMOShv.lib mos_tt
 .lib cornerHBT.lib hbt_typ
 .lib cornerRES.lib res_typ
-.lib cornerCAP.lib cap_typ_stat
-.include /foss/pdks/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
+.lib cornerCAP.lib cap_typ
+*.include /foss/pdks/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
+.include /opt/pdks/ihp-sg13g2/libs.ref/sg13g2_stdcell/spice/sg13g2_stdcell.spice
 .global VDD GND
 
 
@@ -265,7 +265,7 @@ C {title.sym} 160 -30 0 0 {name=l2 author="Skill Surf"}
 C {lab_pin.sym} 410 -620 0 0 {name=p3 sig_type=std_logic lab=CLK_IN}
 C {lab_pin.sym} 470 -600 0 0 {name=p4 lab=Vbias1}
 C {lab_pin.sym} 410 -650 0 0 {name=p5 lab=VBGR}
-C {schematic/top-pll/LC_VCO_FPLL.sym} 610 -530 0 0 {name=xpll}
+C {top-pll/LC_VCO_FPLL.sym} 610 -530 0 0 {name=xpll}
 C {vsource.sym} 60 -580 0 0 {name=VBGR value=0.6 savecurrent=false}
 C {gnd.sym} 60 -510 0 0 {name=l13 lab=GND}
 C {vdd.sym} 60 -710 0 0 {name=l4 lab=VBGR}
