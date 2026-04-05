@@ -45,11 +45,11 @@ N 0 -310 60 -310 {lab=VDD}
 N 420 200 420 260 {lab=GND}
 N 360 200 420 200 {lab=GND}
 N 360 230 360 270 {
-lab=#net1}
+lab=Vx}
 N 0 200 0 260 {lab=GND}
 N 0 200 60 200 {lab=GND}
 N 60 230 60 270 {
-lab=#net1}
+lab=Vx}
 N 360 130 360 180 {
 lab=OUTp}
 N 60 130 60 180 {
@@ -84,7 +84,7 @@ N 360 -190 360 -140 {lab=OUTp}
 N 360 -30 360 0 {lab=OUTp}
 N 360 60 360 130 {lab=OUTp}
 N 210 270 360 270 {
-lab=#net1}
+lab=Vx}
 N -620 350 -560 350 {lab=GND}
 N -620 300 -620 350 {lab=GND}
 N -620 300 -560 300 {lab=GND}
@@ -115,9 +115,9 @@ N 120 -80 180 -80 {lab=OUTn}
 N 120 -50 120 70 {lab=OUTn}
 N 300 -50 300 70 {lab=OUTp}
 N 240 -80 300 -80 {lab=OUTp}
-N 210 270 210 300 {lab=#net1}
+N 210 270 210 300 {lab=Vx}
 N 60 270 210 270 {
-lab=#net1}
+lab=Vx}
 N -470 -290 -410 -290 {lab=VCTRL}
 N -470 -80 -470 -50 {lab=VCTRL}
 N -470 -50 -410 -50 {lab=VCTRL}
@@ -153,7 +153,7 @@ N 570 30 630 30 {lab=GND}
 N 570 60 570 80 {lab=GND}
 N 360 -30 500 -30 {lab=OUTp}
 N 500 -30 500 30 {lab=OUTp}
-N -150 -60 -150 0 {lab=#net2}
+N -150 -60 -150 0 {lab=#net1}
 N -110 30 -80 30 {lab=OUTn}
 N -110 -90 -80 -90 {lab=OUTn}
 N -150 80 -150 100 {lab=GND}
@@ -184,6 +184,7 @@ N 60 -140 60 -90 {lab=OUTn}
 N 60 -90 60 -80 {lab=OUTn}
 N 360 -140 360 -80 {lab=OUTp}
 N 60 0 60 60 {lab=OUTn}
+N 210 300 210 360 {lab=Vx}
 C {sg13g2_pr/sg13_lv_nmos.sym} -400 300 0 0 {name=M5
 l=1u
 w=384u
