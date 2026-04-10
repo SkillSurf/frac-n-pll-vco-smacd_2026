@@ -133,46 +133,14 @@ spiceprefix=X
 }
 C {lab_pin.sym} 1140 -520 1 1 {name=p11 sig_type=std_logic lab=Vbn}
 C {ipin.sym} 1670 -840 0 1 {name=p3 lab=GND}
-C {sg13g2_pr/rsil.sym} 1850 -590 1 1 {name=R2
-w=0.5e-6
-l=3848e-6
-model=rsil
-body=sub!
-spiceprefix=X
-b=0
-m=1
-}
 C {gnd.sym} 1940 -350 0 0 {name=l2 lab=GND}
 C {gnd.sym} 1270 -350 0 0 {name=l3 lab=GND}
 C {gnd.sym} 960 -350 0 0 {name=l5 lab=GND}
 C {vdd.sym} 740 -830 0 0 {name=l12 lab=VDD}
 C {vdd.sym} 960 -830 0 0 {name=l6 lab=VDD}
 C {vdd.sym} 1270 -830 0 0 {name=l7 lab=VDD}
-C {sg13g2_pr/rsil.sym} 1760 -520 2 0 {name=R1
-w=0.5e-6
-l=3848e-6
-model=rsil
-body=sub!
-spiceprefix=X
-b=0
-m=1
-}
 C {gnd.sym} 1760 -350 0 0 {name=l4 lab=GND}
 C {lab_pin.sym} 1560 -590 3 1 {name=p6 sig_type=std_logic lab=VCP}
-C {sg13g2_pr/cap_cmim.sym} 1940 -490 0 1 {name=C2
-model=cap_cmim
-w=41.7e-6
-l=41.7e-6
-m=8
-spiceprefix=X
-ic=20}
-C {sg13g2_pr/cap_cmim.sym} 1760 -420 0 0 {name=C1
-model=cap_cmim
-w=55.85e-6
-l=55.85e-6
-m=12
-spiceprefix=X
-ic=2}
 C {lab_pin.sym} 1140 -660 1 0 {name=p16 sig_type=std_logic lab=Vbp}
 C {sg13g2_pr/sg13_lv_pmos.sym} 760 -660 0 1 {name=M11
 l=2u
@@ -273,7 +241,7 @@ value="
 .lib cornerRES.lib res_typ
 .lib cornerCAP.lib cap_typ
 "}
-C {vsource.sym} 1900 -850 0 0 {name=V2 value="PULSE(0 1.2 3.1u 1n 1n 79n 100n 29)" savecurrent=false}
+C {vsource.sym} 1900 -850 0 0 {name=V2 value="PULSE(0 1.2 3.1u 1n 1n 49n 100n 29)" savecurrent=false}
 C {gnd.sym} 1900 -800 0 0 {name=l16 lab=GND}
 C {lab_pin.sym} 1900 -910 3 1 {name=p7 sig_type=std_logic lab=DN}
 C {simulator_commands.sym} 2220 -620 0 0 {name=TRAN only_toplevel=true 
@@ -302,7 +270,7 @@ plot v(vbp) v(vbn)
 "
 }
 C {ammeter.sym} 1680 -590 3 0 {name=Vloop savecurrent=true spice_ignore=0}
-C {vsource.sym} 2210 -880 0 1 {name=V3 value="PULSE(1.2 0 20n 1n 1n 79n 100n 29)" savecurrent=false}
+C {vsource.sym} 2210 -880 0 1 {name=V3 value="PULSE(1.2 0 20n 1n 1n 49n 100n 29)" savecurrent=false}
 C {gnd.sym} 2210 -800 0 1 {name=l19 lab=GND}
 C {lab_pin.sym} 2210 -940 1 0 {name=p8 sig_type=std_logic lab=UP}
 C {devices/code_shown.sym} 620 -960 0 0 {name=PARAMS only_toplevel=true 
@@ -327,3 +295,33 @@ spiceprefix=X
 C {vsource.sym} 560 -460 0 1 {name=VBGR value=0.6 savecurrent=false}
 C {gnd.sym} 560 -400 0 0 {name=l20 lab=GND}
 C {lab_pin.sym} 820 -590 2 0 {name=p2 sig_type=std_logic lab=Vbp}
+C {sg13g2_pr/rppd.sym} 1850 -590 1 1 {name=R2
+w=2e-6
+l=407.22e-6
+model=rppd
+body=sub!
+spiceprefix=X
+b=0
+m=1
+}
+C {sg13g2_pr/cap_cmim.sym} 1940 -490 0 1 {name=C2
+model=cap_cmim
+w=18.63e-6
+l=18.63e-6
+m=4
+spiceprefix=X}
+C {sg13g2_pr/rppd.sym} 1760 -520 2 0 {name=R1
+w=2e-6
+l=407.22e-6
+model=rppd
+body=sub!
+spiceprefix=X
+b=0
+m=1
+}
+C {sg13g2_pr/cap_cmim.sym} 1760 -420 0 0 {name=C1
+model=cap_cmim
+w=48.34e-6
+l=48.34e-6
+m=16
+spiceprefix=X}

@@ -7,10 +7,6 @@
 *.ipin GND
 XM2 Vbn Vbn net7 GND sg13_lv_nmos w=W_NB l=2u ng=n_NB
 XM8 net2 GND VDD VDD sg13_lv_pmos w=W_PS l=2u ng=n_PS
-XR2 CTRL net3 sub! rsil w=0.5e-6 l=3848e-6 m=1 b=0
-XR1 net4 net3 sub! rsil w=0.5e-6 l=3848e-6 m=1 b=0
-XC2 CTRL GND cap_cmim w=41.7e-6 l=41.7e-6 m=8
-XC1 net4 GND cap_cmim w=55.85e-6 l=55.85e-6 m=12
 XM11 Vbp Vbp net2 VDD sg13_lv_pmos w=W_PB l=2u ng=n_PB
 XM3 Vbn Vbp net1 VDD sg13_lv_pmos w=W_PB l=2u ng=n_PB
 XM4 net1 GND VDD VDD sg13_lv_pmos w=W_PS l=2u ng=n_PS
@@ -20,12 +16,16 @@ XM10 net7 VDD GND GND sg13_lv_nmos w=W_NS l=2u ng=n_NS
 XM1 net6 DN GND GND sg13_lv_nmos w=W_NS l=2u ng=n_NS
 XM5 VCP Vbn net6 GND sg13_lv_nmos w=W_NB l=2u ng=n_NB
 V1 VDD GND 1.2
-V2 DN GND PULSE(0 1.2 3.1u 1n 1n 79n 100n 29)
+V2 DN GND PULSE(0 1.2 3.1u 1n 1n 49n 100n 29)
 Vloop VCP net3 0
 .save i(vloop)
-V3 UP GND PULSE(1.2 0 20n 1n 1n 79n 100n 29)
+V3 UP GND PULSE(1.2 0 20n 1n 1n 49n 100n 29)
 XM6 Vbp net8 GND GND sg13_lv_nmos w=3.9u l=2u ng=1
 VBGR net8 GND 0.6
+XR2 CTRL net3 sub! rppd w=2e-6 l=407.22e-6 m=1 b=0
+XC2 CTRL GND cap_cmim w=18.63e-6 l=18.63e-6 m=4
+XR1 net4 net3 sub! rppd w=2e-6 l=407.22e-6 m=1 b=0
+XC1 net4 GND cap_cmim w=48.34e-6 l=48.34e-6 m=16
 **** begin user architecture code
 
 

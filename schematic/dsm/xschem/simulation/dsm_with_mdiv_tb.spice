@@ -1,4 +1,4 @@
-** sch_path: /home/mmhnbm/frac-n-pll-vco-smacd_2026/schematic/blocks/dsm/xschem/dsm_with_mdiv_tb.sch
+** sch_path: /foss/designs/uniccass-icdesign-tools/shared_xserver/frac-n-pll-vco-smacd_2026/schematic/dsm/xschem/dsm_with_mdiv_tb.sch
 **.subckt dsm_with_mdiv_tb
 V1 freq_in GND PULSE(0 1.8 0 10ns 10ns 50ns 100ns)
 A2 [ en ] [ net2 ] adc1

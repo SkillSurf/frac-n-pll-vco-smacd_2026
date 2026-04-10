@@ -80,9 +80,8 @@ N -320 300 -320 350 {lab=GND}
 N -380 300 -320 300 {lab=GND}
 N -380 330 -380 350 {lab=GND}
 N 360 -50 360 -30 {lab=OUTp}
-N 360 -190 360 -140 {lab=OUTp}
-N 360 -30 360 0 {lab=OUTp}
-N 360 60 360 130 {lab=OUTp}
+N 360 -190 360 -50 {lab=OUTp}
+N 360 -30 360 130 {lab=OUTp}
 N 210 270 360 270 {
 lab=Vx}
 N -620 350 -560 350 {lab=GND}
@@ -91,9 +90,8 @@ N -620 300 -560 300 {lab=GND}
 N -560 330 -560 350 {lab=GND}
 N -470 300 -420 300 {lab=Vgs}
 N 60 -50 60 -30 {lab=OUTn}
-N 60 -190 60 -140 {lab=OUTn}
-N 60 60 60 130 {lab=OUTn}
-N 60 -30 60 0 {lab=OUTn}
+N 60 -190 60 -50 {lab=OUTn}
+N 60 -30 60 130 {lab=OUTn}
 N -470 -170 -470 -140 {lab=GND}
 N -470 -170 -420 -170 {lab=GND}
 N -470 -200 -470 -170 {lab=GND}
@@ -115,7 +113,7 @@ N 120 -80 180 -80 {lab=OUTn}
 N 120 -50 120 70 {lab=OUTn}
 N 300 -50 300 70 {lab=OUTp}
 N 240 -80 300 -80 {lab=OUTp}
-N 210 270 210 300 {lab=Vx}
+N 210 270 210 390 {lab=Vx}
 N 60 270 210 270 {
 lab=Vx}
 N -470 -290 -410 -290 {lab=VCTRL}
@@ -123,7 +121,6 @@ N -470 -80 -470 -50 {lab=VCTRL}
 N -470 -50 -410 -50 {lab=VCTRL}
 N -380 350 -380 370 {lab=GND}
 N -560 350 -560 370 {lab=GND}
-N 210 360 210 390 {lab=Vx}
 N 110 390 210 390 {lab=Vx}
 N -470 230 -470 300 {lab=Vgs}
 N -560 230 -560 270 {lab=Vgs}
@@ -137,8 +134,8 @@ N -560 230 -470 230 {lab=Vgs}
 N -560 190 -560 230 {lab=Vgs}
 N -380 140 -380 270 {lab=Vx}
 N -720 160 -600 160 {lab=VBGR}
-N 570 -30 570 0 {lab=OUT}
-N 570 -60 570 -30 {lab=OUT}
+N 570 -30 570 0 {lab=FOUT}
+N 570 -60 570 -30 {lab=FOUT}
 N 500 30 530 30 {lab=OUTp}
 N 500 -90 530 -90 {lab=OUTp}
 N 570 80 570 100 {lab=GND}
@@ -171,20 +168,12 @@ N -80 -30 60 -30 {lab=OUTn}
 N -80 -90 -80 -30 {lab=OUTn}
 N 500 -90 500 -30 {lab=OUTp}
 N 300 -80 300 -50 {lab=OUTp}
-N 360 -80 360 -50 {lab=OUTp}
-N 60 -80 60 -50 {lab=OUTn}
 N 120 -80 120 -50 {lab=OUTn}
 N 520 -320 580 -320 {lab=VDD}
 N 520 -340 520 -320 {lab=VDD}
 N 520 -280 580 -280 {lab=GND}
 N 520 -280 520 -260 {lab=GND}
-N 570 -30 720 -30 {lab=OUT}
-N 360 0 360 60 {lab=OUTp}
-N 60 -140 60 -90 {lab=OUTn}
-N 60 -90 60 -80 {lab=OUTn}
-N 360 -140 360 -80 {lab=OUTp}
-N 60 0 60 60 {lab=OUTn}
-N 210 300 210 360 {lab=Vx}
+N 570 -30 720 -30 {lab=FOUT}
 C {sg13g2_pr/sg13_lv_nmos.sym} -400 300 0 0 {name=M5
 l=1u
 w=384u
@@ -239,8 +228,6 @@ spiceprefix=X
 }
 C {gnd.sym} -560 370 0 1 {name=l8 lab=GND}
 C {lab_pin.sym} -470 230 2 0 {name=p1 sig_type=std_logic lab=Vgs
-}
-C {lc-vco/ihp_4nh_inductor.sym} 200 60 2 1 {name=x1
 }
 C {sg13g2_pr/cap_rfcmim.sym} 210 -80 3 0 {name=C1 
 model=cap_rfcmim
@@ -315,7 +302,7 @@ model=sg13_lv_nmos
 spiceprefix=X
 }
 C {gnd.sym} -150 100 0 1 {name=l16 lab=GND}
-C {opin.sym} 720 -30 0 0 {name=p5 lab=OUT
+C {opin.sym} 720 -30 0 0 {name=p5 lab=FOUT
 }
 C {lab_pin.sym} 60 100 2 1 {name=p8 sig_type=std_logic lab=OUTn
 }
@@ -331,3 +318,4 @@ C {vdd.sym} -150 -160 0 0 {name=l9 lab=VDD}
 C {vdd.sym} 220 -350 0 0 {name=l7 lab=VDD}
 C {vdd.sym} 520 -340 0 0 {name=l4 lab=VDD}
 C {vdd.sym} 570 -160 0 0 {name=l12 lab=VDD}
+C {/foss/designs/uniccass-icdesign-tools/shared_xserver/frac-n-pll-vco-smacd_2026/schematic/lc-vco/4nH_INDUCTOR.sym} 200 60 2 1 {name=x1}
