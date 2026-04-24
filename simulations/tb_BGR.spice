@@ -19,16 +19,16 @@ print I(Vmeas)
 dc TEMP 100 -50 -5
 print I(Vmeas)
 
-write bgr_temp.raw
+write tb_BGR_temp.raw
 .endc
 
 .control
 save all
-tran 1u 15m
+tran 100u 15m
 
 print I(Vmeas)
 
-write bandgap_transient.raw
+write tb_BGR_transient.raw
 .endc
 
 

@@ -1,6 +1,6 @@
 * NGSPICE file created from BANDGAP_REF.ext - technology: ihp-sg13g2
 
-.subckt BANDGAP_REF VDD GND VBGR
+.subckt BANDGAP_REF_PEX VDD GND VBGR
 X0 a_n7059_10169.t5 a_3822_10479.t6 VDD.t24 VDD.t23 sg13_lv_pmos ad=1.78125p pd=9.755u as=1.78125p ps=9.755u w=9.375u l=2.08u
 X1 VDD.t86 GND.t34 cap_cmim l=5u w=5u
 X2 VDD.t22 a_n7059_10169.t11 VBGR.t1 VDD.t19 sg13_lv_pmos ad=0.38p pd=2.38u as=0.38p ps=2.38u w=2u l=5u

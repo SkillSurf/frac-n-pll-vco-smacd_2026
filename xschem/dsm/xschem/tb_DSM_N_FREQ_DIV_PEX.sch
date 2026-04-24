@@ -54,7 +54,7 @@ en
 rst
 freq_out
 freq_in"
-rawfile=$netlist_dir/test.raw
+rawfile=$netlist_dir/tb_DSM_N_FREQ_DIV_PEX.raw
 autoload=1}
 N 740 -180 790 -180 {lab=rst}
 N 1220 -160 1270 -160 {lab=sclk}

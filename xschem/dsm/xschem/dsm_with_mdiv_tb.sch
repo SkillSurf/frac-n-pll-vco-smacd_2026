@@ -34,7 +34,7 @@ divy=5
 subdivy=1
 unity=1
 x1=0
-x2=0.001
+x2=0.00067062075
 
 subdivx=4
 xlabmag=1.2
@@ -53,7 +53,9 @@ sclk
 en
 rst
 freq_out
-freq_in"}
+freq_in"
+rawfile=$netlist_dir/test.raw
+autoload=1}
 N 400 -330 450 -330 {lab=rst}
 N 400 -310 450 -310 {lab=sclk}
 N 400 -290 450 -290 {lab=sdata}
