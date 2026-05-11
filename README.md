@@ -9,7 +9,7 @@ Radio frequency (RF) integrated circuit design using open-source tools has tradi
 ## Paper Acceptance
 
 <p align="center">
-    <img src="./img/smacd_paper.png" width="500"><br>
+    <img src="./images/smacd_paper.png" width="500"><br>
     <em><strong>Figure 1:</strong> "A 2.4 GHz LC-VCO Fractional-N Phase Locked Loop Open-Source Design in 130nm BiCMOS" accepted at SMACD 2026</em>
 </p>
 
@@ -22,7 +22,7 @@ Supervised by **Kithmin Wickremasinghe** (MASc) and Co-supervised by **Gayangana
 Department of Electronic and Telecommunication Engineering, University of Moratuwa, Sri Lanka
 
 <p align="center">
-    <img src="./img/ENTC_News.png" width="600"><br>
+    <img src="./images/ENTC_News.png" width="600"><br>
 </p>
 
 ## Conference Information
@@ -32,7 +32,7 @@ This fractional-N PLL design has been accepted for publication at **SMACD 2026**
 # Block Diagram
 
 <p align="center">
-    <img src="./img/PLL.png" width="800"><br>
+    <img src="./images/PLL.png" width="800"><br>
     <em>Figure 2: Block Diagram of the 2.4 GHz Fractional-N PLL</em>
 </p>
 
